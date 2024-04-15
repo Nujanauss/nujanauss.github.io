@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var vars = {
       gridSize: -1,
       moves: 70,
-      currentPosX: 20,
-      currentPosY: 20,
+      currentPosX: 0,
+      currentPosY: 0,
       roundsTillComparison: 3,
       finalRound: 6,
       actionStochasticity: 0,
