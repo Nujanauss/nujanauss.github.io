@@ -8,13 +8,25 @@
 </head>
 <body>
     <div style="margin-top:10%;" class="wrapper">
-      <aside style="text-align:center;" class="inter">
-        <div id="scorer" style="padding-bottom:30px;">Here is the average score of another player</div>
-        <div id="scorer" style="padding-bottom:30px;">5732.33</div>
-        <button id="next" class="button"">Next Round? Round 4 of 6</button>
+      <aside class="inter">
+          <table id="score-table">
+            <tr>
+              <th colspan="2" style="background-color: #BBBBBB; padding: 10px;">Current Standings</th>
+            </tr>
+            <tr>
+              <td id="social-label" style="background-color: #DDDDDD; color: #1F449C; padding: 10px;">Player 1</td>
+              <td id="social-score" style="background-color: #EEEEEE; color: #1F449C; padding: 10px;">5</td>
+            </tr>
+            <tr>
+              <td id="player-label" style="background-color: #DDDDDD; color: #333333; padding: 10px;">You</td>
+              <td id="player-score" style="background-color: #EEEEEE; color: #333333; padding: 10px;">5</td>
+            </tr>
+          </table>
+          <button id="next" class="button">Next Round</button>
       </aside>
     </div>
 
-    <script src="standings-script.js"></script>
+    <script type="module" src="shared.js"></script>
+    <script type="module" src="standings-script.js"></script>
 </body>
 </html>

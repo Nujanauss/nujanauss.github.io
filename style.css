@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: url('./Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
+}
+
 .wrapper {
   display: flex;
   flex-flow: row wrap;
@@ -9,12 +14,18 @@
   color: #333;
 }
 
+#scorer {
+  font-size: 30px;
+}
+
 .wrapper > * {
   padding: 10px;
 }
 
 .info {
   width: 150px;
+  border-style: solid;
+  border-radius:5px;
 }
 
 .inter {
@@ -23,14 +34,11 @@
 
 #grid-container {
   display: grid;
-  grid-template-columns: repeat(30, 10px);
-  grid-template-rows: repeat(30, 10px);
-  border: 1px solid;
 }
 
 .square {
   box-sizing: border-box;
-  border: 1px solid transparent;
+  border: 1px solid #999999;
 }
 
 .square.current {
@@ -68,4 +76,30 @@
 .button:hover {
   background-color: grey;
   color: white;
+}
+
+.inter {
+    text-align: center;
+}
+
+#score-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+#score-table th,
+#score-table td {
+    background-color: #BBBBBB;
+    border: 1px solid #999999;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#score-table th {
+    background-color: #BBBBBB;
+    color: #333333;
 }
