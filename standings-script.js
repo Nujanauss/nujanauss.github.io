@@ -30,19 +30,26 @@ document.addEventListener('DOMContentLoaded', function() {
     if (socialScoreDiv) {
       socialScoreDiv.innerHTML = socialScore.toFixed(1);
     }
+
     var socialRow = document.getElementById('social-label').parentNode;
     var playerRow = document.getElementById('player-label').parentNode;
-
+    var topRow;
     if (avgScore < socialScore) {
       // Append player row after social row
       socialRow.parentNode.insertBefore(playerRow, socialRow.nextSibling);
+      topRow = socialRow;
     } else {
       playerRow.parentNode.insertBefore(socialRow, playerRow.nextSibling);
+      topRow = playerRow;
     }
+    var cellsInTopRow = topRow.querySelectorAll('td');
+    cellsInTopRow.forEach(cell => {
+      cell.style.color = "#1F449C";
+    });
 
     const butt = document.getElementById('next');
-    butt.addEventListener('click', nextRound);
     if (butt) {
-        butt.innerHTML = "Next Round? Round " + (parseFloat(round) + 1) + " of " + finalRound;
+      butt.addEventListener('click', nextRound);
+      butt.innerHTML = "Next Round? Round " + (parseFloat(round) + 1) + " of " + finalRound;
     }
 });
