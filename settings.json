@@ -2,22 +2,17 @@
   "vars": {
     "gridSize": 30,
     "moves": 70,
-    "initialPosX": 14,
-    "initialPosY": 14,
+    "minStepsUntilReward":3,
+    "maxStepsUntilReward":3,
+    "initialPosX": 0,
+    "initialPosY": 0,
     "roundsTillComparison": 3,
     "finalRound": 6,
-    "actionStochasticity": 0,
+    "actionStochasticity": 0.1,
     "greenSquareScore": 10,
     "purpleSquareScore": 1000,
-    "maxNoGreenSquares": 2,
-    "maxNoPurpleSquares": 2,
-    "greenSquareOffsetFromEdgeX": 1,
-    "greenSquareOffsetFromEdgeY": 1,
-    "greenSquarePosRangeX": 2,
-    "greenSquarePosRangeY": 2,
-    "purpleSquareOffsetFromEdgeX": 0,
-    "purpleSquareOffsetFromEdgeY": 0,
-    "purpleSquarePosRangeX": 2,
-    "purpleSquarePosRangeY": 2
+    "maxNoGreenSquares": 3,
+    "greenSquarePosRange": 4,
+    "purpleSquarePosRange": 2
   }
 }

@@ -23,7 +23,7 @@
 }
 
 .info {
-  width: 150px;
+  width: 200px;
   border-style: solid;
   border-radius:5px;
 }
@@ -39,11 +39,13 @@
 .square {
   box-sizing: border-box;
   border: 1px solid #999999;
+  box-shadow: 0px 0px 5px #999999;
 }
 
 .square.current {
   border-color: black;
   border-width: 2px;
+  box-shadow: inset 0px 0px 5px #999999;
 }
 
 .grey {
@@ -56,10 +58,12 @@
 
 .green {
   background-color: #228833;
+  box-shadow: inset 0px 0px 5px #ffffff;
 }
 
 .gold {
   background-color: #AA3377;
+  box-shadow: inset 0px 0px 5px #ffffff;
 }
 
 .button {

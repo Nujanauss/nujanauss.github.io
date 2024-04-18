@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     const gridContainer = document.getElementById('grid-container'), movesText = document.getElementById('moves'), scoreText = document.getElementById('score');
 
     const vars = await loadGameSettings();
-    const rewards = generateRewards(vars);
+    var rewards = Array.from({ length: vars.gridSize }, () => Array.from({ length: vars.gridSize }, () => 0)); // initialise
+    const whenToGenerateRewards = vars.moves - Math.floor(Math.random() * (vars.maxStepsUntilReward - vars.minStepsUntilReward)) - vars.minStepsUntilReward;
 
     let score = 0, previousScore = 0, currentPosition = { x: vars.initialPosX, y: vars.initialPosY }, moves = vars.moves;
     setupGrid();
@@ -24,7 +25,12 @@ document.addEventListener('DOMContentLoaded', async function() {
           endTrialLogic();
           return;
         }
-        [score, moves, currentPosition] = gameLogic(event,key,currentPosition);
+
+        [moves, currentPosition] = gameLogic(event,key,currentPosition);
+        if (moves == whenToGenerateRewards && round == 1) {
+          rewards = generateRewards(vars, rewards, currentPosition);
+        }
+        score = revealSquare(currentPosition,rewards);
         scoreText.innerHTML = 'Score: ' + score;
         movesText.innerHTML = 'Moves left: ' + moves;
         updateTextColor(scoreText,score,previousScore)
@@ -74,9 +80,8 @@ document.addEventListener('DOMContentLoaded', async function() {
           gridContainer.children[currentPosition.y * vars.gridSize + currentPosition.x].classList.remove('current');
           currentPosition = newPosition;
           gridContainer.children[currentPosition.y * vars.gridSize + currentPosition.x].classList.add('current');
-          score = revealSquare(currentPosition);
       }
-      return [score, moves, currentPosition];
+      return [moves, currentPosition];
     }
 
     function addStochasticity(axis, increment) {
@@ -94,8 +99,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       
     }
 
-    function revealSquare(position) {
-      const index = position.y * vars.gridSize + position.x, square = gridContainer.children[index];
+    function revealSquare(position,rewards) {
+      const index = convertXY2Square(position.x, position.y), square = gridContainer.children[index];
       square.classList.remove('grey');
       if (rewards[position.y][position.x] === 1) {
           square.classList.add('green');
@@ -109,32 +114,42 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
       return score;
     }
+    
+    function generateRewards(vars, rewards, currentPosition) {
+      rewards[currentPosition.y][currentPosition.x] = 1;
 
-    function generateRewards(vars) {
-      const rewards = Array.from({ length: vars.gridSize }, () => Array.from({ length: vars.gridSize }, () => 0));
-      const [rowGreen1, colGreen1] = [Math.floor(Math.random() * 2) + 1, Math.floor(Math.random() * 2) + 1];
-      rewards[rowGreen1][colGreen1] = 1;
-      const [rowGreen2, colGreen2] = [Math.floor(Math.random() * 2) + 1, Math.floor(Math.random() * 2) + 1];
-      rewards[rowGreen2][colGreen2] = 1;
-      const [rowGold, colGold] = [vars.gridSize - 1 - Math.floor(Math.random() * 2), vars.gridSize - 1 - Math.floor(Math.random() * 2)];
-      rewards[rowGold][colGold] = 2;
+      const nearbyRange = vars.greenSquarePosRange;
+      for (let i = 0; i < vars.maxNoGreenSquares - 1; i++) {
+          let x, y, idx;
+          do {
+              x = Math.floor(Math.random() * nearbyRange);
+              y = Math.floor(Math.random() * nearbyRange);
+              idx = convertXY2Square(x, y)
+          } while (gridContainer.children[idx].classList.contains('white')); // To ensure not placing rewards on visited squares: rewards[x][y] !== 0 && 
+          rewards[x][y] = 1;
+      }
+
+      rewards[vars.gridSize - 1 - Math.floor(Math.random() * vars.purpleSquarePosRange)][vars.gridSize - 1 - Math.floor(Math.random() * vars.purpleSquarePosRange)] = 2;
       return rewards;
-    }
+}
 
     function updateTextColor(scoreText,score,previousScore) {
       const originalColor = 'black';
       var newColor = 'black';
+      var timeout = 300;
       if ((score - previousScore) == vars.greenSquareScore) {
         newColor = '#228833';
+        timeout = 500;
       } else if ((score - previousScore) == vars.purpleSquareScore) {
         newColor = '#AA3377';
+        timeout = 500;
       } else if (score < previousScore) {
         newColor = '#BBBBBB' //red:#F05039
       }
       scoreText.style.color = newColor;
-      setTimeout(() => {
+      setTimeout(() => { 
           scoreText.style.color = originalColor;
-      }, 300);
+      }, timeout);
     }
 
     function setupGrid() {
@@ -188,6 +203,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     function validateVars(variables) {
       validateVar(variables, 'gridSize', 30, 2, 200);
       validateVar(variables, 'moves', 70, 1);
+      validateVar(variables, 'minStepsUntilReward', 3, 0, variables.moves - 1);
+      validateVar(variables, 'maxStepsUntilReward', 3, variables.minStepsUntilReward, variables.moves - 1);
       validateVar(variables, 'initialPosX', 0, 0, variables.gridSize - 1);
       validateVar(variables, 'initialPosY', 0, 0, variables.gridSize - 1);
       validateVar(variables, 'roundsTillComparison', 3, 1, variables.finalRound - 1);
@@ -196,15 +213,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       validateVar(variables, 'greenSquareScore', 10, 1);
       validateVar(variables, 'purpleSquareScore', 1000, variables.greenSquareScore);
       validateVar(variables, 'maxNoGreenSquares', 2, 0);
-      validateVar(variables, 'maxNoPurpleSquares', 1, 0);
-      validateVar(variables, 'greenSquareOffsetFromEdgeX', 1, 0, variables.gridSize - 1);
-      validateVar(variables, 'greenSquareOffsetFromEdgeY', 1, 0, variables.gridSize - 1);
-      validateVar(variables, 'greenSquarePosRangeX', 2, 0, variables.gridSize - 1);
-      validateVar(variables, 'greenSquarePosRangeY', 2, 0, variables.gridSize - 1);
-      validateVar(variables, 'purpleSquareOffsetFromEdgeX', 0, 0, variables.gridSize - 1);
-      validateVar(variables, 'purpleSquareOffsetFromEdgeY', 0, 0, variables.gridSize - 1);
-      validateVar(variables, 'purpleSquarePosRangeX', 2, 0, variables.gridSize - 1);
-      validateVar(variables, 'purpleSquarePosRangeY', 2, 0, variables.gridSize - 1);
+      validateVar(variables, 'greenSquarePosRange', 2, 0, variables.gridSize - 1);
+      validateVar(variables, 'purpleSquarePosRange', 2, 0, variables.gridSize - 1);
       return variables;
     }
 
