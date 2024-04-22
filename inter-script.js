@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
         scoreDiv.innerHTML = "You scored: " + latestScore;
     }
     if (butt) {
-        butt.innerHTML = "Next Round? Round " + nxtRound + " of " + finalRound;
-        butt.addEventListener('click', nextRound);
+      const rnd = parseFloat(round) + 1;
+      butt.innerHTML = "Next Round? Round " + rnd + " of " + finalRound;
+      butt.addEventListener('click', nextRound);
     }
 });

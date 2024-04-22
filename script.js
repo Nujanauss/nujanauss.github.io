@@ -7,14 +7,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     var rewards = Array.from({ length: vars.gridSize }, () => Array.from({ length: vars.gridSize }, () => 0)); // initialise
     const whenToGenerateRewards = vars.moves - Math.floor(Math.random() * (vars.maxStepsUntilReward - vars.minStepsUntilReward)) - vars.minStepsUntilReward;
 
-    let score = 0, previousScore = 0, currentPosition = { x: vars.initialPosX, y: vars.initialPosY }, moves = vars.moves;
+    let score = 0, previousScore = 0, currentPosition = { x: vars.initialPosX, y: vars.initialPosY }, moves = vars.moves, previousPosition = currentPosition;
     setupGrid();
 
     movesText.innerHTML = 'Moves left: ' + vars.moves;
-    var round = updateRoundAndURL();
+    var round = getRoundFromURL();
     const scoresSoFar = getScoresSoFar();
 
-    var urlModified = false;
+    var urlModified = false, generatedTrue = false;
     document.addEventListener('keydown', function(event) {
         const key = event.key;
         if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
@@ -27,8 +27,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         [moves, currentPosition] = gameLogic(event,key,currentPosition);
-        if (moves == whenToGenerateRewards && round == 1) {
-          rewards = generateRewards(vars, rewards, currentPosition);
+        if (previousPosition == currentPosition) {
+          return;
+        }
+        if (round == 1 && !generatedTrue && moves < whenToGenerateRewards - 1) {
+          [generatedTrue, rewards] = generateRewards(vars, rewards, currentPosition);
         }
         score = revealSquare(currentPosition,rewards);
         scoreText.innerHTML = 'Score: ' + score;
@@ -36,6 +39,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         updateTextColor(scoreText,score,previousScore)
 
         previousScore = score;
+        previousPosition = currentPosition;
     });
     
     async function loadGameSettings() {
@@ -44,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       return validateVars(data.vars);
     }
 
-    function updateRoundAndURL() {
+    function getRoundFromURL() {
       var round = new URLSearchParams(window.location.search).get('round');
       if (!round) {
         round = 1;
@@ -52,8 +56,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         url.searchParams.set('rounds', vars.finalRound);
         url.searchParams.set('round', round);
         history.replaceState(null, '', url);
-      } else {
-        round++;
       }
       return round;
     }
@@ -116,21 +118,27 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
     
     function generateRewards(vars, rewards, currentPosition) {
-      rewards[currentPosition.y][currentPosition.x] = 1;
-
-      const nearbyRange = vars.greenSquarePosRange;
-      for (let i = 0; i < vars.maxNoGreenSquares - 1; i++) {
-          let x, y, idx;
-          do {
-              x = Math.floor(Math.random() * nearbyRange);
-              y = Math.floor(Math.random() * nearbyRange);
-              idx = convertXY2Square(x, y)
-          } while (gridContainer.children[idx].classList.contains('white')); // To ensure not placing rewards on visited squares: rewards[x][y] !== 0 && 
-          rewards[x][y] = 1;
+      const index = convertXY2Square(currentPosition.x, currentPosition.y);
+      if (gridContainer.children[index].classList.contains('white')) {// don't turn white suddenly green
+        return [false, rewards]
       }
 
-      rewards[vars.gridSize - 1 - Math.floor(Math.random() * vars.purpleSquarePosRange)][vars.gridSize - 1 - Math.floor(Math.random() * vars.purpleSquarePosRange)] = 2;
-      return rewards;
+      rewards[currentPosition.y][currentPosition.x] = 1;
+      const nearbyRange = vars.greenSquarePosRange;
+      for (let i = 0; i < vars.maxNoGreenSquares - 2; i++) {
+          let x, y, idx, signX, signY;
+          do {
+              signX = Math.random() < 0.5 ? -1 : 1;
+              signY = Math.random() < 0.5 ? -1 : 1;
+              x = currentPosition.x + signX * Math.floor(Math.random() * nearbyRange);
+              y = currentPosition.y + signY * Math.floor(Math.random() * nearbyRange);
+              idx = convertXY2Square(x, y)
+          } while (x < 0 || y < 0 || gridContainer.children[idx].classList.contains('white') || gridContainer.children[idx].classList.contains('green'));
+          rewards[y][x] = 1;
+      }
+
+      rewards[vars.gridSize - 1 - Math.floor(Math.random() * vars.purpleSquarePosRange)][vars.gridSize - 2 - Math.floor(Math.random() * vars.purpleSquarePosRange)] = 2;
+      return [true, rewards];
 }
 
     function updateTextColor(scoreText,score,previousScore) {

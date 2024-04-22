@@ -14,6 +14,37 @@
   color: #333;
 }
 
+.margin-5 {
+  margin-top: 5%;
+}
+
+.margin-10 {
+  margin-top: 10%;
+}
+
+.margin-13 {
+  margin-top: 13%;
+}
+
+
+.margin-15 {
+  margin-top: 15%;
+}
+
+.width-30 {
+  width: 30%;
+}
+
+.blue-coloured {
+  color:#1F449C;
+}
+
+.index-instructions {
+  margin: 0 auto;
+  padding-bottom:30px;
+  width:50%;
+}
+
 #scorer {
   font-size: 30px;
 }
@@ -26,14 +57,32 @@
   width: 200px;
   border-style: solid;
   border-radius:5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .inter {
   width:auto;
+  text-align:center;
 }
 
 #grid-container {
   display: grid;
+}
+
+.padding-10 {
+  padding-bottom: 10px;
+}
+
+.padding-30 {
+  padding-bottom: 30px;
+}
+
+.padding-50 {
+  padding-bottom: 50px;
+}
+
+.font-30 {
+  font-size: 30px;
 }
 
 .square {
@@ -52,6 +101,14 @@
   background-color: #BBBBBB;
 }
 
+.light-grey {
+  background-color: #DDDDDD;
+}
+
+.lightest-grey {
+  background-color: #EEEEEE;
+}
+
 .white {
   background-color: white;
 }
@@ -64,6 +121,10 @@
 .gold {
   background-color: #AA3377;
   box-shadow: inset 0px 0px 5px #ffffff;
+}
+
+.dark-grey-text {
+  color: #333333;
 }
 
 .button {
@@ -83,7 +144,7 @@
 }
 
 .inter {
-    text-align: center;
+  text-align: center;
 }
 
 #score-table {
@@ -97,13 +158,7 @@
 
 #score-table th,
 #score-table td {
-    background-color: #BBBBBB;
     border: 1px solid #999999;
     padding: 10px;
     border-radius: 5px;
-}
-
-#score-table th {
-    background-color: #BBBBBB;
-    color: #333333;
 }
