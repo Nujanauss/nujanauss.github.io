@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     movesText.innerHTML = 'Moves left: ' + vars.moves;
     var round = getRoundFromURL();
     const scoresSoFar = getScoresSoFar();
+    let initialRewardPos = getUrlParameter('blob');
 
     var urlModified = false, generatedTrue = false;
     document.addEventListener('keydown', function(event) {
@@ -22,16 +23,22 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         if (!urlModified && moves < 1) { //only modify URL once
-          endTrialLogic();
+          endTrialLogic(initialRewardPos, scoresSoFar);
           return;
         }
 
-        [moves, currentPosition] = gameLogic(event,key,currentPosition);
+        [moves, currentPosition] = gameLogic(event, key, currentPosition);
         if (previousPosition == currentPosition) {
           return;
         }
+
         if (round == 1 && !generatedTrue && moves < whenToGenerateRewards - 1) {
           [generatedTrue, rewards] = generateRewards(vars, rewards, currentPosition);
+          if (generatedTrue) {
+            initialRewardPos = encodeCoordinates(currentPosition.x, currentPosition.y);
+          }
+        } else if (round > 1 && !generatedTrue ) {
+          [generatedTrue, rewards] = generateRewards(vars, rewards, decodeCoordinates(initialRewardPos));
         }
         score = revealSquare(currentPosition,rewards);
         scoreText.innerHTML = 'Score: ' + score;
@@ -117,21 +124,21 @@ document.addEventListener('DOMContentLoaded', async function() {
       return score;
     }
     
-    function generateRewards(vars, rewards, currentPosition) {
-      const index = convertXY2Square(currentPosition.x, currentPosition.y);
+    function generateRewards(vars, rewards, startAtPos) {
+      const index = convertXY2Square(startAtPos.x, startAtPos.y);
       if (gridContainer.children[index].classList.contains('white')) {// don't turn white suddenly green
         return [false, rewards]
       }
 
-      rewards[currentPosition.y][currentPosition.x] = 1;
+      rewards[startAtPos.y][startAtPos.x] = 1;
       const nearbyRange = vars.greenSquarePosRange;
       for (let i = 0; i < vars.maxNoGreenSquares - 2; i++) {
           let x, y, idx, signX, signY;
           do {
               signX = Math.random() < 0.5 ? -1 : 1;
               signY = Math.random() < 0.5 ? -1 : 1;
-              x = currentPosition.x + signX * Math.floor(Math.random() * nearbyRange);
-              y = currentPosition.y + signY * Math.floor(Math.random() * nearbyRange);
+              x = startAtPos.x + signX * Math.floor(Math.random() * nearbyRange);
+              y = startAtPos.y + signY * Math.floor(Math.random() * nearbyRange);
               idx = convertXY2Square(x, y)
           } while (x < 0 || y < 0 || gridContainer.children[idx].classList.contains('white') || gridContainer.children[idx].classList.contains('green'));
           rewards[y][x] = 1;
@@ -186,26 +193,36 @@ document.addEventListener('DOMContentLoaded', async function() {
     function convertXY2Square(x, y) {
       return vars.gridSize * y + x;
     }
+    
+    function encodeCoordinates(x, y) {
+      return (x << 16) | y;
+    }
 
-    function constructURLWithScores(htmlFile, scoresSoFar) {
-      let url = htmlFile + '?rounds=' + vars.finalRound + '&round=' + round;
+    function decodeCoordinates(encoded) {
+      let x = encoded >> 16;
+      let y = encoded & 0xFFFF;
+      return {x, y};
+    }
+
+    function endTrialLogic(initialRewardPos, scoresSoFar) {
+      scoresSoFar.push(score);
+      if (round == vars.roundsTillComparison) {
+        window.location.href = constructURLWithScores("standings.html", initialRewardPos, scoresSoFar);
+      } else if (round > (vars.finalRound - 1)){
+        window.location.href = constructURLWithScores("thanks.html", initialRewardPos, scoresSoFar);
+      } else {
+        window.location.href = constructURLWithScores("intermediary.html", initialRewardPos, scoresSoFar);
+      }
+      urlModified = true; 
+      return;
+    }
+    
+    function constructURLWithScores(htmlFile, initialRewardPos, scoresSoFar) {
+      let url = htmlFile + '?blob=' + initialRewardPos + '&rounds=' + vars.finalRound + '&round=' + round;
       scoresSoFar.forEach((score, index) => {
           url += '&score' + (index + 1) + '=' + score;
       });
       return url;
-    }
-
-    function endTrialLogic() {
-      scoresSoFar.push(score);
-      if (round == vars.roundsTillComparison) {
-        window.location.href = constructURLWithScores("standings.html", scoresSoFar);
-      } else if (round > (vars.finalRound - 1)){
-        window.location.href = constructURLWithScores("thanks.html", scoresSoFar);
-      } else {
-        window.location.href = constructURLWithScores("intermediary.html", scoresSoFar);
-      }
-      urlModified = true; 
-      return;
     }
 
     function validateVars(variables) {
