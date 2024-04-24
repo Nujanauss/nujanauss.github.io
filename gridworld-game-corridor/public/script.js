@@ -27,11 +27,12 @@ document.addEventListener('DOMContentLoaded', async function() {
           return;
         }
 
-        [moves, currentPosition] = gameLogic(event, key, currentPosition);
+        currentPosition = gameLogic(event, key, currentPosition);
         if (previousPosition == currentPosition) {
           return;
         }
 
+        moves--;
         if (round == 1 && !generatedTrue && moves < whenToGenerateRewards - 1) {
           [generatedTrue, rewards] = generateRewards(vars, rewards, currentPosition);
           if (generatedTrue) {
@@ -67,7 +68,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       return round;
     }
 
-    function gameLogic(event,key,currentPosition) {
+    function gameLogic(event, key, currentPosition) {
       const newPosition = { ...currentPosition };
 
       var axis = key.includes('Up') || key.includes('Down') ? 'y' : 'x';
@@ -75,22 +76,22 @@ document.addEventListener('DOMContentLoaded', async function() {
       // Introduce stochasticity
       [axis, increment] = addStochasticity(axis, increment);
       if (axis === 'x') {
-        if (newPosition.x + increment >= 0 && newPosition.x + increment < vars.gridSize) { // check within grid boundaries
-            newPosition.x += increment;
-            moves--;
-        }
+        newPosition.x += increment
       } else {
-          if (newPosition.y + increment >= 0 && newPosition.y + increment < vars.gridSize) {
-              newPosition.y += increment;
-              moves--;
-          }
+        newPosition.y += increment;
       }
-      if (newPosition.x !== currentPosition.x || newPosition.y !== currentPosition.y) {
-          gridContainer.children[currentPosition.y * vars.gridSize + currentPosition.x].classList.remove('current');
-          currentPosition = newPosition;
-          gridContainer.children[currentPosition.y * vars.gridSize + currentPosition.x].classList.add('current');
+      const oldIdx = convertXY2Square(currentPosition.x, currentPosition.y);
+      const newIdx = convertXY2Square(newPosition.x, newPosition.y);
+      if (newPosition.y < 0 || newPosition.y > vars.gridSize - 1 || newPosition.x < 0 || newPosition.x > vars.gridSize - 1) { // check within grid boundaries
+        return currentPosition;
       }
-      return [moves, currentPosition];
+      if (gridContainer.children[newIdx].classList.contains('hidden')) {
+        return currentPosition;
+      }
+      gridContainer.children[oldIdx].classList.remove('current');
+      currentPosition = newPosition;
+      gridContainer.children[newIdx].classList.add('current');
+      return currentPosition;
     }
 
     function addStochasticity(axis, increment) {
@@ -126,13 +127,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     function generateRewards(vars, rewards, startAtPos) {
       const index = convertXY2Square(startAtPos.x, startAtPos.y);
-      if (gridContainer.children[index].classList.contains('white')) {// don't turn white suddenly green
+      if (!gridContainer.children[index].classList.contains('room')
+        || gridContainer.children[index].classList.contains('white')) {// don't turn white suddenly green
         return [false, rewards]
       }
 
       rewards[startAtPos.y][startAtPos.x] = 1;
       const nearbyRange = vars.greenSquarePosRange;
-      for (let i = 0; i < vars.maxNoGreenSquares - 2; i++) {
+      for (let i = 0; i < vars.maxNoGreenSquares - 1; i++) {
           let x, y, idx, signX, signY;
           do {
               signX = Math.random() < 0.5 ? -1 : 1;
@@ -140,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async function() {
               x = startAtPos.x + signX * Math.floor(Math.random() * nearbyRange);
               y = startAtPos.y + signY * Math.floor(Math.random() * nearbyRange);
               idx = convertXY2Square(x, y)
-          } while (x < 0 || y < 0 || gridContainer.children[idx].classList.contains('white') || gridContainer.children[idx].classList.contains('green'));
+          } while (x < 0 || y < 0 || !gridContainer.children[idx].classList.contains('grey'));
           rewards[y][x] = 1;
       }
 
@@ -168,26 +170,90 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function setupGrid() {
-      const minDimension = Math.min(window.innerWidth, window.innerHeight - 50), squareSize = minDimension / vars.gridSize;
+      const minDimension = Math.min(window.innerWidth, window.innerHeight), squareSize = minDimension / vars.gridSize * 2;
       gridContainer.innerHTML = '';
-      gridContainer.style.width = vars.gridSize * squareSize + 'px';
-      gridContainer.style.height = vars.gridSize * squareSize + 'px';
-      gridContainer.style.margin = 'auto';
       gridContainer.style.gridTemplateColumns = `repeat(${vars.gridSize}, ${squareSize}px)`;
-      gridContainer.style.gridTemplateRows = `repeat(${vars.gridSize}, ${squareSize}px)`;
-      for (let i = 0; i < vars.gridSize; i++) {
-          for (let j = 0; j < vars.gridSize; j++) {
+      gridContainer.style.gridTemplateRows = `repeat(${vars.gridSize}, 0px)`;
+      
+      let rowHeights = new Array(vars.gridSize).fill(0); // we start with rows having 0 height, and change the ones we need to
+
+      for (let y = 0; y < vars.gridSize; y++) {
+          for (let x = 0; x < vars.gridSize; x++) {
               const square = document.createElement('div');
-              square.classList.add('square', 'grey');
+              square.id = `square-${x}-${y}`; 
+              square.classList.add('square', 'hidden');
               square.style.width = square.style.height = squareSize + 'px';
               square.style.borderRadius = 5 + 'px';
               gridContainer.appendChild(square);
           }
       }
+
+      const middleRow = Math.floor(vars.gridSize / 2);
+      for (let y = 0; y < vars.gridSize; y++) {
+        for (let x = vars.gridSize - ((vars.roomSize - 1)/ 2) - 1; x >= 0; x--) {  // Start from the end and decrement
+          if (y == middleRow) {
+              addSquare(x, y);
+              rowHeights[y] = 1;
+              continue;
+          }
+
+          if (y < middleRow + vars.corridorWidth - 1 && y > middleRow - vars.corridorWidth + 1) {
+              addSquare(x, y);
+              rowHeights[y] = 1;
+              continue;
+          }
+
+          // Entryways top
+          if ((x - vars.gridSize + ((vars.roomSize - 1) / 2) + 1) % (vars.roomFrequency * 2) == 0
+              && x > vars.roomSize
+              && y == middleRow - ((vars.corridorWidth + 1) / 2)) {
+              addSquare(x, y);
+              rowHeights[y] = 1;
+              rowHeights = addRoom(x, y, y > middleRow, rowHeights);
+              continue;
+          }
+
+          // Entryways bottom
+          if ((x - vars.gridSize + ((vars.roomSize - 1) / 2) + 1 - vars.roomFrequency) % (vars.roomFrequency * 2) == 0
+              && x > vars.roomSize
+              && y == middleRow + ((vars.corridorWidth + 1) / 2)) {
+              addSquare(x, y);
+              rowHeights[y] = 1;
+              rowHeights = addRoom(x, y, y > middleRow, rowHeights);
+              continue;
+          }
+        }
+      }
+
+      gridContainer.style.gridTemplateRows = rowHeights.map(height => height ? `${squareSize}px` : '0px').join(' ');
       var initialSquare = convertXY2Square(vars.initialPosX, vars.initialPosY);
       gridContainer.children[initialSquare].classList.remove('grey');
       gridContainer.children[initialSquare].classList.add('white');
       gridContainer.children[initialSquare].classList.add('current');
+    }
+
+    function addSquare(x, y) {
+      const squareId = `square-${x}-${y}`;
+      const square = document.getElementById(squareId);
+      if (square) {
+        square.classList.remove('hidden');
+        square.classList.add('grey');
+        return square;
+      }
+    }
+
+    function addRoom(entryX, entryY, upper, rowHeights) {
+      var dir = upper ? 1 : -1;
+      for (let dy = 0; dy < vars.roomSize; dy++) {
+        for (let dx = 0; dx < vars.roomSize; dx++) {
+          let y = entryY + dir + (dy * dir)
+          let x = entryX + dx - ((vars.roomSize - 1) / 2);
+          let square = addSquare(x, y);
+          square.classList.add('room');
+          rowHeights[y] = 1;
+        }
+      }
+      return rowHeights;
     }
 
     function convertXY2Square(x, y) {
@@ -228,10 +294,13 @@ document.addEventListener('DOMContentLoaded', async function() {
     function validateVars(variables) {
       validateVar(variables, 'gridSize', 30, 2, 200);
       validateVar(variables, 'moves', 70, 1);
+      validateVar(variables, 'corridorWidth', 3, 1, variables.gridSize);
+      validateVar(variables, 'roomFrequency', 5, 0, variables.gridSize);
+      validateVar(variables, 'roomSize', 3, 3, variables.roomFrequency * 2);
       validateVar(variables, 'minStepsUntilReward', 3, 0, variables.moves - 1);
       validateVar(variables, 'maxStepsUntilReward', 3, variables.minStepsUntilReward, variables.moves - 1);
       validateVar(variables, 'initialPosX', 0, 0, variables.gridSize - 1);
-      validateVar(variables, 'initialPosY', 0, 0, variables.gridSize - 1);
+      validateVar(variables, 'initialPosY', (variables.gridSize / 2), 0, variables.gridSize - 1);
       validateVar(variables, 'roundsTillComparison', 3, 1, variables.finalRound - 1);
       validateVar(variables, 'finalRound', 6, 1);
       validateVar(variables, 'actionStochasticity', 0, 0, 1);

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid World Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div style="margin-top:10%;" class="wrapper">
+      <aside class="inter">
+          <table id="score-table">
+            <tr>
+              <th colspan="2" style="background-color: #BBBBBB; padding: 10px;">Current Standings</th>
+            </tr>
+            <tr>
+              <td id="social-label" style="background-color: #DDDDDD; color: #333333; padding: 10px;">Player 1</td>
+              <td id="social-score" style="background-color: #EEEEEE; color: #333333; padding: 10px;">5</td>
+            </tr>
+            <tr>
+              <td id="player-label" style="background-color: #DDDDDD; color: #333333; padding: 10px;">You</td>
+              <td id="player-score" style="background-color: #EEEEEE; color: #333333; padding: 10px;">5</td>
+            </tr>
+          </table>
+          <button id="next" class="button">Next Round</button>
+      </aside>
+    </div>
+
+    <script type="module" src="shared.js"></script>
+    <script type="module" src="standings-script.js"></script>
+</body>
+</html>

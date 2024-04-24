@@ -8,13 +8,14 @@
 </head>
 <body>
     <div class="wrapper">
-      <aside class="inter">
-        <button id="mazeTaskBtn" class="button"">Maze task</button>
-        <button id="corridorTaskBtn" class="button"">Corridor task</button>
-        <button id="armTaskBtn" class="button"">Arm task</button>
+      <div id="grid-container" class="padding-30"></div>
+      <aside class="info">
+        <div id="score">Score: 0</div>
+        <div id="moves">Moves left: 50</div>
       </aside>
     </div>
 
-    <script type="module" src="game-choice-script.js"></script>
+    <script type="module" src="shared.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
