@@ -4,8 +4,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     const gridContainer = document.getElementById('grid-container'), movesText = document.getElementById('moves'), scoreText = document.getElementById('score');
 
     const vars = await loadGameSettings();
-    const whenToGenerateRewards = vars.moves - Math.floor(Math.random() * (vars.maxStepsUntilReward - vars.minStepsUntilReward)) - vars.minStepsUntilReward;
+    const whenToGenerateRewards = 3;
     const roomMap = {};
+    const roomsVisited = new Set();
     var rewards = Array.from({ length: vars.gridSize }, () => Array.from({ length: vars.gridSize }, () => 0)); // initialise
 
     let score = 0, previousScore = 0, currentPosition = { x: vars.initialPosX, y: vars.initialPosY }, moves = vars.moves, previousPosition = currentPosition;
@@ -15,11 +16,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     var round = getRoundFromURL();
     const scoresSoFar = getScoresSoFar();
     let initialRewardPos = getUrlParameter('blob');
-
-    let visitedArms = [];
-    let visitedRooms = [];
-
     var urlModified = false, generatedTrue = false;
+
     document.addEventListener('keydown', function(event) {
         const key = event.key;
         if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
@@ -37,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         moves--;
-        if (round == 1 && !generatedTrue && moves < whenToGenerateRewards - 1) {
+        if (round == 1 && !generatedTrue && roomsVisited.size == whenToGenerateRewards) {
           [generatedTrue, rewards] = generateRewards(vars, rewards, currentPosition);
           if (generatedTrue) {
             initialRewardPos = encodeCoordinates(currentPosition.x, currentPosition.y);
@@ -77,13 +75,15 @@ document.addEventListener('DOMContentLoaded', async function() {
 
       var axis = key.includes('Up') || key.includes('Down') ? 'y' : 'x';
       var increment = key.includes('Up') || key.includes('Left') ? -1 : 1;
-      // Introduce stochasticity
-      [axis, increment] = addStochasticity(axis, increment);
+
+      [axis, increment] = addStochasticity(axis, increment); // Introduce stochasticity
+
       if (axis === 'x') {
         newPosition.x += increment
       } else {
         newPosition.y += increment;
       }
+
       const oldIdx = convertXY2Square(currentPosition.x, currentPosition.y);
       const newIdx = convertXY2Square(newPosition.x, newPosition.y);
       if (newPosition.y < 0 || newPosition.y > vars.gridSize - 1 || newPosition.x < 0 || newPosition.x > vars.gridSize - 1) { // check within grid boundaries
@@ -92,10 +92,16 @@ document.addEventListener('DOMContentLoaded', async function() {
       if (gridContainer.children[newIdx].classList.contains('hidden')) {
         return currentPosition;
       }
+
       gridContainer.children[oldIdx].classList.remove('current');
       currentPosition = newPosition;
       const newLocationClassList = gridContainer.children[newIdx].classList;
       newLocationClassList.add('current');
+      Array.from(newLocationClassList).forEach(className => {
+        if (className.includes("roomNo")) {
+            roomsVisited.add(className);
+        }
+      });
       return currentPosition;
     }
 
@@ -142,7 +148,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       let roomNo = '';
       classListArray.forEach(className => {
           if (className.includes('roomNo')) {
-            roomNo = className;
+            roomNo = className.split("-")[0];
           }
       });
 
@@ -187,19 +193,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       gridContainer.innerHTML = '';
       gridContainer.style.gridTemplateColumns = `repeat(${vars.gridSize}, ${squareSize}px)`;
       gridContainer.style.gridTemplateRows = `repeat(${vars.gridSize}, 0px)`;
-      
-      let rowHeights = new Array(vars.gridSize).fill(0); // we start with rows having 0 height, and change the ones we need to
 
-      for (let y = 0; y < vars.gridSize; y++) {
-          for (let x = 0; x < vars.gridSize; x++) {
-              const square = document.createElement('div');
-              square.id = `square-${x}-${y}`; 
-              square.classList.add('square', 'hidden');
-              square.style.width = square.style.height = squareSize + 'px';
-              square.style.borderRadius = 5 + 'px';
-              gridContainer.appendChild(square);
-          }
-      }
+      createGridSquares(squareSize);
 
       let roomNo = 5;
       const mid = Math.floor(vars.gridSize / 2);
@@ -210,199 +205,135 @@ document.addEventListener('DOMContentLoaded', async function() {
           // north
           if (x == mid && y < mid && y > quat - 3) {
             addSquare(x, y);
-            rowHeights[y] = 1;
             continue;
           }
           // south
           if (x == mid && y >= mid && y < vars.gridSize - quat + 3) {
             addSquare(x, y);
-            rowHeights[y] = 1;
             continue;
           }
           // east
           if (y == mid && x >= mid && x < vars.gridSize - quat + 3) {
             addSquare(x, y);
-            rowHeights[y] = 1;
             continue;
           }
           // west
           if (y == mid && x < mid && x > quat - 3) {
             addSquare(x, y);
-            rowHeights[y] = 1;
             continue;
           }
           // Neast-west
           if (x > mid - quat + 2 && x < mid + quat - 2 && y == mid - eigh - 2) {
             addSquare(x, y);
-            rowHeights[y] = 1;
             continue;
           }
           // Seast-west
           if (x > mid - quat + 2 && x < mid + quat - 2 && y == vars.gridSize - mid + eigh + 2) {
             addSquare(x, y);
-            rowHeights[y] = 1;
             continue;
           }
           // Enorth-south
           if (y > mid - quat + 2 && y < mid + quat - 2 && x == vars.gridSize - mid + eigh + 2) {
             addSquare(x, y);
-            rowHeights[y] = 1;
             continue;
           }
           // Wnorth-south
           if (y > mid - quat + 2 && y < mid + quat - 2 && x == mid - eigh - 2) {
             addSquare(x, y);
-            rowHeights[y] = 1;
             continue;
           }
           // Nentryway
           if ((x == mid - quat + 3 || x == mid + quat - 3) && y == mid - eigh - 3) {
             addSquare(x, y);
-            rowHeights[y] = 1;
-            // Nroom
-            for (let dy = 0; dy < vars.roomSize; dy++) {
-              for (let dx = 0; dx < vars.roomSize; dx++) {
-                let ry = y - dy - 1;
-                let rx = x - Math.floor(vars.roomSize / 2) + dx;
-                let square = addSquare(rx, ry);
-                square.classList.add('room',`roomNo${roomNo}`,'armNorth');
-                if (!roomMap[`roomNo${roomNo}`]) {
-                  roomMap[`roomNo${roomNo}`] = [];
-                }
-                roomMap[`roomNo${roomNo}`].push(square);
-                rowHeights[ry] = 1;
-              }
-            }
+            createRoom(x - Math.floor(vars.roomSize / 2), y - 1, 1, -1, vars.roomSize, `roomNo${roomNo}`, 'armNorth');
             roomNo++;
             continue;
           }
           // Sentryway
           if ((x == mid - quat + 3 || x == mid + quat - 3) && y == vars.gridSize - mid + eigh + 3) {
             addSquare(x, y);
-            rowHeights[y] = 1;
-            // Sroom
-            for (let dy = 0; dy < vars.roomSize; dy++) {
-              for (let dx = 0; dx < vars.roomSize; dx++) {
-                let ry = y + dy + 1;
-                let rx = x - Math.floor(vars.roomSize / 2) + dx;
-                let square = addSquare(rx, ry);
-                square.classList.add('room',`roomNo${roomNo}`,'armSouth');
-                if (!roomMap[`roomNo${roomNo}`]) {
-                  roomMap[`roomNo${roomNo}`] = [];
-                }
-                roomMap[`roomNo${roomNo}`].push(square);
-                rowHeights[ry] = 1;
-              }
-            }
+            createRoom(x - Math.floor(vars.roomSize / 2), y + 1, 1, 1, vars.roomSize, `roomNo${roomNo}`, 'armSouth');
             roomNo++;
             continue;
           }
           // Eentryway
           if ((y == mid - quat + 3 || y == mid + quat - 3) && x == vars.gridSize - mid + eigh + 3) {
             addSquare(x, y);
-            rowHeights[y] = 1;
-            // Sroom
-            for (let dy = 0; dy < vars.roomSize; dy++) {
-              for (let dx = 0; dx < vars.roomSize; dx++) {
-                let rx = x + dx + 1;
-                let ry = y - Math.floor(vars.roomSize / 2) + dy;
-                let square = addSquare(rx, ry);
-                square.classList.add('room',`roomNo${roomNo}`,'armEast');
-                if (!roomMap[`roomNo${roomNo}`]) {
-                  roomMap[`roomNo${roomNo}`] = [];
-                }
-                roomMap[`roomNo${roomNo}`].push(square);
-                rowHeights[ry] = 1;
-              }
-            }
+            createRoom(x + 1, y - Math.floor(vars.roomSize / 2), 1, 1, vars.roomSize, `roomNo${roomNo}`, 'armEast');
             roomNo++;
             continue;
           }
           // Wentryway
           if ((y == mid - quat + 3 || y == mid + quat - 3) && x == mid - eigh - 3) {
             addSquare(x, y);
-            rowHeights[y] = 1;
-            // Nroom
-            for (let dy = 0; dy < vars.roomSize; dy++) {
-              for (let dx = 0; dx < vars.roomSize; dx++) {
-                let rx = x - dx - 1;
-                let ry = y - Math.floor(vars.roomSize / 2) + dy;
-                let square = addSquare(rx, ry);
-                square.classList.add('room',`roomNo${roomNo}`,'armWest');
-                if (!roomMap[`roomNo${roomNo}`]) {
-                  roomMap[`roomNo${roomNo}`] = [];
-                }
-                roomMap[`roomNo${roomNo}`].push(square);
-                rowHeights[ry] = 1;
-              }
-            }
+            createRoom(x - 1, y - Math.floor(vars.roomSize / 2), -1, 1, vars.roomSize, `roomNo${roomNo}`, 'armWest');
             roomNo++;
             continue;
           }
         }
       }
-      // north room
-          for (let dy = 0; dy < vars.roomSize; dy++) {
-            for (let dx = 0; dx < vars.roomSize; dx++) {
-              let ry = quat - 1 - dy - 2;
-              let rx = mid - Math.floor(vars.roomSize / 2) + dx
-              let square = addSquare(rx, ry);
-              square.classList.add('room','roomNo1','armNorth');
-              if (!roomMap['roomNo1']) {
-                  roomMap['roomNo1'] = [];
-              }
-              roomMap['roomNo1'].push(square);
-              rowHeights[ry] = 1;
-            }
-          }
-          // south room
-          for (let dy = 0; dy < vars.roomSize; dy++) {
-            for (let dx = 0; dx < vars.roomSize; dx++) {
-              let ry = vars.gridSize - quat + 1 + dy + 2;
-              let rx = mid - Math.floor(vars.roomSize / 2) + dx
-              let square = addSquare(rx, ry);
-              square.classList.add('room', 'roomNo2','armSouth');
-              if (!roomMap['roomNo2']) {
-                roomMap['roomNo2'] = [];
-              }
-              roomMap['roomNo2'].push(square);
-              rowHeights[ry] = 1;
-            }
-          }
-          // east room
-          for (let dy = 0; dy < vars.roomSize; dy++) {
-            for (let dx = 0; dx < vars.roomSize; dx++) {
-              let rx = vars.gridSize - quat + 1 + dx + 2;
-              let ry = mid - Math.floor(vars.roomSize / 2) + dy
-              let square = addSquare(rx, ry);
-              square.classList.add('room', 'roomNo3','armEast');
-              if (!roomMap['roomNo3']) {
-                roomMap['roomNo3'] = [];
-              }
-              roomMap['roomNo3'].push(square);
-              rowHeights[ry] = 1;
-            }
-          }
-          // west room
-          for (let dy = 0; dy < vars.roomSize; dy++) {
-            for (let dx = 0; dx < vars.roomSize; dx++) {
-              let rx = quat - 1 - dx - 2;
-              let ry = mid - Math.floor(vars.roomSize / 2) + dy
-              let square = addSquare(rx, ry);
-              square.classList.add('room', 'roomNo4','armWest');
-              if (!roomMap['roomNo4']) {
-                roomMap['roomNo4'] = [];
-              }
-              roomMap['roomNo4'].push(square);
-              rowHeights[ry] = 1;
-            }
-          }
 
-      gridContainer.style.gridTemplateRows = rowHeights.map(height => height ? `${squareSize}px` : '0px').join(' ');
+      // north room
+      createRoom(mid - Math.floor(vars.roomSize / 2), quat - 3, 1, -1, vars.roomSize, 'roomNo1', 'armNorth');
+
+      // south room
+      createRoom(mid - Math.floor(vars.roomSize / 2), vars.gridSize - quat + 3, 1, 1, vars.roomSize, 'roomNo2', 'armSouth');
+
+      // east room
+      createRoom(vars.gridSize - quat + 3, mid - Math.floor(vars.roomSize / 2), 1, 1, vars.roomSize, 'roomNo3', 'armEast');
+
+      // west room
+      createRoom(quat - 3, mid - Math.floor(vars.roomSize / 2), -1, 1, vars.roomSize, 'roomNo4', 'armWest');
+
+      
+      const rowHeights = getRowHeights(gridContainer, squareSize, vars.gridSize);
+      gridContainer.style.gridTemplateRows = rowHeights.join(' ');
       var initialSquare = convertXY2Square(vars.initialPosX, vars.initialPosY);
       gridContainer.children[initialSquare].classList.remove('grey');
       gridContainer.children[initialSquare].classList.add('white');
       gridContainer.children[initialSquare].classList.add('current');
+    }
+
+    function createGridSquares(squareSize) {
+      for (let y = 0; y < vars.gridSize; y++) {
+          for (let x = 0; x < vars.gridSize; x++) {
+              const square = createSquare(x, y, squareSize);
+              gridContainer.appendChild(square);
+          }
+      }
+    }
+
+    function createSquare(x, y, squareSize) {
+      const square = document.createElement('div');
+      square.id = `square-${x}-${y}`;
+      square.classList.add('square', 'hidden');
+      square.style.width = square.style.height = squareSize + 'px';
+      square.style.borderRadius = '5px';
+      return square;
+    }
+
+    function createRoom(rx, ry, dirX, dirY, roomSize, roomName, armDirection) {
+      for (let dy = 0; dy < vars.roomSize; dy++) {
+        for (let dx = 0; dx < vars.roomSize; dx++) {
+          let square = addSquare(rx + (dx * dirX), ry + (dy * dirY));
+          square.classList.add('room', roomName + '-' + armDirection);
+          addToRoomMap(roomName, square);
+        }
+      }
+    }
+
+    function addToRoomMap(roomName, square) {
+      if (!roomMap[roomName]) {
+          roomMap[roomName] = [];
+      }
+      roomMap[roomName].push(square);
+    }
+
+    function setInitialSquare() {
+      const initialSquare = convertXY2Square(vars.initialPosX, vars.initialPosY);
+      const initialSquareElement = gridContainer.children[initialSquare];
+      initialSquareElement.classList.remove('grey');
+      initialSquareElement.classList.add('white', 'current');
     }
 
     function addSquare(x, y) {
@@ -413,6 +344,31 @@ document.addEventListener('DOMContentLoaded', async function() {
         square.classList.add('grey');
         return square;
       }
+    }
+
+    function getRowHeights(gridContainer, squareSize, gridSize) {
+      const squares = Array.from(gridContainer.children);
+      const rowHeights = [];
+      let currentRowHeight = '0px';
+
+      squares.forEach((square, index) => {
+          // If the square is in the first column or a new row has started
+          if (index % gridSize === 0 || index === 0) {
+              // If this isn't the first row, push the height of the previous row to the rowHeights array
+              if (index !== 0) {
+                  rowHeights.push(currentRowHeight);
+              }
+              currentRowHeight = '0px';
+          }
+          if (square.classList.contains('grey')) {
+              currentRowHeight = `${squareSize}px`;
+          }
+          // If we've reached the end of the squares, push the height of the last row
+          if (index === squares.length - 1) {
+              rowHeights.push(currentRowHeight);
+          }
+      });
+      return rowHeights;
     }
 
     function convertXY2Square(x, y) {
@@ -427,6 +383,26 @@ document.addEventListener('DOMContentLoaded', async function() {
       let x = encoded >> 16;
       let y = encoded & 0xFFFF;
       return {x, y};
+    }
+
+    function encodeRooms(visitedRooms) {
+      let encodedNumber = 0;
+      for (let i = 1; i <= 12; i++) {
+        if (roomsVisited.has(`roomNo${i}`)) {
+          encodedNumber |= (1 << (i - 1));
+        }
+      }
+      return encodedNumber;
+    }
+
+    function decodeRooms (encoded) {
+      const decodedRoomsVisited = new Set();
+      for (let i = 1; i <= 12; i++) {
+        if (encodedNumber & (1 << (i - 1))) {
+            decodedRoomsVisited.add(`roomNo${i}`);
+        }
+      }
+      return decodedRoomsVisited;
     }
 
     function endTrialLogic(initialRewardPos, scoresSoFar) {
@@ -463,8 +439,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       validateVar(variables, 'corridorWidth', 3, 1, variables.gridSize);
       validateVar(variables, 'roomFrequency', 5, 0, variables.gridSize);
       validateVar(variables, 'roomSize', 3, 3, variables.roomFrequency * 2);
-      validateVar(variables, 'minStepsUntilReward', 3, 0, variables.moves - 1);
-      validateVar(variables, 'maxStepsUntilReward', 3, variables.minStepsUntilReward, variables.moves - 1);
+      validateVar(variables, 'roomsVisitedTillReward', 2, 1, 12);
       validateVar(variables, 'initialPosX', 0, 0, variables.gridSize - 1);
       validateVar(variables, 'initialPosY', (variables.gridSize / 2), 0, variables.gridSize - 1);
       validateVar(variables, 'roundsTillComparison', 3, 1, variables.finalRound - 1);
