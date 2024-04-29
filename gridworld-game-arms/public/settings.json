@@ -6,6 +6,7 @@
     "roomSize": 2,
     "moves": 70,
     "roomsVisitedTillReward": 4,
+    "armsVisitedTillReward": 2,
     "initialPosX": 15,
     "initialPosY": 15,
     "roundsTillComparison": 3,

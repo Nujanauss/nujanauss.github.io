@@ -4,8 +4,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     const gridContainer = document.getElementById('grid-container'), movesText = document.getElementById('moves'), scoreText = document.getElementById('score');
 
     const vars = await loadGameSettings();
-    const whenToGenerateRewards = vars.roomsVisitedTillReward;
+    const whenToGenerateRewards = vars.armsVisitedTillReward; //roomsVisitedTillReward
     const roomMap = {};
+    const room2ArmMap = {};
     var rewards = Array.from({ length: vars.gridSize }, () => Array.from({ length: vars.gridSize }, () => 0)); // initialise
 
     let score = 0, previousScore = 0, currentPosition = { x: vars.initialPosX, y: vars.initialPosY }, currentRoomNo = 0, moves = vars.moves, previousPosition = currentPosition;
@@ -34,20 +35,20 @@ document.addEventListener('DOMContentLoaded', async function() {
           return;
         }
 
-        [currentPosition, currentRoomNo] = gameLogic(event, key, currentPosition);
+        currentPosition = gameLogic(event, key, currentPosition);
         if (previousPosition == currentPosition) {
           return;
         }
 
         moves--;
-        if (!generatedTrue && roomsVisited.size == whenToGenerateRewards) {
+        if (!generatedTrue && getNoArmsVisited(roomsVisited) == whenToGenerateRewards) { // roomsVisited.size == whenToGenerateRewards
           [generatedTrue, rewards] = generateRewards(vars, rewards, currentPosition);
           if (generatedTrue) {
             initialRewardPos = encodeCoordinates(currentPosition.x, currentPosition.y);
           }
         }
 
-        score = revealSquare(currentPosition, rewards, currentRoomNo);
+        score = revealSquare(currentPosition, rewards);
         scoreText.innerHTML = 'Score: ' + score;
         movesText.innerHTML = 'Moves left: ' + moves;
         updateTextColor(scoreText,score,previousScore)
@@ -84,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       var axis = key.includes('Up') || key.includes('Down') ? 'y' : 'x';
       var increment = key.includes('Up') || key.includes('Left') ? -1 : 1;
 
-      [axis, increment] = addStochasticity(axis, increment); // Introduce stochasticity
+      //[axis, increment] = addStochasticity(axis, increment); // Introduce stochasticity
 
       if (axis === 'x') {
         newPosition.x += increment
@@ -110,7 +111,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             roomsVisited.add( className.split("-")[0]);
         }
       });
-      return [currentPosition, roomNo];
+      return currentPosition;
     }
 
     function addStochasticity(axis, increment) {
@@ -128,7 +129,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       
     }
 
-    function revealSquare(position, rewards, roomNo) {
+    function revealSquare(position, rewards) {
       const index = convertXY2Square(position.x, position.y), square = gridContainer.children[index];
       square.classList.remove('grey');
       if (rewards[position.y][position.x] === 1) {
@@ -174,7 +175,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
       //purple rewards
       for (var i = 1; i < 13; i++) {
-        if (roomsVisited.has(`roomNo${i}`)) {
+        if (roomsVisited.has(`roomNo${i}`) || getArmsVisited(roomsVisited).has(room2ArmMap[`roomNo${i}`])) {
           continue;
         }
         let purpleSquares = roomMap[`roomNo${i}`];
@@ -336,6 +337,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           addToRoomMap(roomName, square);
         }
       }
+      addToArmMap(roomName, armDirection);
     }
 
     function addToRoomMap(roomName, square) {
@@ -343,6 +345,13 @@ document.addEventListener('DOMContentLoaded', async function() {
           roomMap[roomName] = [];
       }
       roomMap[roomName].push(square);
+    }
+
+    function addToArmMap(roomName, armName) {
+      if (!room2ArmMap[roomName]) {
+          room2ArmMap[roomName] = [];
+      }
+      room2ArmMap[roomName].push(armName);
     }
 
     function setInitialSquare() {
@@ -360,6 +369,22 @@ document.addEventListener('DOMContentLoaded', async function() {
         square.classList.add('grey');
         return square;
       }
+    }
+
+    function getArmsVisited(roomsVisited) {
+      const armsVisited = new Set();
+        roomsVisited.forEach(room => {
+            if (room2ArmMap[room]) { // Check if the room has arms mapped to it
+                room2ArmMap[room].forEach(arm => {
+                    armsVisited.add(arm); // Add each arm to the set
+                });
+            }
+        });
+        return armsVisited;
+    }
+
+    function getNoArmsVisited(roomsVisited) {
+        return getArmsVisited(roomsVisited).size;
     }
 
     function getRowHeights(gridContainer, squareSize, gridSize) {
