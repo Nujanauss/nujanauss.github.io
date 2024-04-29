@@ -35,7 +35,11 @@ body {
 }
 
 .blue-coloured {
-  color:#1F449C;
+  color: #1F449C;
+}
+
+.dark-grey-coloured {
+  color: #737373;
 }
 
 .index-instructions {
@@ -54,14 +58,27 @@ body {
 
 .info {
   width: 200px;
+}
+
+.box {
   border-style: solid;
   border-radius:5px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 10px;
+}
+
+#trialOver {
+  text-align: center;
+  visibility: hidden;
 }
 
 .inter {
-  width:auto;
-  text-align:center;
+  width: auto;
+  text-align: center;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: center
 }
 
 #grid-container {
@@ -78,6 +95,10 @@ body {
 
 .padding-50 {
   padding-bottom: 50px;
+}
+
+.padding-top-20 {
+  padding-top: 20px;
 }
 
 .font-30 {
@@ -100,6 +121,7 @@ body {
   background-color: #BBBBBB;
 }
 
+
 .light-grey {
   background-color: #DDDDDD;
 }
@@ -112,14 +134,61 @@ body {
   background-color: white;
 }
 
+.blue {
+  background-color: white;
+  animation: fadeToBlue 0.75s forwards;
+}
+
 .green {
-  background-color: #228833;
-  box-shadow: inset 0px 0px 5px #ffffff;
+  background-color: white;
+  animation: fadeToGreen 0.75s forwards;
 }
 
 .gold {
-  background-color: #AA3377;
-  box-shadow: inset 0px 0px 5px #ffffff;
+  background-color: white;
+  animation: fadeToPurple 1s forwards;
+}
+
+@keyframes fadeToGreen {
+    0% {
+        background-color: white;
+    }
+    50% {
+        background-color: #228833;
+        box-shadow: inset 0px 0px 5px #ffffff;
+    }
+    100% {
+        background-color: #228833;
+        box-shadow: inset 0px 0px 5px #ffffff;
+    }
+}
+
+@keyframes fadeToPurple {
+    0% {
+        background-color: white;
+    }
+    50% {
+        background-color: #AA3377;
+        box-shadow: inset 0px 0px 5px #ffffff;
+    }
+    100% {
+        background-color: #AA3377;
+        box-shadow: inset 0px 0px 5px #ffffff;
+    }
+}
+
+@keyframes fadeToBlue {
+    0% {
+        background-color: white;
+    }
+    50% {
+        background-color: #1F449C;
+        box-shadow: inset 0px 0px 5px #ffffff;
+    }
+    100% {
+        background-color: #1F449C;
+        box-shadow: inset 0px 0px 5px #ffffff;
+    }
 }
 
 .hidden {
@@ -161,4 +230,60 @@ body {
     border: 1px solid #999999;
     padding: 10px;
     border-radius: 5px;
+}
+
+.progress-bar-container {
+  width: 8%;
+  height: 6px;
+  padding: 0px;
+  margin-bottom: 30px;
+  background-color: #BBBBBB;
+  border-radius: 5px;
+}
+
+.progress-bar {
+  height: 100%;
+  padding: 0px;
+  background-color: #1F449C;
+  border-radius: 5px;
+}
+
+#page1 {
+  width: 0%;
+  animation: progress0to25 1s forwards;
+}
+
+#page2 {
+  width: 25;
+  animation: progress25to50 1s forwards;
+}
+
+#page3 {
+  width: 50%;
+  animation: progress50to75 1s forwards;
+}
+
+#page4 {
+  width: 75%;
+  animation: progress75to100 1s forwards;
+}
+
+@keyframes progress0to25 {
+    from { width: 0%; }
+    to { width: 25%; }
+}
+
+@keyframes progress25to50 {
+    from { width: 25%; }
+    to { width: 50%; }
+}
+
+@keyframes progress50to75 {
+    from { width: 50%; }
+    to { width: 75%; }
+}
+
+@keyframes progress75to100 {
+    from { width: 75%; }
+    to { width: 100%; }
 }

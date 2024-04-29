@@ -12,6 +12,6 @@
 //    .catch(error => console.error('Error:', error));
 //});
 
-document.getElementById('nextButton1').addEventListener('click', function() {
-    window.location.href = 'instructions2.html';
+document.getElementById('trainingButton').addEventListener('click', function() {
+    window.location.href = 'training.html';
 });

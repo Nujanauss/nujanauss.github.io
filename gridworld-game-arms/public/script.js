@@ -4,19 +4,24 @@ document.addEventListener('DOMContentLoaded', async function() {
     const gridContainer = document.getElementById('grid-container'), movesText = document.getElementById('moves'), scoreText = document.getElementById('score');
 
     const vars = await loadGameSettings();
-    const whenToGenerateRewards = 3;
+    const whenToGenerateRewards = vars.roomsVisitedTillReward;
     const roomMap = {};
-    const roomsVisited = new Set();
     var rewards = Array.from({ length: vars.gridSize }, () => Array.from({ length: vars.gridSize }, () => 0)); // initialise
 
-    let score = 0, previousScore = 0, currentPosition = { x: vars.initialPosX, y: vars.initialPosY }, moves = vars.moves, previousPosition = currentPosition;
+    let score = 0, previousScore = 0, currentPosition = { x: vars.initialPosX, y: vars.initialPosY }, currentRoomNo = 0, moves = vars.moves, previousPosition = currentPosition;
     setupGrid();
+    var round = getRoundFromURL();
 
     movesText.innerHTML = 'Moves left: ' + vars.moves;
-    var round = getRoundFromURL();
     const scoresSoFar = getScoresSoFar();
     let initialRewardPos = getUrlParameter('blob');
+    const roomsVisited = getUrlParameter('grok') !== null ? decodeRooms(getUrlParameter('grok')) : new Set();
     var urlModified = false, generatedTrue = false;
+
+    if (initialRewardPos !== '') {
+      [,rewards] = generateRewards(vars, rewards, decodeCoordinates(initialRewardPos));
+      generatedTrue = true;
+    }
 
     document.addEventListener('keydown', function(event) {
         const key = event.key;
@@ -29,27 +34,30 @@ document.addEventListener('DOMContentLoaded', async function() {
           return;
         }
 
-        currentPosition = gameLogic(event, key, currentPosition);
+        [currentPosition, currentRoomNo] = gameLogic(event, key, currentPosition);
         if (previousPosition == currentPosition) {
           return;
         }
 
         moves--;
-        if (round == 1 && !generatedTrue && roomsVisited.size == whenToGenerateRewards) {
+        if (!generatedTrue && roomsVisited.size == whenToGenerateRewards) {
           [generatedTrue, rewards] = generateRewards(vars, rewards, currentPosition);
           if (generatedTrue) {
             initialRewardPos = encodeCoordinates(currentPosition.x, currentPosition.y);
           }
-        } else if (round > 1 && !generatedTrue ) {
-          [generatedTrue, rewards] = generateRewards(vars, rewards, decodeCoordinates(initialRewardPos));
         }
-        score = revealSquare(currentPosition,rewards);
+
+        score = revealSquare(currentPosition, rewards, currentRoomNo);
         scoreText.innerHTML = 'Score: ' + score;
         movesText.innerHTML = 'Moves left: ' + moves;
         updateTextColor(scoreText,score,previousScore)
 
         previousScore = score;
         previousPosition = currentPosition;
+
+        if (moves < 1) {
+          document.getElementById("trialOver").style.visibility = "visible";
+        }
     });
     
     async function loadGameSettings() {
@@ -84,25 +92,25 @@ document.addEventListener('DOMContentLoaded', async function() {
         newPosition.y += increment;
       }
 
-      const oldIdx = convertXY2Square(currentPosition.x, currentPosition.y);
       const newIdx = convertXY2Square(newPosition.x, newPosition.y);
-      if (newPosition.y < 0 || newPosition.y > vars.gridSize - 1 || newPosition.x < 0 || newPosition.x > vars.gridSize - 1) { // check within grid boundaries
-        return currentPosition;
-      }
       if (gridContainer.children[newIdx].classList.contains('hidden')) {
         return currentPosition;
       }
 
-      gridContainer.children[oldIdx].classList.remove('current');
+      const currentIdx = convertXY2Square(currentPosition.x, currentPosition.y);
+      gridContainer.children[currentIdx].classList.remove('current');
+      
       currentPosition = newPosition;
       const newLocationClassList = gridContainer.children[newIdx].classList;
       newLocationClassList.add('current');
+      let roomNo = 0;
       Array.from(newLocationClassList).forEach(className => {
         if (className.includes("roomNo")) {
-            roomsVisited.add(className);
+            roomNo = className.split("-")[0].slice(-1);
+            roomsVisited.add( className.split("-")[0]);
         }
       });
-      return currentPosition;
+      return [currentPosition, roomNo];
     }
 
     function addStochasticity(axis, increment) {
@@ -120,7 +128,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       
     }
 
-    function revealSquare(position,rewards) {
+    function revealSquare(position, rewards, roomNo) {
       const index = convertXY2Square(position.x, position.y), square = gridContainer.children[index];
       square.classList.remove('grey');
       if (rewards[position.y][position.x] === 1) {
@@ -165,7 +173,15 @@ document.addEventListener('DOMContentLoaded', async function() {
       });
 
       //purple rewards
-      rewards[10][18] = 2;
+      for (var i = 1; i < 13; i++) {
+        if (roomsVisited.has(`roomNo${i}`)) {
+          continue;
+        }
+        let purpleSquares = roomMap[`roomNo${i}`];
+        const [, x, y] = purpleSquares[1].id.split('-').map(Number);
+        rewards[y][x] = 2;
+        break;
+      }
       return [true, rewards];
 }
 
@@ -385,11 +401,15 @@ document.addEventListener('DOMContentLoaded', async function() {
       return {x, y};
     }
 
-    function encodeRooms(visitedRooms) {
+    function encodeRooms(roomsVisited) {
       let encodedNumber = 0;
       for (let i = 1; i <= 12; i++) {
-        if (roomsVisited.has(`roomNo${i}`)) {
-          encodedNumber |= (1 << (i - 1));
+        const roomNumber = `roomNo${i}`;
+        for (const item of roomsVisited) {
+          if (item.startsWith(roomNumber)) {
+              encodedNumber |= (1 << (i - 1));
+              break;
+          }
         }
       }
       return encodedNumber;
@@ -398,7 +418,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     function decodeRooms (encoded) {
       const decodedRoomsVisited = new Set();
       for (let i = 1; i <= 12; i++) {
-        if (encodedNumber & (1 << (i - 1))) {
+        if (encoded & (1 << (i - 1))) {
             decodedRoomsVisited.add(`roomNo${i}`);
         }
       }
@@ -419,7 +439,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function constructURLWithScores(htmlFile, initialRewardPos, scoresSoFar) {
-      let url = htmlFile + '?blob=' + initialRewardPos + '&rounds=' + vars.finalRound + '&round=' + round;
+      let url = htmlFile + '?blob=' + initialRewardPos + '&grok=' + encodeRooms(roomsVisited) + '&rounds=' + vars.finalRound + '&round=' + round;
       scoresSoFar.forEach((score, index) => {
           url += '&score' + (index + 1) + '=' + score;
       });
@@ -438,7 +458,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       validateVar(variables, 'moves', 70, 1);
       validateVar(variables, 'corridorWidth', 3, 1, variables.gridSize);
       validateVar(variables, 'roomFrequency', 5, 0, variables.gridSize);
-      validateVar(variables, 'roomSize', 3, 3, variables.roomFrequency * 2);
+      validateVar(variables, 'roomSize', 3, 1, variables.roomFrequency * 2);
       validateVar(variables, 'roomsVisitedTillReward', 2, 1, 12);
       validateVar(variables, 'initialPosX', 0, 0, variables.gridSize - 1);
       validateVar(variables, 'initialPosY', (variables.gridSize / 2), 0, variables.gridSize - 1);
