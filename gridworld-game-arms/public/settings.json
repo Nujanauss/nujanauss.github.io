@@ -4,7 +4,7 @@
     "corridorWidth": 3,
     "roomFrequency": 9,
     "roomSize": 2,
-    "moves": 70,
+    "moves": 55,
     "roomsVisitedTillReward": 4,
     "armsVisitedTillReward": 2,
     "initialPosX": 15,

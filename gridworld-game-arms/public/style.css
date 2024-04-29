@@ -72,6 +72,10 @@ body {
   visibility: hidden;
 }
 
+#trainingOver {
+  text-align: center;
+}
+
 .inter {
   width: auto;
   text-align: center;

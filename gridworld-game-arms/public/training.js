@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         previousPosition = currentPosition;
 
         if (score > 50) {
-          document.getElementById("trialOver").style.visibility = "visible";
+          document.getElementById("trainingOver").innerHTML = "Perfect! You scored more than 50. Press any button to continue.";
         }
     });
     
@@ -151,7 +151,6 @@ document.addEventListener('DOMContentLoaded', async function() {
       // west room
       rewards = createRoom(quat - 3, mid - Math.floor(vars.roomSize / 2), -1, 1, vars.roomSize, 'roomNo4', 'armWest', rewards);
 
-      
       const rowHeights = getRowHeights(gridContainer, squareSize, vars.gridSize);
       gridContainer.style.gridTemplateRows = rowHeights.join(' ');
       var initialSquare = convertXY2Square(vars.initialPosX, vars.initialPosY);
