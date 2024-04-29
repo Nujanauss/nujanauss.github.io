@@ -16,11 +16,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     movesText.innerHTML = 'Moves left: ' + vars.moves;
     const scoresSoFar = getScoresSoFar();
     let initialRewardPos = getUrlParameter('blob');
+    let purplePos = getUrlParameter('plor');
     const roomsVisited = getUrlParameter('grok') !== null ? decodeRooms(getUrlParameter('grok')) : new Set();
     var urlModified = false, generatedTrue = false;
 
     if (initialRewardPos !== '') {
-      [,rewards] = generateRewards(vars, rewards, decodeCoordinates(initialRewardPos));
+      [,rewards] = generateRewards(vars, rewards, decodeCoordinates(initialRewardPos), decodeCoordinates(purplePos));
       generatedTrue = true;
     }
 
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         if (!urlModified && moves < 1) { //only modify URL once
-          endTrialLogic(initialRewardPos, scoresSoFar);
+          endTrialLogic(initialRewardPos, purplePos, scoresSoFar);
           return;
         }
 
@@ -42,9 +43,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         moves--;
         if (!generatedTrue && getNoArmsVisited(roomsVisited) == whenToGenerateRewards) { // roomsVisited.size == whenToGenerateRewards
-          [generatedTrue, rewards] = generateRewards(vars, rewards, currentPosition);
+          let purpleX, purpleY = 0;
+          [generatedTrue, rewards, purpleX, purpleY] = generateRewards(vars, rewards, currentPosition, purplePos);
           if (generatedTrue) {
             initialRewardPos = encodeCoordinates(currentPosition.x, currentPosition.y);
+            purplePos = encodeCoordinates(purpleX, purpleY);
           }
         }
 
@@ -144,8 +147,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
       return score;
     }
-    
-    function generateRewards(vars, rewards, startAtPos) {
+
+    function generateRewards(vars, rewards, startAtPos, purplePos) {
       const index = convertXY2Square(startAtPos.x, startAtPos.y);
       const newLocationClassList = gridContainer.children[index].classList;
       if (!newLocationClassList.contains('room') || newLocationClassList.contains('white')) {// don't turn white suddenly green
@@ -162,8 +165,9 @@ document.addEventListener('DOMContentLoaded', async function() {
       });
 
       let squares = roomMap[roomNo];
-      shuffleArray(squares);
-      const selectedSquares = squares.slice(0, Math.min(squares.length, vars.maxNoGreenSquares));
+      //shuffleArray(squares);
+      //const selectedSquares = squares.slice(0, Math.min(squares.length, vars.maxNoGreenSquares));
+      const selectedSquares = [squares[1], squares[2]];
       selectedSquares.forEach(sqr => {
         const squareId = sqr.id;
         const [, x, y] = squareId.split('-').map(Number);
@@ -174,17 +178,25 @@ document.addEventListener('DOMContentLoaded', async function() {
       });
 
       //purple rewards
+      if (purplePos !== '') {
+        rewards[purplePos.y][purplePos.x] = 2;
+        return [true, rewards, purplePos.x, purplePos.y];
+      }
+
+      let purpleX = 0, purpleY = 0;
       for (var i = 1; i < 13; i++) {
         if (roomsVisited.has(`roomNo${i}`) || getArmsVisited(roomsVisited).has(room2ArmMap[`roomNo${i}`])) {
           continue;
         }
         let purpleSquares = roomMap[`roomNo${i}`];
         const [, x, y] = purpleSquares[1].id.split('-').map(Number);
-        rewards[y][x] = 2;
+        purpleX = x;
+        purpleY = y;
+        rewards[purpleY][purpleX] = 2;
         break;
       }
-      return [true, rewards];
-}
+      return [true, rewards, purpleX, purpleY];
+  }
 
     function updateTextColor(scoreText,score,previousScore) {
       const originalColor = 'black';
@@ -450,21 +462,21 @@ document.addEventListener('DOMContentLoaded', async function() {
       return decodedRoomsVisited;
     }
 
-    function endTrialLogic(initialRewardPos, scoresSoFar) {
+    function endTrialLogic(initialRewardPos, purplePos, scoresSoFar) {
       scoresSoFar.push(score);
       if (round == vars.roundsTillComparison) {
-        window.location.href = constructURLWithScores("standings.html", initialRewardPos, scoresSoFar);
+        window.location.href = constructURLWithScores("standings.html", initialRewardPos, purplePos, scoresSoFar);
       } else if (round > (vars.finalRound - 1)){
-        window.location.href = constructURLWithScores("thanks.html", initialRewardPos, scoresSoFar);
+        window.location.href = constructURLWithScores("thanks.html", initialRewardPos, purplePos, scoresSoFar);
       } else {
-        window.location.href = constructURLWithScores("intermediary.html", initialRewardPos, scoresSoFar);
+        window.location.href = constructURLWithScores("intermediary.html", initialRewardPos, purplePos, scoresSoFar);
       }
       urlModified = true; 
       return;
     }
 
-    function constructURLWithScores(htmlFile, initialRewardPos, scoresSoFar) {
-      let url = htmlFile + '?blob=' + initialRewardPos + '&grok=' + encodeRooms(roomsVisited) + '&rounds=' + vars.finalRound + '&round=' + round;
+    function constructURLWithScores(htmlFile, initialRewardPos, purplePos, scoresSoFar) {
+      let url = htmlFile + '?blob=' + initialRewardPos + '&plor=' + purplePos + '&grok=' + encodeRooms(roomsVisited) + '&rounds=' + vars.finalRound + '&round=' + round;
       scoresSoFar.forEach((score, index) => {
           url += '&score' + (index + 1) + '=' + score;
       });
