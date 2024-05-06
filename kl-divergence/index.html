@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KL Divergence Plot</title>
-    <!-- Load Plotly.js -->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <!-- Load ipywidgets -->
-    <script src="https://cdn.jsdelivr.net/npm/requirejs/require.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@4.0.0/dist/embed-amd.js"></script>
+    <title>Interactive Widget</title>
+    <!-- Load Jupyter Widgets from CDN -->
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@4.0.0/dist/embed-amd.js"></script>
 </head>
 <body>
-    <h1>KL Divergence Plot</h1>
+    <h1>Interactive Widget</h1>
 
-    <div id="interactive_plot"></div>
+    <div id="interactive_widget"></div>
 
     <script type="application/vnd.jupyter.widget-view+json">
         {
@@ -26,8 +23,8 @@
     <script type="text/javascript">
         requirejs.config({
             paths: {
-                '@jupyter-widgets/base': 'https://cdn.jsdelivr.net/npm/@jupyter-widgets/base',
-                '@jupyter-widgets/controls': 'https://cdn.jsdelivr.net/npm/@jupyter-widgets/controls'
+                '@jupyter-widgets/base': 'https://unpkg.com/@jupyter-widgets/base@1.0.0/dist',
+                '@jupyter-widgets/controls': 'https://unpkg.com/@jupyter-widgets/controls@1.0.0/dist'
             }
         });
 
@@ -40,7 +37,7 @@
                 version_minor: 0
             };
 
-            var target = document.getElementById('interactive_plot');
+            var target = document.getElementById('interactive_widget');
             manager.display_widget_state(widgetState, target, {});
         });
     </script>
