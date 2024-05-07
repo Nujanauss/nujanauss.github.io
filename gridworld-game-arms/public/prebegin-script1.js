@@ -6,14 +6,20 @@ document.addEventListener('DOMContentLoaded', function() {
     butt.addEventListener('click', generate);
   }
   document.getElementById('trainingScore').innerHTML = getUrlParameter('s');
+
   var pressedOnce = false;
   function generate() {
+    if (butt.disabled) {
+      return;
+    }
     if (!pressedOnce) {
       pressedOnce = true;
+      butt.disabled = true;
       document.getElementById('username-generation').style.visibility = 'visible';
       butt.classList.remove('enabled');
       butt.style.cursor = 'not-allowed';
       butt.style.color = 'grey';
+      
       setTimeout(() => {
         butt.disabled = false;
         butt.innerHTML = 'Next';
