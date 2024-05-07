@@ -465,7 +465,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     function endTrialLogic(initialRewardPos, purplePos, scoresSoFar) {
       scoresSoFar.push(score);
       if (round == vars.roundsTillComparison) {
-        window.location.href = constructURLWithScores("standings.html", initialRewardPos, purplePos, scoresSoFar);
+        window.location.href = constructURLWithScores("standings-2.html", initialRewardPos, purplePos, scoresSoFar);
       } else if (round > (vars.finalRound - 1)){
         window.location.href = constructURLWithScores("thanks.html", initialRewardPos, purplePos, scoresSoFar);
       } else {

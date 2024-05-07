@@ -215,7 +215,7 @@ body {
   transition: background-color 0.1s;
 }
 
-.button:hover {
+.button.enabled:hover {
   background-color: grey;
   color: white;
 }
@@ -290,4 +290,27 @@ body {
 @keyframes progress75to100 {
     from { width: 75%; }
     to { width: 100%; }
+}
+
+.chart-container {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.bar {
+  fill: #1F449C;
+  stroke: #0f214d; /* Border color */
+  stroke-width: 2px; /* Border width */
+  rx: 3px; /* Border radius for rounded corners */
+}
+
+.bar:hover {
+  fill: #737373;
+  cursor: pointer;
+}
+
+.tick {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
 }
