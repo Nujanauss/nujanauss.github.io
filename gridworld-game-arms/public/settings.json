@@ -3,7 +3,7 @@
     "gridSize": 30,
     "corridorWidth": 3,
     "roomFrequency": 9,
-    "roomSize": 2,
+    "roomSize": 4,
     "moves": 55,
     "roomsVisitedTillReward": 4,
     "armsVisitedTillReward": 2,

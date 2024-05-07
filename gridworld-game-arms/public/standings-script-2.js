@@ -58,11 +58,10 @@ document.addEventListener('DOMContentLoaded', function() {
       .attr("transform", `translate(${margin.left}, ${yScale(0) + margin.top})`)
       .call(xAxis);
 
+    var youTick = svg.selectAll(".tick text").filter(function() { return d3.select(this).text() === "You"; })
+    youTick.attr("fill", "#1F449C");
     if (avgScore < 0) {
-      svg.selectAll(".tick text")
-        .filter(function() { return d3.select(this).text() === "You"; })
-        .attr("dy", "-1em")
-        .attr("fill", "blue");
+      youTick.attr("dy", "-1em");
     }
 
     // Create initial bars
@@ -160,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const butt = document.getElementById('next');
     if (butt) {
       butt.disabled = true;
-      butt.color = 'blue';
       butt.style.cursor = 'not-allowed'; // Change cursor to not-allowed
       butt.addEventListener('click', nextRound);
       butt.innerHTML = "Next Round? Round " + (parseFloat(round) + 1) + " of " + finalRound;

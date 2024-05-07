@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         if (score > 50) { //only modify URL once
-          window.location.href = 'prebegin.html' + '?s' + '=' + score + '&r=' + vars.finalRound + '&c=' + vars.roundsTillComparison;
+          window.location.href = 'prebegin1.html' + '?s' + '=' + score + '&r=' + vars.finalRound + '&c=' + vars.roundsTillComparison;
           return;
         }
 

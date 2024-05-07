@@ -217,7 +217,7 @@ body {
 
 .button.enabled:hover {
   background-color: grey;
-  color: white;
+  color: white !important;
 }
 
 #score-table {
@@ -250,6 +250,10 @@ body {
   padding: 0px;
   background-color: #1F449C;
   border-radius: 5px;
+}
+
+#username-generation {
+  visibility: hidden;
 }
 
 #page1 {
