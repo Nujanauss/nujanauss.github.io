@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
 
       const newIdx = convertXY2Square(newPosition.x, newPosition.y);
-      if (gridContainer.children[newIdx].classList.contains('hidden')) {
+      if (gridContainer.children[newIdx] == undefined || gridContainer.children[newIdx].classList.contains('hidden')) {
         return currentPosition;
       }
 
@@ -74,13 +74,16 @@ document.addEventListener('DOMContentLoaded', async function() {
     function revealSquare(position, rewards) {
       const index = convertXY2Square(position.x, position.y), square = gridContainer.children[index];
       square.classList.remove('grey');
-      if (rewards[position.y][position.x] === 1) {
-          square.classList.add('blue');
-          score += 5;
-      } else {
-          square.classList.add('white');
-          score--;
+      if (rewards[position.y][position.x] === 0) {
+        square.classList.add('white');
+        score--;
+        return score;
       }
+      const pseudoElement = document.createElement('div');
+      square.appendChild(pseudoElement);
+      pseudoElement.classList.add('blue');
+      score += 5;
+      rewards[position.y][position.x] = 0;
       return score;
     }
 
@@ -104,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function setupGrid() {
-      const minDimension = Math.min(window.innerWidth, window.innerHeight + 20), squareSize = minDimension / vars.gridSize;
+      const minDimension = Math.min(window.innerWidth, window.innerHeight - 20), squareSize = minDimension / vars.gridSize;
       gridContainer.innerHTML = '';
       gridContainer.style.gridTemplateColumns = `repeat(${vars.gridSize}, ${squareSize}px)`;
       gridContainer.style.gridTemplateRows = `repeat(${vars.gridSize}, 0px)`;

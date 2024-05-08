@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const whenToGenerateRewards = vars.armsVisitedTillReward; //roomsVisitedTillReward
     const roomMap = {};
     const room2ArmMap = {};
+    const arm2RoomMap = {};
     var rewards = Array.from({ length: vars.gridSize }, () => Array.from({ length: vars.gridSize }, () => 0)); // initialise
 
     let score = 0, previousScore = 0, currentPosition = { x: vars.initialPosX, y: vars.initialPosY }, currentRoomNo = 0, moves = vars.moves, previousPosition = currentPosition;
@@ -16,12 +17,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     movesText.innerHTML = 'Moves left: ' + vars.moves;
     const scoresSoFar = getScoresSoFar();
     let initialRewardPos = getUrlParameter('blob');
-    let purplePos = getUrlParameter('plor');
+    let purpleRoom = getUrlParameter('plor');
     const roomsVisited = getUrlParameter('grok') !== null ? decodeRooms(getUrlParameter('grok')) : new Set();
     var urlModified = false, generatedTrue = false;
 
     if (initialRewardPos !== '') {
-      [,rewards] = generateRewards(vars, rewards, decodeCoordinates(initialRewardPos), decodeCoordinates(purplePos));
+      initialRewardPos = decodeCoordinates(initialRewardPos);
+      purpleRoom = decodeRoom(purpleRoom);
+      [,rewards] = generateRewards(vars, rewards, initialRewardPos, purpleRoom);
       generatedTrue = true;
     }
 
@@ -32,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         if (!urlModified && moves < 1) { //only modify URL once
-          endTrialLogic(initialRewardPos, purplePos, scoresSoFar);
+          endTrialLogic(initialRewardPos, purpleRoom, scoresSoFar);
           return;
         }
 
@@ -43,11 +46,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         moves--;
         if (!generatedTrue && getNoArmsVisited(roomsVisited) == whenToGenerateRewards) { // roomsVisited.size == whenToGenerateRewards
-          let purpleX, purpleY = 0;
-          [generatedTrue, rewards, purpleX, purpleY] = generateRewards(vars, rewards, currentPosition, purplePos);
+          [generatedTrue, rewards, purpleRoom] = generateRewards(vars, rewards, currentPosition, purpleRoom);
           if (generatedTrue) {
-            initialRewardPos = encodeCoordinates(currentPosition.x, currentPosition.y);
-            purplePos = encodeCoordinates(purpleX, purpleY);
+            initialRewardPos = { x: currentPosition.x, y: currentPosition.y };
           }
         }
 
@@ -82,6 +83,19 @@ document.addEventListener('DOMContentLoaded', async function() {
       return round;
     }
 
+    function endTrialLogic(initialRewardPos, purpleRoom, scoresSoFar) {
+      scoresSoFar.push(score);
+      if (round == vars.roundsTillComparison) {
+        window.location.href = constructURLWithScores("standings-2.html", initialRewardPos, purpleRoom, scoresSoFar);
+      } else if (round > (vars.finalRound - 1)){
+        window.location.href = constructURLWithScores("thanks.html", initialRewardPos, purpleRoom, scoresSoFar);
+      } else {
+        window.location.href = constructURLWithScores("intermediary.html", initialRewardPos, purpleRoom, scoresSoFar);
+      }
+      urlModified = true; 
+      return;
+    }
+
     function gameLogic(event, key, currentPosition) {
       const newPosition = { ...currentPosition };
 
@@ -97,7 +111,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
 
       const newIdx = convertXY2Square(newPosition.x, newPosition.y);
-      if (gridContainer.children[newIdx].classList.contains('hidden')) {
+      if (gridContainer.children[newIdx] == undefined || gridContainer.children[newIdx].classList.contains('hidden')) {
         return currentPosition;
       }
 
@@ -117,46 +131,36 @@ document.addEventListener('DOMContentLoaded', async function() {
       return currentPosition;
     }
 
-    function addStochasticity(axis, increment) {
-      if (Math.random() > vars.actionStochasticity) {
-        return [axis, increment];
-      }
-      var randomAxis = Math.random() < 0.5 ? 'y' : 'x';
-      var randomIncrement = Math.random() < 0.5 ? -1 : 1;
-
-      while (randomAxis === axis && randomIncrement === increment) {
-          randomAxis = Math.random() < 0.5 ? 'y' : 'x';
-          randomIncrement = Math.random() < 0.5 ? -1 : 1;
-      }
-      return [randomAxis, randomIncrement];
-      
-    }
-
     function revealSquare(position, rewards) {
       const index = convertXY2Square(position.x, position.y), square = gridContainer.children[index];
       square.classList.remove('grey');
-      if (rewards[position.y][position.x] === 1) {
-          square.classList.add('green');
-          score += vars.greenSquareScore;
-      } else if (rewards[position.y][position.x] === 2) {
-          square.classList.add('gold');
-          score += vars.purpleSquareScore;
-      } else {
-          square.classList.add('white');
-          score--;
+      if (rewards[position.y][position.x] === 0) {
+        square.classList.add('white');
+        score--;
+        return score;
       }
+      const pseudoElement = document.createElement('div');
+      square.appendChild(pseudoElement);
+      if (rewards[position.y][position.x] === 1) {
+        pseudoElement.classList.add('green');
+        score += vars.greenSquareScore;
+      } else if (rewards[position.y][position.x] === 2) {
+        pseudoElement.classList.add('gold');
+        score += vars.purpleSquareScore;
+      }
+      rewards[position.y][position.x] = 0;
       return score;
     }
 
-    function generateRewards(vars, rewards, startAtPos, purplePos) {
-      const index = convertXY2Square(startAtPos.x, startAtPos.y);
-      const newLocationClassList = gridContainer.children[index].classList;
-      if (!newLocationClassList.contains('room') || newLocationClassList.contains('white')) {// don't turn white suddenly green
+    function generateRewards(vars, rewards, startAtPos, purpleRoom) {
+      const greenPosIdx = convertXY2Square(startAtPos.x, startAtPos.y);
+      const greenPosClassList = gridContainer.children[greenPosIdx].classList;
+      if (!greenPosClassList.contains('room') || greenPosClassList.contains('white')) {// don't turn white suddenly green
         return [false, rewards]
       }
 
       //green rewards
-      const classListArray = Array.from(newLocationClassList);
+      const classListArray = Array.from(greenPosClassList);
       let roomNo = '';
       classListArray.forEach(className => {
           if (className.includes('roomNo')) {
@@ -164,10 +168,14 @@ document.addEventListener('DOMContentLoaded', async function() {
           }
       });
 
-      let squares = roomMap[roomNo];
-      //shuffleArray(squares);
-      //const selectedSquares = squares.slice(0, Math.min(squares.length, vars.maxNoGreenSquares));
-      const selectedSquares = [squares[1], squares[2]];
+      let arm = room2ArmMap[roomNo];
+      let rooms = arm2RoomMap[arm];
+      let availableForGreenSqrs = [];
+      rooms.forEach(room => {
+        availableForGreenSqrs = availableForGreenSqrs.concat(roomMap[room]);
+      });
+      shuffleArray(availableForGreenSqrs);
+      const selectedSquares = availableForGreenSqrs.slice(0, Math.min(availableForGreenSqrs.length, vars.maxNoGreenSquares));
       selectedSquares.forEach(sqr => {
         const squareId = sqr.id;
         const [, x, y] = squareId.split('-').map(Number);
@@ -178,25 +186,30 @@ document.addEventListener('DOMContentLoaded', async function() {
       });
 
       //purple rewards
-      if (purplePos !== '') {
-        rewards[purplePos.y][purplePos.x] = 2;
-        return [true, rewards, purplePos.x, purplePos.y];
-      }
-
-      let purpleX = 0, purpleY = 0;
-      for (var i = 1; i < 13; i++) {
-        if (roomsVisited.has(`roomNo${i}`) || getArmsVisited(roomsVisited).has(room2ArmMap[`roomNo${i}`])) {
-          continue;
+      if (purpleRoom === '') {
+        for (var i = 1; i < 13; i++) {
+          if (roomsVisited.has(`roomNo${i}`) || getArmsVisited(roomsVisited).has(room2ArmMap[`roomNo${i}`])) {
+            continue;
+          }
+          purpleRoom = `roomNo${i}`;
+          break;
         }
-        let purpleSquares = roomMap[`roomNo${i}`];
-        const [, x, y] = purpleSquares[1].id.split('-').map(Number);
-        purpleX = x;
-        purpleY = y;
-        rewards[purpleY][purpleX] = 2;
-        break;
       }
-      return [true, rewards, purpleX, purpleY];
-  }
+      let availablePurpleSquares = roomMap[purpleRoom];
+      shuffleArray(availablePurpleSquares);
+      const selectedPurpleSquares = availablePurpleSquares.slice(0, Math.min(availablePurpleSquares.length, vars.maxNoPurpleSquares));
+      selectedPurpleSquares.forEach(sqr => {
+        const squareId = sqr.id;
+        const [, x, y] = squareId.split('-').map(Number);
+        const idx = convertXY2Square(x, y);
+        if (rewards[y][x] !== 2 && !gridContainer.children[idx].classList.contains('white')) {
+            rewards[y][x] = 2;
+        }
+      });
+      return [true, rewards, purpleRoom];
+    }
+    
+
 
     function updateTextColor(scoreText,score,previousScore) {
       const originalColor = 'black';
@@ -218,7 +231,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function setupGrid() {
-      const minDimension = Math.min(window.innerWidth, window.innerHeight + 20), squareSize = minDimension / vars.gridSize;
+      const minDimension = Math.min(window.innerWidth, window.innerHeight - 20), squareSize = minDimension / vars.gridSize;
       gridContainer.innerHTML = '';
       gridContainer.style.gridTemplateColumns = `repeat(${vars.gridSize}, ${squareSize}px)`;
       gridContainer.style.gridTemplateRows = `repeat(${vars.gridSize}, 0px)`;
@@ -364,6 +377,10 @@ document.addEventListener('DOMContentLoaded', async function() {
           room2ArmMap[roomName] = [];
       }
       room2ArmMap[roomName].push(armName);
+      if (!arm2RoomMap[armName]) {
+        arm2RoomMap[armName] = [];
+      }
+      arm2RoomMap[armName].push(roomName);
     }
 
     function setInitialSquare() {
@@ -438,6 +455,26 @@ document.addEventListener('DOMContentLoaded', async function() {
       return {x, y};
     }
 
+    function encodeRoom(roomStr) {
+      let encoded = '';
+      for (let i = 0; i < roomStr.length; i++) {
+        let charCode = roomStr.charCodeAt(i);
+        let shiftedCharCode = charCode + 3;
+        encoded += String.fromCharCode(shiftedCharCode);
+      }
+      return encoded;
+    }
+
+    function decodeRoom(encoded) {
+      let decoded = '';
+      for (let i = 0; i < encoded.length; i++) {
+        let charCode = encoded.charCodeAt(i);
+        let shiftedCharCode = charCode - 3;
+        decoded += String.fromCharCode(shiftedCharCode);
+      }
+      return decoded;
+    }
+
     function encodeRooms(roomsVisited) {
       let encodedNumber = 0;
       for (let i = 1; i <= 12; i++) {
@@ -452,7 +489,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       return encodedNumber;
     }
 
-    function decodeRooms (encoded) {
+    function decodeRooms(encoded) {
       const decodedRoomsVisited = new Set();
       for (let i = 1; i <= 12; i++) {
         if (encoded & (1 << (i - 1))) {
@@ -462,21 +499,14 @@ document.addEventListener('DOMContentLoaded', async function() {
       return decodedRoomsVisited;
     }
 
-    function endTrialLogic(initialRewardPos, purplePos, scoresSoFar) {
-      scoresSoFar.push(score);
-      if (round == vars.roundsTillComparison) {
-        window.location.href = constructURLWithScores("standings-2.html", initialRewardPos, purplePos, scoresSoFar);
-      } else if (round > (vars.finalRound - 1)){
-        window.location.href = constructURLWithScores("thanks.html", initialRewardPos, purplePos, scoresSoFar);
-      } else {
-        window.location.href = constructURLWithScores("intermediary.html", initialRewardPos, purplePos, scoresSoFar);
+    function constructURLWithScores(htmlFile, initialRewardPos, purpleRoom, scoresSoFar) {
+      let url = htmlFile + '?grok=' + encodeRooms(roomsVisited) + '&rounds=' + vars.finalRound + '&round=' + round;
+      if (initialRewardPos !== '') {
+        url += '&blob=' + encodeCoordinates(initialRewardPos.x, initialRewardPos.y);
       }
-      urlModified = true; 
-      return;
-    }
-
-    function constructURLWithScores(htmlFile, initialRewardPos, purplePos, scoresSoFar) {
-      let url = htmlFile + '?blob=' + initialRewardPos + '&plor=' + purplePos + '&grok=' + encodeRooms(roomsVisited) + '&rounds=' + vars.finalRound + '&round=' + round;
+      if (purpleRoom !== '') {
+        url += '&plor=' + encodeRoom(purpleRoom)
+      }
       scoresSoFar.forEach((score, index) => {
           url += '&score' + (index + 1) + '=' + score;
       });
@@ -519,3 +549,18 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
     }
 });
+
+function addStochasticity(axis, increment) {
+  if (Math.random() > vars.actionStochasticity) {
+    return [axis, increment];
+  }
+  var randomAxis = Math.random() < 0.5 ? 'y' : 'x';
+  var randomIncrement = Math.random() < 0.5 ? -1 : 1;
+
+  while (randomAxis === axis && randomIncrement === increment) {
+      randomAxis = Math.random() < 0.5 ? 'y' : 'x';
+      randomIncrement = Math.random() < 0.5 ? -1 : 1;
+  }
+  return [randomAxis, randomIncrement];
+  
+}

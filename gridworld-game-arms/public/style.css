@@ -116,6 +116,7 @@ body {
 }
 
 .square.current {
+  transition: transform 0.5s linear;
   border-color: black;
   border-width: 2px;
   box-shadow: inset 0px 0px 5px #999999;
@@ -125,6 +126,55 @@ body {
   background-color: #BBBBBB;
 }
 
+.white {
+  background-color: white;
+}
+
+.blue {
+  height: 100%;
+  background-color: #1F449C;
+  box-shadow: inset 0px 0px 5px #999999;
+  border-radius: 3px;
+  border-color: black;
+  border-width: 3px;
+  animation: explodeAndFade 1s forwards;
+}
+
+.gold {
+  height: 100%;
+  background-color: #AA3377;
+  box-shadow: inset 0px 0px 5px #999999;
+  border-radius: 3px;
+  border-color: black;
+  border-width: 3px;
+  animation: explodeAndFade 1s forwards;
+}
+
+.green {
+  height: 100%;
+  background-color: #228833;
+  box-shadow: inset 0px 0px 5px #999999;
+  border-radius: 3px;
+  border-color: black;
+  border-width: 3px;
+  animation: explodeAndFade 1s forwards;
+}
+
+@keyframes explodeAndFade {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(5);
+    opacity: 0;
+  }
+}
+
 
 .light-grey {
   background-color: #DDDDDD;
@@ -132,67 +182,6 @@ body {
 
 .lightest-grey {
   background-color: #EEEEEE;
-}
-
-.white {
-  background-color: white;
-}
-
-.blue {
-  background-color: white;
-  animation: fadeToBlue 0.75s forwards;
-}
-
-.green {
-  background-color: white;
-  animation: fadeToGreen 0.75s forwards;
-}
-
-.gold {
-  background-color: white;
-  animation: fadeToPurple 1s forwards;
-}
-
-@keyframes fadeToGreen {
-    0% {
-        background-color: white;
-    }
-    50% {
-        background-color: #228833;
-        box-shadow: inset 0px 0px 5px #ffffff;
-    }
-    100% {
-        background-color: #228833;
-        box-shadow: inset 0px 0px 5px #ffffff;
-    }
-}
-
-@keyframes fadeToPurple {
-    0% {
-        background-color: white;
-    }
-    50% {
-        background-color: #AA3377;
-        box-shadow: inset 0px 0px 5px #ffffff;
-    }
-    100% {
-        background-color: #AA3377;
-        box-shadow: inset 0px 0px 5px #ffffff;
-    }
-}
-
-@keyframes fadeToBlue {
-    0% {
-        background-color: white;
-    }
-    50% {
-        background-color: #1F449C;
-        box-shadow: inset 0px 0px 5px #ffffff;
-    }
-    100% {
-        background-color: #1F449C;
-        box-shadow: inset 0px 0px 5px #ffffff;
-    }
 }
 
 .hidden {
@@ -252,7 +241,7 @@ body {
   border-radius: 5px;
 }
 
-#username-generation {
+.hidden {
   visibility: hidden;
 }
 
@@ -317,4 +306,26 @@ body {
 .tick {
   font-family: 'Montserrat', sans-serif;
   font-size: 20px;
+}
+
+.loader {
+  display: none;
+  z-index: 999;
+  border: 6px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 6px solid #1F449C;
+  width: 40px;
+  height: 40px;
+  -webkit-animation: spin 1.5s linear infinite; /* Safari */
+  animation: spin 1.5s linear infinite;
+  }
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

@@ -4,7 +4,7 @@
     "corridorWidth": 3,
     "roomFrequency": 9,
     "roomSize": 4,
-    "moves": 55,
+    "moves": 30,
     "roomsVisitedTillReward": 4,
     "armsVisitedTillReward": 2,
     "initialPosX": 15,
@@ -14,7 +14,8 @@
     "actionStochasticity": 0,
     "greenSquareScore": 10,
     "purpleSquareScore": 1000,
-    "maxNoGreenSquares": 2,
+    "maxNoGreenSquares": 23,
+    "maxNoPurpleSquares": 5,
     "greenSquarePosRange": 2,
     "purpleSquarePosRange": 1
   }

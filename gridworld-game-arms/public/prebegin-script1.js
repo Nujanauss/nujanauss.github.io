@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
         butt.style.cursor = 'pointer';
       }, 3000);
     } else {
-      window.location.href = 'prebegin2.html'  + '?r=' + getUrlParameter('r') + '&c=' + getUrlParameter('c') + '&usr=lumi7el&cmr=n3ssiori';
+      window.location.href = 'prebegin2.html'  + '?r=' + getUrlParameter('r') + '&c=' + getUrlParameter('c') + '&usr=lumi7el';
     }
   }
 });
