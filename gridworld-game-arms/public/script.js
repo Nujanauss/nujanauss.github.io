@@ -208,8 +208,6 @@ document.addEventListener('DOMContentLoaded', async function() {
       });
       return [true, rewards, purpleRoom];
     }
-    
-
 
     function updateTextColor(scoreText,score,previousScore) {
       const originalColor = 'black';
@@ -480,7 +478,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       for (let i = 1; i <= 12; i++) {
         const roomNumber = `roomNo${i}`;
         for (const item of roomsVisited) {
-          if (item.startsWith(roomNumber)) {
+          if (item === roomNumber) {
               encodedNumber |= (1 << (i - 1));
               break;
           }

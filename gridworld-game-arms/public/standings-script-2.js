@@ -6,7 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const scores = getScoresSoFar();
 
     const scoresSum = scores.reduce((total, score) => total + score, 0);
-    const avgScore = (scoresSum / scores.length).toFixed(1);
+    /*const avgScore = (scoresSum / scores.length).toFixed(1);*/
+    const avgScore = Math.max(...scores);
+
 
     var socialScore;
     if (avgScore < 0) {

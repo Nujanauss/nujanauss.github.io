@@ -8,8 +8,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     const roomMap = {};
     var rewards = Array.from({ length: vars.gridSize }, () => Array.from({ length: vars.gridSize }, () => 0)); // initialise
 
-    let score = 0, previousScore = 0, currentPosition = { x: vars.initialPosX, y: vars.initialPosY }, previousPosition = currentPosition;
+    let score = 0, previousScore = 0, squaresVisited = 0, noSquares = 0, currentPosition = { x: vars.initialPosX, y: vars.initialPosY }, previousPosition = currentPosition;
     setupGrid();
+
+    [,rewards] = generateRewards(rewards);
 
     document.addEventListener('keydown', function(event) {
         const key = event.key;
@@ -17,7 +19,12 @@ document.addEventListener('DOMContentLoaded', async function() {
           return;
         }
 
-        if (score > 50) { //only modify URL once
+        console.log(squaresVisited)
+        if (squaresVisited == noSquares - 1) {
+          window.location.href = 'cancel.html';
+          return;
+        }
+        if (score > 40) { //only modify URL once
           window.location.href = 'prebegin1.html' + '?s' + '=' + score + '&r=' + vars.finalRound + '&c=' + vars.roundsTillComparison;
           return;
         }
@@ -34,8 +41,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         previousScore = score;
         previousPosition = currentPosition;
 
-        if (score > 50) {
-          document.getElementById("trainingOver").innerHTML = "Perfect! You scored more than 50. Press any button to continue.";
+        if (score > 40) {
+          document.getElementById("trainingOver").innerHTML = "Perfect! You scored more than 40. Press any button to continue.";
         }
     });
     
@@ -70,20 +77,40 @@ document.addEventListener('DOMContentLoaded', async function() {
       newLocationClassList.add('current');
       return currentPosition;
     }
+    
+    function generateRewards(rewards) {
+      let availableForGreenSqrs = Object.values(roomMap).flat();
+      shuffleArray(availableForGreenSqrs);
+      const selectedSquares = availableForGreenSqrs.slice(0, availableForGreenSqrs.length * 0.7);
+      selectedSquares.forEach(sqr => {
+        const squareId = sqr.id;
+        const [, x, y] = squareId.split('-').map(Number);
+        const idx = convertXY2Square(x, y);
+        if (rewards[y][x] !== 3 && !gridContainer.children[idx].classList.contains('white')) {
+            rewards[y][x] = 3;
+        }
+      });
+      return [true, rewards];
+    }
 
     function revealSquare(position, rewards) {
       const index = convertXY2Square(position.x, position.y), square = gridContainer.children[index];
       square.classList.remove('grey');
       if (rewards[position.y][position.x] === 0) {
-        square.classList.add('white');
+        if (!square.classList.contains('white')) {
+          square.classList.add('white');
+          squaresVisited++;
+        }
         score--;
         return score;
       }
       const pseudoElement = document.createElement('div');
       square.appendChild(pseudoElement);
       pseudoElement.classList.add('blue');
+      square.classList.add('white');
       score += 5;
       rewards[position.y][position.x] = 0;
+      squaresVisited++;
       return score;
     }
 
@@ -189,7 +216,6 @@ document.addEventListener('DOMContentLoaded', async function() {
           let square = addSquare(x, y);
           square.classList.add('room', roomName + '-' + armDirection);
           addToRoomMap(roomName, square);
-          newRewards[y][x] = 1;
         }
       }
       return newRewards;
@@ -215,6 +241,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       if (square) {
         square.classList.remove('hidden');
         square.classList.add('grey');
+        noSquares++;
         return square;
       }
     }
