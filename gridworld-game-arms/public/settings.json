@@ -13,8 +13,8 @@
     "finalRound": 5,
     "actionStochasticity": 0,
     "greenSquareScore": 10,
-    "purpleSquareScore": 1000,
-    "maxNoGreenSquares": 23,
+    "purpleSquareScore": 200,
+    "maxNoGreenSquares": 30,
     "maxNoPurpleSquares": 5,
     "greenSquarePosRange": 2,
     "purpleSquarePosRange": 1

@@ -56,6 +56,11 @@ body {
   padding: 10px;
 }
 
+aside {
+  display: flex;
+  flex-direction: column;
+}
+
 .info {
   width: 200px;
 }
@@ -69,7 +74,17 @@ body {
 
 #trialOver {
   text-align: center;
-  visibility: hidden;
+}
+
+#trialOverBut {
+  text-align: center;
+  margin-top: 20px;
+}
+
+
+#trainingOverBut {
+  text-align: center;
+  margin-top: 20px;
 }
 
 #trainingOver {
@@ -175,6 +190,24 @@ body {
   }
 }
 
+.greenish {
+  background-color: rgba(34, 136, 51, 0.3);
+  box-shadow: inset 0px 0px 5px #999999, 0px 0px 5px #999999;
+  border: 1px solid rgba(34, 136, 51, 0.7);
+}
+
+.goldish {
+  background-color: rgba(170, 51, 119, 0.3);
+  box-shadow: inset 0px 0px 5px #999999, 0px 0px 5px #999999;
+  border: 1px solid rgba(170, 51, 119, 0.7);
+}
+
+.bluish {
+  background-color: rgba(31, 68, 156, 0.3);
+  box-shadow: inset 0px 0px 5px #999999, 0px 0px 5px #999999;
+  border: 1px solid rgba(31, 68, 156, 0.7);
+
+}
 
 .light-grey {
   background-color: #DDDDDD;

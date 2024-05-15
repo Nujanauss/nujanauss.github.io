@@ -1,7 +1,7 @@
 import { getUrlParameter, getScoresSoFar } from './shared.js';
 
 document.addEventListener('DOMContentLoaded', async function() {
-    const gridContainer = document.getElementById('grid-container'), movesText = document.getElementById('moves'), scoreText = document.getElementById('score');
+    const gridContainer = document.getElementById('grid-container'), movesText = document.getElementById('moves'), scoreText = document.getElementById('score'), bonusText = document.getElementById('bonus');
 
     const vars = await loadGameSettings();
     const whenToGenerateRewards = vars.armsVisitedTillReward; //roomsVisitedTillReward
@@ -19,7 +19,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     let initialRewardPos = getUrlParameter('blob');
     let purpleRoom = getUrlParameter('plor');
     const roomsVisited = getUrlParameter('grok') !== null ? decodeRooms(getUrlParameter('grok')) : new Set();
-    var urlModified = false, generatedTrue = false;
+
+    var generatedTrue = false;
+    var bonusAmount = 5 + (scoresSoFar.reduce((total, score) => total + score, 0) / 100) + (score / 100);
+    bonusText.innerHTML = 'Bonus: £' + bonusAmount.toFixed(2);
 
     if (initialRewardPos !== '') {
       initialRewardPos = decodeCoordinates(initialRewardPos);
@@ -34,8 +37,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           return;
         }
 
-        if (!urlModified && moves < 1) { //only modify URL once
-          endTrialLogic(initialRewardPos, purpleRoom, scoresSoFar);
+        if (moves < 1) {
           return;
         }
 
@@ -54,6 +56,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         score = revealSquare(currentPosition, rewards);
         scoreText.innerHTML = 'Score: ' + score;
+        bonusAmount = 5 + (scoresSoFar.reduce((total, score) => total + score, 0) / 100) + (score / 100);
+        bonusText.innerHTML = 'Bonus: £' + bonusAmount.toFixed(2);
         movesText.innerHTML = 'Moves left: ' + moves;
         updateTextColor(scoreText,score,previousScore)
 
@@ -61,7 +65,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         previousPosition = currentPosition;
 
         if (moves < 1) {
-          document.getElementById("trialOver").style.visibility = "visible";
+          endTrialLogic(initialRewardPos, purpleRoom, scoresSoFar);
+          return;
         }
     });
     
@@ -84,15 +89,22 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function endTrialLogic(initialRewardPos, purpleRoom, scoresSoFar) {
+      document.getElementById("trialOver").style.visibility = "visible";
+      document.getElementById("trialOverBut").style.visibility = "visible";
       scoresSoFar.push(score);
       if (round == vars.roundsTillComparison) {
-        window.location.href = constructURLWithScores("standings-2.html", initialRewardPos, purpleRoom, scoresSoFar);
+        document.getElementById('trialOverBut').addEventListener('click', function() {
+          window.location.href = constructURLWithScores("standings-2.html", initialRewardPos, purpleRoom, scoresSoFar);
+        });
       } else if (round > (vars.finalRound - 1)){
-        window.location.href = constructURLWithScores("thanks.html", initialRewardPos, purpleRoom, scoresSoFar);
+        document.getElementById('trialOverBut').addEventListener('click', function() {
+          window.location.href = constructURLWithScores("thanks.html", initialRewardPos, purpleRoom, scoresSoFar);
+        });
       } else {
-        window.location.href = constructURLWithScores("intermediary.html", initialRewardPos, purpleRoom, scoresSoFar);
+        document.getElementById('trialOverBut').addEventListener('click', function() {
+          window.location.href = constructURLWithScores("intermediary.html", initialRewardPos, purpleRoom, scoresSoFar);
+        });
       }
-      urlModified = true; 
       return;
     }
 
@@ -143,9 +155,11 @@ document.addEventListener('DOMContentLoaded', async function() {
       square.appendChild(pseudoElement);
       if (rewards[position.y][position.x] === 1) {
         pseudoElement.classList.add('green');
+        square.classList.add('greenish');
         score += vars.greenSquareScore;
       } else if (rewards[position.y][position.x] === 2) {
         pseudoElement.classList.add('gold');
+        square.classList.add('goldish');
         score += vars.purpleSquareScore;
       }
       rewards[position.y][position.x] = 0;

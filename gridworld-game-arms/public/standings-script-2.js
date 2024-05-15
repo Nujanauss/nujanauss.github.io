@@ -12,16 +12,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var socialScore;
     if (avgScore < 0) {
-      socialScore = Math.random() * 200;
+      socialScore = 50 + Math.random() * 50;
     }
-    if (avgScore > 0 && avgScore < 1000) {
-      socialScore = 1000 + Math.random() * 500;
+    if (avgScore > 0 && avgScore < 200) {
+      socialScore = 200 + Math.random() * 400;
     }
-    if (avgScore > 999 && avgScore < 3000) {
-      socialScore = Math.random() * 1000 + 1000;
-    }
-    if (avgScore > 2999) {
-      socialScore = Math.random() * 3000 + 1000;
+    if (avgScore > 200) {
+      socialScore = 500 + Math.random() * 400;
     }
 
     const data = [

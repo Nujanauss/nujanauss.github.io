@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', async function() {
           return;
         }
         if (score > 40) { //only modify URL once
-          window.location.href = 'prebegin1.html' + '?s' + '=' + score + '&r=' + vars.finalRound + '&c=' + vars.roundsTillComparison;
           return;
         }
 
@@ -42,7 +41,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         previousPosition = currentPosition;
 
         if (score > 40) {
-          document.getElementById("trainingOver").innerHTML = "Perfect! You scored more than 40. Press any button to continue.";
+          document.getElementById("trainingOver").innerHTML = "Perfect! You scored more than 40. Click Next to continue.";
+          document.getElementById("trainingOverBut").style.visibility = "visible";
+          document.getElementById('trainingOverBut').addEventListener('click', function() {
+            window.location.href = 'prebegin1.html' + '?s' + '=' + score + '&r=' + vars.finalRound + '&c=' + vars.roundsTillComparison;
+          });
         }
     });
     
@@ -106,6 +109,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
       const pseudoElement = document.createElement('div');
       square.appendChild(pseudoElement);
+      square.classList.add('bluish');
       pseudoElement.classList.add('blue');
       square.classList.add('white');
       score += 5;
