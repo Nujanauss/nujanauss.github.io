@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
   if (butt) {
     butt.addEventListener('click', generate);
   }
+  document.getElementById('rounds').innerHTML = sessionStorage.getItem('finalRound');
+  document.getElementById('comparisonRound').innerHTML = sessionStorage.getItem('roundsTillComparison');
   var pressedOnce = false;
   function generate() {
     if (butt.disabled) {
@@ -52,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
         butt.style.cursor = 'pointer';
       }, 8000);
     } else {
-      window.location.href = 'game.html'  + '?r=' + getUrlParameter('r') + '&c=' + getUrlParameter('c') + '&usr=lumi7el&cmr=n3ssiori';
+      window.location.href = 'game.html?usr=lumi7el&cmr=n3ssiori';
     }
   }
 });

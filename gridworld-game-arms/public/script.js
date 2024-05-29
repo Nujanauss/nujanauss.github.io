@@ -1,35 +1,34 @@
 import { getUrlParameter, getScoresSoFar } from './shared.js';
 
 document.addEventListener('DOMContentLoaded', async function() {
-    const gridContainer = document.getElementById('grid-container'), movesText = document.getElementById('moves'), scoreText = document.getElementById('score'), bonusText = document.getElementById('bonus');
+    const gridContainer = document.getElementById('grid-container'), movesText = document.getElementById('moves'), scoreText = document.getElementById('score');
 
-    const vars = await loadGameSettings();
-    const whenToGenerateRewards = vars.armsVisitedTillReward; //roomsVisitedTillReward
+    const gridSize = getFromStor('gridSize');
+    const roomSize = getFromStor('roomSize');
+    const initialPos = { x: getFromStor('initialPosX'), y: getFromStor('initialPosY') };
+    const whenToGenerateRewards = getFromStor('armsVisitedTillReward');
     const roomMap = {};
     const room2ArmMap = {};
     const arm2RoomMap = {};
-    var rewards = Array.from({ length: vars.gridSize }, () => Array.from({ length: vars.gridSize }, () => 0)); // initialise
+    var rewards = Array.from({ length: gridSize }, () => Array.from({ length: gridSize }, () => 0)); // initialise
+    var moves = getFromStor('moves');
 
-    let score = 0, previousScore = 0, currentPosition = { x: vars.initialPosX, y: vars.initialPosY }, currentRoomNo = 0, moves = vars.moves, previousPosition = currentPosition;
+    let score = 0, previousScore = 0, currentPosition = initialPos, currentRoomNo = 0, previousPosition = currentPosition;
     setupGrid();
     var round = getRoundFromURL();
 
-    movesText.innerHTML = 'Moves left: ' + vars.moves;
+    movesText.innerHTML = 'Moves left: ' + moves;
     const scoresSoFar = getScoresSoFar();
-    let initialRewardPos = getUrlParameter('blob');
-    let purpleRoom = getUrlParameter('plor');
-    const roomsVisited = getUrlParameter('grok') !== null ? decodeRooms(getUrlParameter('grok')) : new Set();
 
     var generatedTrue = false;
-    var bonusAmount = 5 + (scoresSoFar.reduce((total, score) => total + score, 0) / 100) + (score / 100);
-    bonusText.innerHTML = 'Bonus: £' + bonusAmount.toFixed(2);
 
-    if (initialRewardPos !== '') {
-      initialRewardPos = decodeCoordinates(initialRewardPos);
-      purpleRoom = decodeRoom(purpleRoom);
-      [,rewards] = generateRewards(vars, rewards, initialRewardPos, purpleRoom);
+    let initialRewardPos = getFromStor('initialRewardPos');
+    if (initialRewardPos !== null) {
+      [,rewards] = generateRewards(rewards, initialRewardPos, sessionStorage.getItem('purpleRoom'));
       generatedTrue = true;
     }
+
+    const roomsVisited = getFromStor('roomsVisited') !== null ? getFromStor('roomsVisited') : [];
 
     document.addEventListener('keydown', function(event) {
         const key = event.key;
@@ -37,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           return;
         }
 
-        if (moves < 1) {
+        if (moves < 1) {  
           return;
         }
 
@@ -47,17 +46,15 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         moves--;
-        if (!generatedTrue && getNoArmsVisited(roomsVisited) == whenToGenerateRewards) { // roomsVisited.size == whenToGenerateRewards
-          [generatedTrue, rewards, purpleRoom] = generateRewards(vars, rewards, currentPosition, purpleRoom);
+        if (!generatedTrue && roomsVisited.length !== 0 && getNoArmsVisited(roomsVisited) == whenToGenerateRewards) {
+          [generatedTrue, rewards] = generateRewards(rewards, currentPosition);
           if (generatedTrue) {
-            initialRewardPos = { x: currentPosition.x, y: currentPosition.y };
+            sessionStorage.setItem('initialRewardPos', JSON.stringify({ x: currentPosition.x, y: currentPosition.y }));
           }
         }
 
         score = revealSquare(currentPosition, rewards);
         scoreText.innerHTML = 'Score: ' + score;
-        bonusAmount = 5 + (scoresSoFar.reduce((total, score) => total + score, 0) / 100) + (score / 100);
-        bonusText.innerHTML = 'Bonus: £' + bonusAmount.toFixed(2);
         movesText.innerHTML = 'Moves left: ' + moves;
         updateTextColor(scoreText,score,previousScore)
 
@@ -65,44 +62,37 @@ document.addEventListener('DOMContentLoaded', async function() {
         previousPosition = currentPosition;
 
         if (moves < 1) {
-          endTrialLogic(initialRewardPos, purpleRoom, scoresSoFar);
+          endTrialLogic(scoresSoFar);
           return;
         }
     });
-    
-    async function loadGameSettings() {
-      const response = await fetch('settings.json');
-      const data = await response.json();
-      return validateVars(data.vars);
-    }
 
     function getRoundFromURL() {
       var round = new URLSearchParams(window.location.search).get('round');
       if (!round) {
         round = 1;
         const url = new URL(window.location.href);
-        url.searchParams.set('rounds', vars.finalRound);
         url.searchParams.set('round', round);
         history.replaceState(null, '', url);
       }
       return round;
     }
 
-    function endTrialLogic(initialRewardPos, purpleRoom, scoresSoFar) {
+    function endTrialLogic(scoresSoFar) {
       document.getElementById("trialOver").style.visibility = "visible";
       document.getElementById("trialOverBut").style.visibility = "visible";
       scoresSoFar.push(score);
-      if (round == vars.roundsTillComparison) {
+      if (round == getFromStor('roundsTillComparison')) {
         document.getElementById('trialOverBut').addEventListener('click', function() {
-          window.location.href = constructURLWithScores("standings-2.html", initialRewardPos, purpleRoom, scoresSoFar);
+          window.location.href = constructURLWithScores("standings.html", scoresSoFar);
         });
-      } else if (round > (vars.finalRound - 1)){
+      } else if (round > (getFromStor('finalRound') - 1)){
         document.getElementById('trialOverBut').addEventListener('click', function() {
-          window.location.href = constructURLWithScores("thanks.html", initialRewardPos, purpleRoom, scoresSoFar);
+          window.location.href = constructURLWithScores("thanks.html", scoresSoFar);
         });
       } else {
         document.getElementById('trialOverBut').addEventListener('click', function() {
-          window.location.href = constructURLWithScores("intermediary.html", initialRewardPos, purpleRoom, scoresSoFar);
+          window.location.href = constructURLWithScores("intermediary.html", scoresSoFar);
         });
       }
       return;
@@ -113,8 +103,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
       var axis = key.includes('Up') || key.includes('Down') ? 'y' : 'x';
       var increment = key.includes('Up') || key.includes('Left') ? -1 : 1;
-
-      //[axis, increment] = addStochasticity(axis, increment); // Introduce stochasticity
 
       if (axis === 'x') {
         newPosition.x += increment
@@ -133,11 +121,10 @@ document.addEventListener('DOMContentLoaded', async function() {
       currentPosition = newPosition;
       const newLocationClassList = gridContainer.children[newIdx].classList;
       newLocationClassList.add('current');
-      let roomNo = 0;
       Array.from(newLocationClassList).forEach(className => {
-        if (className.includes("roomNo")) {
-            roomNo = className.split("-")[0].slice(-1);
-            roomsVisited.add( className.split("-")[0]);
+        if (className.includes("roomNo") && !roomsVisited.includes(className.split("-")[0])) {
+            roomsVisited.push(className.split("-")[0]);
+            sessionStorage.setItem('roomsVisited', JSON.stringify(Array.from(roomsVisited)));
         }
       });
       return currentPosition;
@@ -156,17 +143,17 @@ document.addEventListener('DOMContentLoaded', async function() {
       if (rewards[position.y][position.x] === 1) {
         pseudoElement.classList.add('green');
         square.classList.add('greenish');
-        score += vars.greenSquareScore;
+        score += getFromStor('greenSquareScore');
       } else if (rewards[position.y][position.x] === 2) {
         pseudoElement.classList.add('gold');
         square.classList.add('goldish');
-        score += vars.purpleSquareScore;
+        score += getFromStor('purpleSquareScore');
       }
       rewards[position.y][position.x] = 0;
       return score;
     }
 
-    function generateRewards(vars, rewards, startAtPos, purpleRoom) {
+    function generateRewards(rewards, startAtPos) {
       const greenPosIdx = convertXY2Square(startAtPos.x, startAtPos.y);
       const greenPosClassList = gridContainer.children[greenPosIdx].classList;
       if (!greenPosClassList.contains('room') || greenPosClassList.contains('white')) {// don't turn white suddenly green
@@ -189,7 +176,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         availableForGreenSqrs = availableForGreenSqrs.concat(roomMap[room]);
       });
       shuffleArray(availableForGreenSqrs);
-      const selectedSquares = availableForGreenSqrs.slice(0, Math.min(availableForGreenSqrs.length, vars.maxNoGreenSquares));
+      const selectedSquares = availableForGreenSqrs.slice(0, Math.min(availableForGreenSqrs.length, getFromStor('maxNoGreenSquares')));
       selectedSquares.forEach(sqr => {
         const squareId = sqr.id;
         const [, x, y] = squareId.split('-').map(Number);
@@ -200,18 +187,22 @@ document.addEventListener('DOMContentLoaded', async function() {
       });
 
       //purple rewards
-      if (purpleRoom === '') {
+      let purpleRoom;
+      if (sessionStorage.getItem('purpleRoom') === null) {
         for (var i = 1; i < 13; i++) {
-          if (roomsVisited.has(`roomNo${i}`) || getArmsVisited(roomsVisited).has(room2ArmMap[`roomNo${i}`])) {
+          if (roomsVisited.includes(`roomNo${i}`) || getArmsVisited(roomsVisited).has(room2ArmMap[`roomNo${i}`])) {
             continue;
           }
+          sessionStorage.setItem('purpleRoom', `roomNo${i}`);
           purpleRoom = `roomNo${i}`;
           break;
         }
+      } else {
+        purpleRoom = sessionStorage.getItem('purpleRoom');
       }
       let availablePurpleSquares = roomMap[purpleRoom];
       shuffleArray(availablePurpleSquares);
-      const selectedPurpleSquares = availablePurpleSquares.slice(0, Math.min(availablePurpleSquares.length, vars.maxNoPurpleSquares));
+      const selectedPurpleSquares = availablePurpleSquares.slice(0, Math.min(availablePurpleSquares.length, getFromStor('maxNoPurpleSquares')));
       selectedPurpleSquares.forEach(sqr => {
         const squareId = sqr.id;
         const [, x, y] = squareId.split('-').map(Number);
@@ -223,14 +214,14 @@ document.addEventListener('DOMContentLoaded', async function() {
       return [true, rewards, purpleRoom];
     }
 
-    function updateTextColor(scoreText,score,previousScore) {
+    function updateTextColor(scoreText, score, previousScore) {
       const originalColor = 'black';
       var newColor = 'black';
       var timeout = 300;
-      if ((score - previousScore) == vars.greenSquareScore) {
+      if ((score - previousScore) == getFromStor('greenSquareScore')) {
         newColor = '#228833';
         timeout = 500;
-      } else if ((score - previousScore) == vars.purpleSquareScore) {
+      } else if ((score - previousScore) == getFromStor('purpleSquareScore')) {
         newColor = '#AA3377';
         timeout = 500;
       } else if (score < previousScore) {
@@ -243,31 +234,31 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function setupGrid() {
-      const minDimension = Math.min(window.innerWidth, window.innerHeight - 20), squareSize = minDimension / vars.gridSize;
+      const minDimension = Math.min(window.innerWidth, window.innerHeight - 20), squareSize = minDimension / gridSize;
       gridContainer.innerHTML = '';
-      gridContainer.style.gridTemplateColumns = `repeat(${vars.gridSize}, ${squareSize}px)`;
-      gridContainer.style.gridTemplateRows = `repeat(${vars.gridSize}, 0px)`;
+      gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, ${squareSize}px)`;
+      gridContainer.style.gridTemplateRows = `repeat(${gridSize}, 0px)`;
 
       createGridSquares(squareSize);
 
       let roomNo = 5;
-      const mid = Math.floor(vars.gridSize / 2);
+      const mid = Math.floor(gridSize / 2);
       const quat = Math.floor(mid / 2);
       const eigh = Math.floor(quat / 2);
-      for (let y = 0; y < vars.gridSize; y++) {
-        for (let x = 0; x < vars.gridSize; x++) {
+      for (let y = 0; y < gridSize; y++) {
+        for (let x = 0; x < gridSize; x++) {
           // north
           if (x == mid && y < mid && y > quat - 3) {
             addSquare(x, y);
             continue;
           }
           // south
-          if (x == mid && y >= mid && y < vars.gridSize - quat + 3) {
+          if (x == mid && y >= mid && y < gridSize - quat + 3) {
             addSquare(x, y);
             continue;
           }
           // east
-          if (y == mid && x >= mid && x < vars.gridSize - quat + 3) {
+          if (y == mid && x >= mid && x < gridSize - quat + 3) {
             addSquare(x, y);
             continue;
           }
@@ -282,12 +273,12 @@ document.addEventListener('DOMContentLoaded', async function() {
             continue;
           }
           // Seast-west
-          if (x > mid - quat + 2 && x < mid + quat - 2 && y == vars.gridSize - mid + eigh + 2) {
+          if (x > mid - quat + 2 && x < mid + quat - 2 && y == gridSize - mid + eigh + 2) {
             addSquare(x, y);
             continue;
           }
           // Enorth-south
-          if (y > mid - quat + 2 && y < mid + quat - 2 && x == vars.gridSize - mid + eigh + 2) {
+          if (y > mid - quat + 2 && y < mid + quat - 2 && x == gridSize - mid + eigh + 2) {
             addSquare(x, y);
             continue;
           }
@@ -299,28 +290,28 @@ document.addEventListener('DOMContentLoaded', async function() {
           // Nentryway
           if ((x == mid - quat + 3 || x == mid + quat - 3) && y == mid - eigh - 3) {
             addSquare(x, y);
-            createRoom(x - Math.floor(vars.roomSize / 2), y - 1, 1, -1, vars.roomSize, `roomNo${roomNo}`, 'armNorth');
+            createRoom(x - Math.floor(roomSize / 2), y - 1, 1, -1, roomSize, `roomNo${roomNo}`, 'armNorth');
             roomNo++;
             continue;
           }
           // Sentryway
-          if ((x == mid - quat + 3 || x == mid + quat - 3) && y == vars.gridSize - mid + eigh + 3) {
+          if ((x == mid - quat + 3 || x == mid + quat - 3) && y == gridSize - mid + eigh + 3) {
             addSquare(x, y);
-            createRoom(x - Math.floor(vars.roomSize / 2), y + 1, 1, 1, vars.roomSize, `roomNo${roomNo}`, 'armSouth');
+            createRoom(x - Math.floor(roomSize / 2), y + 1, 1, 1, roomSize, `roomNo${roomNo}`, 'armSouth');
             roomNo++;
             continue;
           }
           // Eentryway
-          if ((y == mid - quat + 3 || y == mid + quat - 3) && x == vars.gridSize - mid + eigh + 3) {
+          if ((y == mid - quat + 3 || y == mid + quat - 3) && x == gridSize - mid + eigh + 3) {
             addSquare(x, y);
-            createRoom(x + 1, y - Math.floor(vars.roomSize / 2), 1, 1, vars.roomSize, `roomNo${roomNo}`, 'armEast');
+            createRoom(x + 1, y - Math.floor(roomSize / 2), 1, 1, roomSize, `roomNo${roomNo}`, 'armEast');
             roomNo++;
             continue;
           }
           // Wentryway
           if ((y == mid - quat + 3 || y == mid + quat - 3) && x == mid - eigh - 3) {
             addSquare(x, y);
-            createRoom(x - 1, y - Math.floor(vars.roomSize / 2), -1, 1, vars.roomSize, `roomNo${roomNo}`, 'armWest');
+            createRoom(x - 1, y - Math.floor(roomSize / 2), -1, 1, roomSize, `roomNo${roomNo}`, 'armWest');
             roomNo++;
             continue;
           }
@@ -328,29 +319,28 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
 
       // north room
-      createRoom(mid - Math.floor(vars.roomSize / 2), quat - 3, 1, -1, vars.roomSize, 'roomNo1', 'armNorth');
+      createRoom(mid - Math.floor(roomSize / 2), quat - 3, 1, -1, roomSize, 'roomNo1', 'armNorth');
 
       // south room
-      createRoom(mid - Math.floor(vars.roomSize / 2), vars.gridSize - quat + 3, 1, 1, vars.roomSize, 'roomNo2', 'armSouth');
+      createRoom(mid - Math.floor(roomSize / 2), gridSize - quat + 3, 1, 1, roomSize, 'roomNo2', 'armSouth');
 
       // east room
-      createRoom(vars.gridSize - quat + 3, mid - Math.floor(vars.roomSize / 2), 1, 1, vars.roomSize, 'roomNo3', 'armEast');
+      createRoom(gridSize - quat + 3, mid - Math.floor(roomSize / 2), 1, 1, roomSize, 'roomNo3', 'armEast');
 
       // west room
-      createRoom(quat - 3, mid - Math.floor(vars.roomSize / 2), -1, 1, vars.roomSize, 'roomNo4', 'armWest');
+      createRoom(quat - 3, mid - Math.floor(roomSize / 2), -1, 1, roomSize, 'roomNo4', 'armWest');
 
-      
-      const rowHeights = getRowHeights(gridContainer, squareSize, vars.gridSize);
+      const rowHeights = getRowHeights(gridContainer, squareSize, gridSize);
       gridContainer.style.gridTemplateRows = rowHeights.join(' ');
-      var initialSquare = convertXY2Square(vars.initialPosX, vars.initialPosY);
+      var initialSquare = convertXY2Square(initialPos.x, initialPos.y);
       gridContainer.children[initialSquare].classList.remove('grey');
       gridContainer.children[initialSquare].classList.add('white');
       gridContainer.children[initialSquare].classList.add('current');
     }
 
     function createGridSquares(squareSize) {
-      for (let y = 0; y < vars.gridSize; y++) {
-          for (let x = 0; x < vars.gridSize; x++) {
+      for (let y = 0; y < gridSize; y++) {
+          for (let x = 0; x < gridSize; x++) {
               const square = createSquare(x, y, squareSize);
               gridContainer.appendChild(square);
           }
@@ -367,8 +357,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function createRoom(rx, ry, dirX, dirY, roomSize, roomName, armDirection) {
-      for (let dy = 0; dy < vars.roomSize; dy++) {
-        for (let dx = 0; dx < vars.roomSize; dx++) {
+      for (let dy = 0; dy < roomSize; dy++) {
+        for (let dx = 0; dx < roomSize; dx++) {
           let square = addSquare(rx + (dx * dirX), ry + (dy * dirY));
           square.classList.add('room', roomName + '-' + armDirection);
           addToRoomMap(roomName, square);
@@ -396,7 +386,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function setInitialSquare() {
-      const initialSquare = convertXY2Square(vars.initialPosX, vars.initialPosY);
+      const initialSquare = convertXY2Square(initialPos.x, initialPos.y);
       const initialSquareElement = gridContainer.children[initialSquare];
       initialSquareElement.classList.remove('grey');
       initialSquareElement.classList.add('white', 'current');
@@ -414,14 +404,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     function getArmsVisited(roomsVisited) {
       const armsVisited = new Set();
-        roomsVisited.forEach(room => {
-            if (room2ArmMap[room]) { // Check if the room has arms mapped to it
-                room2ArmMap[room].forEach(arm => {
-                    armsVisited.add(arm); // Add each arm to the set
-                });
-            }
-        });
-        return armsVisited;
+      roomsVisited.forEach(room => {
+        armsVisited.add(room2ArmMap[room][0])
+      });
+      return armsVisited;
     }
 
     function getNoArmsVisited(roomsVisited) {
@@ -454,71 +440,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function convertXY2Square(x, y) {
-      return vars.gridSize * y + x;
-    }
-    
-    function encodeCoordinates(x, y) {
-      return (x << 16) | y;
+      return gridSize * y + x;
     }
 
-    function decodeCoordinates(encoded) {
-      let x = encoded >> 16;
-      let y = encoded & 0xFFFF;
-      return {x, y};
-    }
-
-    function encodeRoom(roomStr) {
-      let encoded = '';
-      for (let i = 0; i < roomStr.length; i++) {
-        let charCode = roomStr.charCodeAt(i);
-        let shiftedCharCode = charCode + 3;
-        encoded += String.fromCharCode(shiftedCharCode);
-      }
-      return encoded;
-    }
-
-    function decodeRoom(encoded) {
-      let decoded = '';
-      for (let i = 0; i < encoded.length; i++) {
-        let charCode = encoded.charCodeAt(i);
-        let shiftedCharCode = charCode - 3;
-        decoded += String.fromCharCode(shiftedCharCode);
-      }
-      return decoded;
-    }
-
-    function encodeRooms(roomsVisited) {
-      let encodedNumber = 0;
-      for (let i = 1; i <= 12; i++) {
-        const roomNumber = `roomNo${i}`;
-        for (const item of roomsVisited) {
-          if (item === roomNumber) {
-              encodedNumber |= (1 << (i - 1));
-              break;
-          }
-        }
-      }
-      return encodedNumber;
-    }
-
-    function decodeRooms(encoded) {
-      const decodedRoomsVisited = new Set();
-      for (let i = 1; i <= 12; i++) {
-        if (encoded & (1 << (i - 1))) {
-            decodedRoomsVisited.add(`roomNo${i}`);
-        }
-      }
-      return decodedRoomsVisited;
-    }
-
-    function constructURLWithScores(htmlFile, initialRewardPos, purpleRoom, scoresSoFar) {
-      let url = htmlFile + '?grok=' + encodeRooms(roomsVisited) + '&rounds=' + vars.finalRound + '&round=' + round;
-      if (initialRewardPos !== '') {
-        url += '&blob=' + encodeCoordinates(initialRewardPos.x, initialRewardPos.y);
-      }
-      if (purpleRoom !== '') {
-        url += '&plor=' + encodeRoom(purpleRoom)
-      }
+    function constructURLWithScores(htmlFile, scoresSoFar) {
+      let url = htmlFile + '?round=' + round;
       scoresSoFar.forEach((score, index) => {
           url += '&score' + (index + 1) + '=' + score;
       });
@@ -532,47 +458,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
     }
 
-    function validateVars(variables) {
-      validateVar(variables, 'gridSize', 30, 2, 200);
-      validateVar(variables, 'moves', 70, 1);
-      validateVar(variables, 'corridorWidth', 3, 1, variables.gridSize);
-      validateVar(variables, 'roomFrequency', 5, 0, variables.gridSize);
-      validateVar(variables, 'roomSize', 3, 1, variables.roomFrequency * 2);
-      validateVar(variables, 'roomsVisitedTillReward', 2, 1, 12);
-      validateVar(variables, 'initialPosX', 0, 0, variables.gridSize - 1);
-      validateVar(variables, 'initialPosY', (variables.gridSize / 2), 0, variables.gridSize - 1);
-      validateVar(variables, 'roundsTillComparison', 3, 1, variables.finalRound - 1);
-      validateVar(variables, 'finalRound', 6, 1);
-      validateVar(variables, 'actionStochasticity', 0, 0, 1);
-      validateVar(variables, 'greenSquareScore', 10, 1);
-      validateVar(variables, 'purpleSquareScore', 1000, variables.greenSquareScore);
-      validateVar(variables, 'maxNoGreenSquares', 2, 0);
-      validateVar(variables, 'greenSquarePosRange', 2, 0, variables.gridSize - 1);
-      validateVar(variables, 'purpleSquarePosRange', 2, 0, variables.gridSize - 1);
-      return variables;
-    }
-
-    function validateVar(variables, varName, defaultValue, minValue, maxValue) {
-      maxValue = maxValue !== undefined ? maxValue : Infinity;
-
-      if (variables[varName] === undefined || variables[varName] < minValue || variables[varName] > maxValue) {
-          console.error(`Invalid ${varName}! Setting to default: ${defaultValue}`);
-          variables[varName] = defaultValue;
-      }
+    function getFromStor(varr) {
+      return JSON.parse(sessionStorage.getItem(varr));
     }
 });
-
-function addStochasticity(axis, increment) {
-  if (Math.random() > vars.actionStochasticity) {
-    return [axis, increment];
-  }
-  var randomAxis = Math.random() < 0.5 ? 'y' : 'x';
-  var randomIncrement = Math.random() < 0.5 ? -1 : 1;
-
-  while (randomAxis === axis && randomIncrement === increment) {
-      randomAxis = Math.random() < 0.5 ? 'y' : 'x';
-      randomIncrement = Math.random() < 0.5 ? -1 : 1;
-  }
-  return [randomAxis, randomIncrement];
-  
-}

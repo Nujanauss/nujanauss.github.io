@@ -3,12 +3,15 @@ import { getUrlParameter, getScoresSoFar } from './shared.js';
 document.addEventListener('DOMContentLoaded', async function() {
     const gridContainer = document.getElementById('grid-container'), scoreText = document.getElementById('score');
 
-    const vars = await loadGameSettings();
-    const whenToGenerateRewards = vars.roomsVisitedTillReward;
+    const blueScore = 5;
+    const whenToGenerateRewards = JSON.parse(sessionStorage.getItem('roomsVisitedTillReward'));
     const roomMap = {};
-    var rewards = Array.from({ length: vars.gridSize }, () => Array.from({ length: vars.gridSize }, () => 0)); // initialise
+    const gridSize = JSON.parse(sessionStorage.getItem('gridSize'));
+    const roomSize = JSON.parse(sessionStorage.getItem('roomSize'));
+    const initialPos = { x: JSON.parse(sessionStorage.getItem('initialPosX')), y: JSON.parse(sessionStorage.getItem('initialPosY')) };
+    var rewards = Array.from({ length: gridSize }, () => Array.from({ length: gridSize }, () => 0)); // initialise
 
-    let score = 0, previousScore = 0, squaresVisited = 0, noSquares = 0, currentPosition = { x: vars.initialPosX, y: vars.initialPosY }, previousPosition = currentPosition;
+    let score = 0, previousScore = 0, squaresVisited = 0, noSquares = 0, currentPosition = initialPos, previousPosition = currentPosition;
     setupGrid();
 
     [,rewards] = generateRewards(rewards);
@@ -44,16 +47,10 @@ document.addEventListener('DOMContentLoaded', async function() {
           document.getElementById("trainingOver").innerHTML = "Perfect! You scored more than 40. Click Next to continue.";
           document.getElementById("trainingOverBut").style.visibility = "visible";
           document.getElementById('trainingOverBut').addEventListener('click', function() {
-            window.location.href = 'prebegin1.html' + '?s' + '=' + score + '&r=' + vars.finalRound + '&c=' + vars.roundsTillComparison;
+            window.location.href = 'prebegin1.html' + '?s' + '=' + score;
           });
         }
     });
-    
-    async function loadGameSettings() {
-      const response = await fetch('settings.json');
-      const data = await response.json();
-      return validateVars(data.vars);
-    }
 
     function gameLogic(event, key, currentPosition) {
       const newPosition = { ...currentPosition };
@@ -112,7 +109,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       square.classList.add('bluish');
       pseudoElement.classList.add('blue');
       square.classList.add('white');
-      score += 5;
+      score += blueScore;
       rewards[position.y][position.x] = 0;
       squaresVisited++;
       return score;
@@ -122,14 +119,9 @@ document.addEventListener('DOMContentLoaded', async function() {
       const originalColor = 'black';
       var newColor = 'black';
       var timeout = 300;
-      if ((score - previousScore) == vars.greenSquareScore) {
-        newColor = '#228833';
+      if ((score - previousScore) == blueScore) {
+        newColor = '#1F449C';
         timeout = 500;
-      } else if ((score - previousScore) == vars.purpleSquareScore) {
-        newColor = '#AA3377';
-        timeout = 500;
-      } else if (score < previousScore) {
-        newColor = '#BBBBBB' //red:#F05039
       }
       scoreText.style.color = newColor;
       setTimeout(() => { 
@@ -138,30 +130,30 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function setupGrid() {
-      const minDimension = Math.min(window.innerWidth, window.innerHeight - 20), squareSize = minDimension / vars.gridSize;
+      const minDimension = Math.min(window.innerWidth, window.innerHeight - 20), squareSize = minDimension / gridSize;
       gridContainer.innerHTML = '';
-      gridContainer.style.gridTemplateColumns = `repeat(${vars.gridSize}, ${squareSize}px)`;
-      gridContainer.style.gridTemplateRows = `repeat(${vars.gridSize}, 0px)`;
+      gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, ${squareSize}px)`;
+      gridContainer.style.gridTemplateRows = `repeat(${gridSize}, 0px)`;
 
       createGridSquares(squareSize);
 
-      const mid = Math.floor(vars.gridSize / 2);
+      const mid = Math.floor(gridSize / 2);
       const quat = Math.floor(mid / 2);
       const eigh = Math.floor(quat / 2);
-      for (let y = 0; y < vars.gridSize; y++) {
-        for (let x = 0; x < vars.gridSize; x++) {
+      for (let y = 0; y < gridSize; y++) {
+        for (let x = 0; x < gridSize; x++) {
           // north
           if (x == mid && y < mid && y > quat - 3) {
             addSquare(x, y);
             continue;
           }
           // south
-          if (x == mid && y >= mid && y < vars.gridSize - quat + 3) {
+          if (x == mid && y >= mid && y < gridSize - quat + 3) {
             addSquare(x, y);
             continue;
           }
           // east
-          if (y == mid && x >= mid && x < vars.gridSize - quat + 3) {
+          if (y == mid && x >= mid && x < gridSize - quat + 3) {
             addSquare(x, y);
             continue;
           }
@@ -174,28 +166,28 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
 
       // north room
-      rewards = createRoom(mid - Math.floor(vars.roomSize / 2), quat - 3, 1, -1, vars.roomSize, 'roomNo1', 'armNorth', rewards);
+      rewards = createRoom(mid - Math.floor(roomSize / 2), quat - 3, 1, -1, roomSize, 'roomNo1', 'armNorth', rewards);
 
       // south room
-      rewards = createRoom(mid - Math.floor(vars.roomSize / 2), vars.gridSize - quat + 3, 1, 1, vars.roomSize, 'roomNo2', 'armSouth', rewards);
+      rewards = createRoom(mid - Math.floor(roomSize / 2), gridSize - quat + 3, 1, 1, roomSize, 'roomNo2', 'armSouth', rewards);
 
       // east room
-      rewards = createRoom(vars.gridSize - quat + 3, mid - Math.floor(vars.roomSize / 2), 1, 1, vars.roomSize, 'roomNo3', 'armEast', rewards);
+      rewards = createRoom(gridSize - quat + 3, mid - Math.floor(roomSize / 2), 1, 1, roomSize, 'roomNo3', 'armEast', rewards);
 
       // west room
-      rewards = createRoom(quat - 3, mid - Math.floor(vars.roomSize / 2), -1, 1, vars.roomSize, 'roomNo4', 'armWest', rewards);
+      rewards = createRoom(quat - 3, mid - Math.floor(roomSize / 2), -1, 1, roomSize, 'roomNo4', 'armWest', rewards);
 
-      const rowHeights = getRowHeights(gridContainer, squareSize, vars.gridSize);
+      const rowHeights = getRowHeights(gridContainer, squareSize, gridSize);
       gridContainer.style.gridTemplateRows = rowHeights.join(' ');
-      var initialSquare = convertXY2Square(vars.initialPosX, vars.initialPosY);
+      var initialSquare = convertXY2Square(initialPos.x, initialPos.y);
       gridContainer.children[initialSquare].classList.remove('grey');
       gridContainer.children[initialSquare].classList.add('white');
       gridContainer.children[initialSquare].classList.add('current');
     }
 
     function createGridSquares(squareSize) {
-      for (let y = 0; y < vars.gridSize; y++) {
-          for (let x = 0; x < vars.gridSize; x++) {
+      for (let y = 0; y < gridSize; y++) {
+          for (let x = 0; x < gridSize; x++) {
               const square = createSquare(x, y, squareSize);
               gridContainer.appendChild(square);
           }
@@ -213,8 +205,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     function createRoom(rx, ry, dirX, dirY, roomSize, roomName, armDirection, rewards) {
       const newRewards = { ...rewards };
-      for (let dy = 0; dy < vars.roomSize; dy++) {
-        for (let dx = 0; dx < vars.roomSize; dx++) {
+      for (let dy = 0; dy < roomSize; dy++) {
+        for (let dx = 0; dx < roomSize; dx++) {
           let x = rx + (dx * dirX);
           let y = ry + (dy * dirY);
           let square = addSquare(x, y);
@@ -233,7 +225,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function setInitialSquare() {
-      const initialSquare = convertXY2Square(vars.initialPosX, vars.initialPosY);
+      const initialSquare = convertXY2Square(initialPos.x, initialPos.y);
       const initialSquareElement = gridContainer.children[initialSquare];
       initialSquareElement.classList.remove('grey');
       initialSquareElement.classList.add('white', 'current');
@@ -276,39 +268,13 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function convertXY2Square(x, y) {
-      return vars.gridSize * y + x;
+      return gridSize * y + x;
     }
 
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
-
-    function validateVars(variables) {
-      validateVar(variables, 'gridSize', 30, 2, 200);
-      validateVar(variables, 'corridorWidth', 3, 1, variables.gridSize);
-      validateVar(variables, 'roomFrequency', 5, 0, variables.gridSize);
-      validateVar(variables, 'roomSize', 3, 1, variables.roomFrequency * 2);
-      validateVar(variables, 'roomsVisitedTillReward', 2, 1, 12);
-      validateVar(variables, 'initialPosX', 0, 0, variables.gridSize - 1);
-      validateVar(variables, 'initialPosY', (variables.gridSize / 2), 0, variables.gridSize - 1);
-      validateVar(variables, 'actionStochasticity', 0, 0, 1);
-      validateVar(variables, 'greenSquareScore', 10, 1);
-      validateVar(variables, 'purpleSquareScore', 1000, variables.greenSquareScore);
-      validateVar(variables, 'maxNoGreenSquares', 2, 0);
-      validateVar(variables, 'greenSquarePosRange', 2, 0, variables.gridSize - 1);
-      validateVar(variables, 'purpleSquarePosRange', 2, 0, variables.gridSize - 1);
-      return variables;
-    }
-
-    function validateVar(variables, varName, defaultValue, minValue, maxValue) {
-      maxValue = maxValue !== undefined ? maxValue : Infinity;
-
-      if (variables[varName] === undefined || variables[varName] < minValue || variables[varName] > maxValue) {
-          console.error(`Invalid ${varName}! Setting to default: ${defaultValue}`);
-          variables[varName] = defaultValue;
       }
     }
 });

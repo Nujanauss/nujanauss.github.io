@@ -8,24 +8,15 @@
 </head>
 <body>
     <div class="wrapper">
-      <aside class="inter">
-          <table id="score-table">
-            <tr>
-              <th colspan="2" class="grey padding-10">Current Standings (Avg.)</th>
-            </tr>
-            <tr>
-              <td id="social-label" class="light-grey padding-10 dark-grey-text">Player 1</td>
-              <td id="social-score" class="lightest-grey padding-10 dark-grey-text">5</td>
-            </tr>
-            <tr>
-              <td id="player-label" class="light-grey padding-10 dark-grey-text">You</td>
-              <td id="player-score" class="lightest-grey padding-10 dark-grey-text">5</td>
-            </tr>
-          </table>
-          <button id="next" class="button">Next Round</button>
-      </aside>
+        <aside class="inter">
+          <div class="padding-50 font-30">Highest scores</div>
+          <div class="chart-container">
+              <svg id="barChart" width="400" height="300"></svg>
+          </div>
+          <button id="next" class="button" disabled>Next Round</button>
+        </aside>
     </div>
-
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script type="module" src="shared.js"></script>
     <script type="module" src="standings-script.js"></script>
 </body>

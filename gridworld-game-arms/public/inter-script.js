@@ -3,7 +3,7 @@ import { getScoresSoFar, nextRound } from './shared.js';
 document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const round = urlParams.get('round');
-    const finalRound = urlParams.get('rounds');
+    const finalRound = sessionStorage.getItem('finalRound');
     const nxtRound = parseFloat(round) + 1;
     const scores = getScoresSoFar();
     const latestScore = scores.pop();
