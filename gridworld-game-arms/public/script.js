@@ -25,11 +25,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     let initialRewardPos = getFromStor('initialRewardPos');
     if (initialRewardPos !== null) {
       [,rewards] = generateGreenRewards(rewards, initialRewardPos);
+      generatedTrue = true;
+    }
+
+    if (parseFloat(round) > getFromStor('roundsTillComparison')) {
       if (sessionStorage.getItem('purpleRoom') === null) {
         setPurpleRoom(roomsVisited);
       }
       rewards = generatePurpleRewards(rewards, sessionStorage.getItem('purpleRoom'));
-      generatedTrue = true;
     }
 
     document.addEventListener('keydown', function(event) {
