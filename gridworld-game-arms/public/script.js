@@ -194,10 +194,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     function setPurpleRoom(roomsVisited) {
       let availablePurpleRooms = [];
       for (var i = 1; i < 13; i++) {
-        if (roomsVisited.includes(`roomNo${i}`) || getArmsVisited(roomsVisited).has(room2ArmMap[`roomNo${i}`][0])) {
+        if (roomsVisited.includes(`roomNo${i}`) || (getNoArmsVisited(roomsVisited) !== 4 && getArmsVisited(roomsVisited).has(room2ArmMap[`roomNo${i}`][0]))) {
           continue;
         }
-       availablePurpleRooms = availablePurpleRooms.concat(`roomNo${i}`);
+        availablePurpleRooms = availablePurpleRooms.concat(`roomNo${i}`);
       }
       shuffleArray(availablePurpleRooms);
       sessionStorage.setItem('purpleRoom', availablePurpleRooms[0]);
