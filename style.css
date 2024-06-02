@@ -35,7 +35,11 @@ body {
 }
 
 .blue-coloured {
-  color:#1F449C;
+  color: #1F449C;
+}
+
+.dark-grey-coloured {
+  color: #737373;
 }
 
 .index-instructions {
@@ -52,16 +56,48 @@ body {
   padding: 10px;
 }
 
+aside {
+  display: flex;
+  flex-direction: column;
+}
+
 .info {
   width: 200px;
+}
+
+.box {
   border-style: solid;
   border-radius:5px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 10px;
+}
+
+#trialOver {
+  text-align: center;
+}
+
+#trialOverBut {
+  text-align: center;
+  margin-top: 20px;
+}
+
+
+#trainingOverBut {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#trainingOver {
+  text-align: center;
 }
 
 .inter {
-  width:auto;
-  text-align:center;
+  width: auto;
+  text-align: center;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: center
 }
 
 #grid-container {
@@ -80,6 +116,10 @@ body {
   padding-bottom: 50px;
 }
 
+.padding-top-20 {
+  padding-top: 20px;
+}
+
 .font-30 {
   font-size: 30px;
 }
@@ -91,6 +131,7 @@ body {
 }
 
 .square.current {
+  transition: transform 0.5s linear;
   border-color: black;
   border-width: 2px;
   box-shadow: inset 0px 0px 5px #999999;
@@ -100,26 +141,80 @@ body {
   background-color: #BBBBBB;
 }
 
+.white {
+  background-color: white;
+}
+
+.blue {
+  height: 100%;
+  background-color: #1F449C;
+  box-shadow: inset 0px 0px 5px #999999;
+  border-radius: 3px;
+  border-color: black;
+  border-width: 3px;
+  animation: explodeAndFade 1s forwards;
+}
+
+.gold {
+  height: 100%;
+  background-color: #AA3377;
+  box-shadow: inset 0px 0px 5px #999999;
+  border-radius: 3px;
+  border-color: black;
+  border-width: 3px;
+  animation: explodeAndFade 1s forwards;
+}
+
+.green {
+  height: 100%;
+  background-color: #228833;
+  box-shadow: inset 0px 0px 5px #999999;
+  border-radius: 3px;
+  border-color: black;
+  border-width: 3px;
+  animation: explodeAndFade 1s forwards;
+}
+
+@keyframes explodeAndFade {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(5);
+    opacity: 0;
+  }
+}
+
+.greenish {
+  background-color: rgba(34, 136, 51, 0.3);
+  box-shadow: inset 0px 0px 5px #999999, 0px 0px 5px #999999;
+  border: 1px solid rgba(34, 136, 51, 0.7);
+}
+
+.goldish {
+  background-color: rgba(170, 51, 119, 0.3);
+  box-shadow: inset 0px 0px 5px #999999, 0px 0px 5px #999999;
+  border: 1px solid rgba(170, 51, 119, 0.7);
+}
+
+.bluish {
+  background-color: rgba(31, 68, 156, 0.3);
+  box-shadow: inset 0px 0px 5px #999999, 0px 0px 5px #999999;
+  border: 1px solid rgba(31, 68, 156, 0.7);
+
+}
+
 .light-grey {
   background-color: #DDDDDD;
 }
 
 .lightest-grey {
   background-color: #EEEEEE;
-}
-
-.white {
-  background-color: white;
-}
-
-.green {
-  background-color: #228833;
-  box-shadow: inset 0px 0px 5px #ffffff;
-}
-
-.gold {
-  background-color: #AA3377;
-  box-shadow: inset 0px 0px 5px #ffffff;
 }
 
 .hidden {
@@ -142,9 +237,9 @@ body {
   transition: background-color 0.1s;
 }
 
-.button:hover {
+.button.enabled:hover {
   background-color: grey;
-  color: white;
+  color: white !important;
 }
 
 #score-table {
@@ -161,4 +256,109 @@ body {
     border: 1px solid #999999;
     padding: 10px;
     border-radius: 5px;
+}
+
+.progress-bar-container {
+  width: 8%;
+  height: 6px;
+  padding: 0px;
+  margin-bottom: 30px;
+  background-color: #BBBBBB;
+  border-radius: 5px;
+}
+
+.progress-bar {
+  height: 100%;
+  padding: 0px;
+  background-color: #1F449C;
+  border-radius: 5px;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+#page1 {
+  width: 0%;
+  animation: progress0to25 1s forwards;
+}
+
+#page2 {
+  width: 25;
+  animation: progress25to50 1s forwards;
+}
+
+#page3 {
+  width: 50%;
+  animation: progress50to75 1s forwards;
+}
+
+#page4 {
+  width: 75%;
+  animation: progress75to100 1s forwards;
+}
+
+@keyframes progress0to25 {
+    from { width: 0%; }
+    to { width: 25%; }
+}
+
+@keyframes progress25to50 {
+    from { width: 25%; }
+    to { width: 50%; }
+}
+
+@keyframes progress50to75 {
+    from { width: 50%; }
+    to { width: 75%; }
+}
+
+@keyframes progress75to100 {
+    from { width: 75%; }
+    to { width: 100%; }
+}
+
+.chart-container {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.bar {
+  fill: #1F449C;
+  stroke: #0f214d; /* Border color */
+  stroke-width: 2px; /* Border width */
+  rx: 3px; /* Border radius for rounded corners */
+}
+
+.bar:hover {
+  fill: #737373;
+  cursor: pointer;
+}
+
+.tick {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+}
+
+.loader {
+  display: none;
+  z-index: 999;
+  border: 6px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 6px solid #1F449C;
+  width: 40px;
+  height: 40px;
+  -webkit-animation: spin 1.5s linear infinite; /* Safari */
+  animation: spin 1.5s linear infinite;
+  }
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
