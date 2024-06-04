@@ -9,17 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     /*const avgScore = (scoresSum / scores.length).toFixed(1);*/
     const avgScore = Math.max(...scores);
 
-
-    var socialScore;
-    if (avgScore < 0) {
-      socialScore = 50 + Math.random() * 50;
-    }
-    if (avgScore > 0 && avgScore < 200) {
-      socialScore = 200 + Math.random() * 400;
-    }
-    if (avgScore > 200) {
-      socialScore = 500 + Math.random() * 400;
-    }
+    var socialScore = 920 + Math.random() * 30;
 
     const data = [
         { name: "n3ssiori", score: 0 },
