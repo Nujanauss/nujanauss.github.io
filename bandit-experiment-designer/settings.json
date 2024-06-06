@@ -1,0 +1,22 @@
+{
+  "vars": {
+    "gridSize": 30,
+    "corridorWidth": 3,
+    "roomFrequency": 9,
+    "roomSize": 4,
+    "moves": 10,
+    "roomsVisitedTillReward": 4,
+    "armsVisitedTillReward": 2,
+    "initialPosX": 15,
+    "initialPosY": 15,
+    "roundsTillComparison": 3,
+    "finalRound": 5,
+    "actionStochasticity": 0,
+    "greenSquareScore": 10,
+    "purpleSquareScore": 200,
+    "maxNoGreenSquares": 30,
+    "maxNoPurpleSquares": 5,
+    "greenSquarePosRange": 2,
+    "purpleSquarePosRange": 1
+  }
+}
