@@ -173,12 +173,21 @@ body {
 
 .gold {
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #AA3377;
   box-shadow: inset 0px 0px 5px #999999;
   border-radius: 3px;
   border-color: black;
   border-width: 3px;
   animation: explodeAndFade 1s forwards;
+  z-index: 2; /* Ensure it is on top */
+  position: absolute; /* Position it absolutely within the square */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .green {
@@ -413,12 +422,24 @@ body {
   align-items: center;
 }
 
+.comparison-card .comparison-header {
+  display: flex;
+  align-items: center;
+}
+
 .slider {
   cursor: pointer;
   background-color: #1F449C;
 }
 
 #toggle-charts-button {
+    display: block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#toggle-tools-button {
     display: block;
     margin-top: 10px;
     padding: 5px 10px;
@@ -435,8 +456,8 @@ input[type="checkbox"] {
 }
 
 h3 {
-  font-size: 23px;
-  margin: 15px 0px;
+  font-size: 20px;
+  margin: 10px 0px;
 }
 
 .mean-slider {
@@ -538,4 +559,17 @@ h3 {
     z-index: 3; /* High z-index to cover everything */
     cursor: none; /* Hide the cursor */
     display: none; /* Initially hidden */
+}
+
+.collapsed {
+  height: 0px;
+  overflow: hidden;
+  cursor: default;
+}
+.toggle-button {
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  font-size:20px;
+  cursor: pointer;
 }

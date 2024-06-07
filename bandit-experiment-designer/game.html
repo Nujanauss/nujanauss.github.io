@@ -12,9 +12,10 @@
           <div class="settings-header">
             <h3>Bandit settings</h3>
           </div>
-          <div class="settings-body">
+          <div class="card settings-body">
+            <div class="toggle-button">-</div>
             <label for="moves-slider">Moves:</label><br>
-            <input class='slider' type="range" id="moves-slider" min="5" max="100" value="10" oninput="this.nextElementSibling.value = this.value">
+            <input class='slider' type="range" id="moves-slider" min="1" max="100" value="10" oninput="this.nextElementSibling.value = this.value">
             <label for="grid-col-slider">Columns:</label><br>
             <input class='slider' type="range" id="grid-col-slider" min="2" max="12" value="4"><br>
             <label for="grid-row-slider">Rows:</label><br>
@@ -22,6 +23,10 @@
             <div class="inline">
               <label for="toggle-charts-button">Visualize reward charts</label>
               <input type="checkbox" id="toggle-charts-button" value="false">
+            </div>
+            <div class="inline">
+              <label for="toggle-tools-button">Visualize reward tools</label>
+              <input type="checkbox" id="toggle-tools-button" value="false">
             </div>
             <div class="inline">
               <label for="toggle-binary-button">Toggle binary rewards</label>
@@ -46,7 +51,7 @@
           <div id="comparison-information" class="gone">
               <p>In the last <span id="no-comparison-trials">2</span> trial<span id="is-trial-plural">s</span></p>
               <p>You scored: <span id="player-score-since-last-comparison">10</span><br>
-              n3ssiori scored: 10</p>
+              n3ssiori scored: <span id="comparison-score-since-last-comparison">10</span></p>
               <button id="read-comparison" class="button enabled hidden">OK</button>
           </div>
           <div id="grid-container"></div>
@@ -66,13 +71,28 @@
           <div class="comparison-header">
             <h3>Comparison settings</h3>
           </div>
-          <div class="comparison-body">
-            <label for="comparison-frequency-slider">Frequency:</label><br>
+          <div class="card comparison-body">
+            <div class="toggle-button">-</div>
+            <label for="number-rounds-slider">Number of rounds:</label><br>
+            <input class='slider' type="range" id="number-rounds-slider" min="1" max="100" value="5">
+            <div class="inline">
+              <label for="toggle-comparison-button">Include social comparison</label>
+              <input type="checkbox" id="toggle-comparison-button" value="false">
+            </div>
+            <label for="comparison-frequency-rounds-slider">Frequency (rounds):</label><br>
+            <input class='slider' type="range" id="comparison-frequency-rounds-slider" min="1" max="5" value="1">
+            <label for="comparison-frequency-slider">Frequency (moves):</label><br>
             <input class='slider' type="range" id="comparison-frequency-slider" min="1" max="100" value="2">
             <div class="inline">
               <label for="toggle-comparison-page-button">New page on comparison</label>
               <input type="checkbox" id="toggle-comparison-page-button" value="false">
             </div>
+            <label for="prob-upward-comparison-slider">Prob. upward comparison (per move):</label><br>
+            <input class='slider' type="range" id="prob-upward-comparison-slider" min="0" max="100" value="60">
+            <label for="comparison-mean-slider">Comparison difference mean μ (per move):</label><br>
+            <input class='slider' type="range" id="comparison-mean-slider" min="0" max="1000" value="500">
+            <label for="comparison-std-dev-slider">Comparison difference std. dev. σ (per move):</label><br>
+            <input class='slider' type="range" id="comparison-std-dev-slider" min="0" max="100" value="50">
             <output class="comparison-text"></output><br>
         </div>
     </div>
