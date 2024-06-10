@@ -7,7 +7,12 @@ document.addEventListener('DOMContentLoaded', async function() {
   if (butt) {
     butt.addEventListener('click', generate);
   }
-  document.getElementById('noOfMoves').innerHTML = settings.moves;
+  var noMovesText = document.getElementById('noOfMoves');
+  if (settings.numberOfRounds > 1) {
+    noMovesText.innerHTML = settings.moves + " per round.";
+  } else {
+    noMovesText.innerHTML = settings.moves + " moves in total.";
+  }
 
   var pressedOnce = false;
   function generate() {

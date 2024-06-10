@@ -7,8 +7,26 @@ document.addEventListener('DOMContentLoaded', function() {
   if (butt) {
     butt.addEventListener('click', generate);
   }
-  document.getElementById('rounds').innerHTML = settings.numberOfRounds;
-  document.getElementById('comparisonRound').innerHTML = settings.comparisonFrequencyRounds;
+  if (settings.numberOfRounds == 1) {
+    document.getElementById('rounds').innerHTML = "1 round "
+  } else {
+    document.getElementById('rounds').innerHTML = settings.numberOfRounds + " rounds ";
+  }
+  
+  var comparisonText = document.getElementById('comparisonText');
+  if (!settings.comparisonOnNewPage) {
+    if (settings.comparisonFrequency == 1) {
+      comparisonText.innerHTML = "Every move, ";
+    } else {
+      comparisonText.innerHTML = "Every " + settings.comparisonFrequency + " moves,";
+    }
+  } else {
+    if (settings.comparisonFrequencyRounds == 1) {
+      comparisonText.innerHTML = "Every round, ";
+    } else {
+      comparisonText.innerHTML = "Every " + settings.comparisonFrequencyRounds + " rounds,";
+    }
+  }
   var pressedOnce = false;
   function generate() {
     if (butt.disabled) {
