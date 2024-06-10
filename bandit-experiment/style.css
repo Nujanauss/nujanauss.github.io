@@ -1,0 +1,565 @@
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
+}
+
+body {
+  overflow: hidden;
+  max-height: 100vh;
+  max-width: 100vw;
+  position: relative;
+  user-select: none;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  height: 100vh;
+  position: relative;
+}
+
+.width-30 {
+  width: 30%;
+}
+
+.width-60 {
+  width: 60%;
+}
+
+.width-70 {
+  width: 70%;
+}
+
+.blue-coloured {
+  color: #1F449C;
+}
+
+.dark-grey-coloured {
+  color: #737373;
+}
+
+.index-instructions {
+  margin: 0 auto;
+  padding-bottom:30px;
+  width:50%;
+}
+
+#scorer {
+  font-size: 30px;
+}
+
+.wrapper > * {
+  padding: 10px;
+}
+
+.grid-info-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.info {
+  width: 200px;
+  position: absolute;
+  right: 10%;
+  text-align: center;
+}
+
+.box {
+  border-style: solid;
+  border-radius:5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 10px;
+  text-align: left;
+}
+
+#trialOver {
+  text-align: center;
+}
+
+#trialOverBut {
+  text-align: center;
+  margin-top: 20px;
+}
+
+
+#trainingOverBut {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#trainingOver {
+  text-align: center;
+}
+
+.inter {
+  width: auto;
+  text-align: center;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: center
+}
+
+#grid-container {
+  display: grid;
+  margin: 0 auto; /* Center horizontally */
+}
+
+.padding-10 {
+  padding-bottom: 10px;
+}
+
+.padding-30 {
+  padding-bottom: 30px;
+}
+
+.padding-50 {
+  padding-bottom: 50px;
+}
+
+.padding-top-20 {
+  padding-top: 20px;
+}
+
+.font-30 {
+  font-size: 30px;
+}
+
+.square {
+  box-sizing: border-box;
+  border: 1px solid #999999;
+  box-shadow: 0px 0px 5px #999999;
+  cursor: pointer;
+  transition: background-color 0.1s;
+  position: relative; /* Important to position child elements absolutely */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.square:hover {
+  transition: transform 0.5s linear;
+  border-color: black;
+  border-width: 2px;
+  box-shadow: inset 0px 0px 5px #999999;
+}
+
+.grey {
+  background-color: #BBBBBB;
+}
+
+.white {
+  background-color: white;
+}
+
+.blue {
+  height: 100%;
+  background-color: #1F449C;
+  box-shadow: inset 0px 0px 5px #999999;
+  border-radius: 3px;
+  border-color: black;
+  border-width: 3px;
+  animation: explodeAndFade 1s forwards;
+}
+
+.gold {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #AA3377;
+  box-shadow: inset 0px 0px 5px #999999;
+  border-radius: 3px;
+  border-color: black;
+  border-width: 3px;
+  animation: explodeAndFade 1s forwards;
+  z-index: 2; /* Ensure it is on top */
+  position: absolute; /* Position it absolutely within the square */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.green {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #228833;
+  box-shadow: inset 0px 0px 5px #999999;
+  border-radius: 3px;
+  border-color: black;
+  border-width: 3px;
+  animation: explodeAndFade 1s forwards;
+  z-index: 2; /* Ensure it is on top */
+  position: absolute; /* Position it absolutely within the square */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.square-score {
+  font-size: 10px;
+  color: white;
+  animation: explodeAndFade 2s forwards;
+}
+
+@keyframes explodeAndFade {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.greenish {
+  background-color: rgba(34, 136, 51, 0.3);
+  box-shadow: inset 0px 0px 5px #999999, 0px 0px 5px #999999;
+  border: 1px solid rgba(34, 136, 51, 0.7);
+}
+
+.goldish {
+  background-color: rgba(170, 51, 119, 0.3);
+  box-shadow: inset 0px 0px 5px #999999, 0px 0px 5px #999999;
+  border: 1px solid rgba(170, 51, 119, 0.7);
+}
+
+.bluish {
+  background-color: rgba(31, 68, 156, 0.3);
+  box-shadow: inset 0px 0px 5px #999999, 0px 0px 5px #999999;
+  border: 1px solid rgba(31, 68, 156, 0.7);
+
+}
+
+.light-grey {
+  background-color: #DDDDDD;
+}
+
+.lightest-grey {
+  background-color: #EEEEEE;
+}
+
+.hidden {
+  box-shadow: none;
+  visibility: hidden;
+}
+
+.dark-grey-text {
+  color: #333333;
+}
+
+.button {
+  padding: 10px 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  border:  3px solid grey;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.1s;
+}
+
+.button.enabled:hover {
+  background-color: grey;
+  color: white !important;
+}
+
+#score-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 300px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+#score-table th,
+#score-table td {
+    border: 1px solid #999999;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.progress-bar-container {
+  width: 8%;
+  height: 6px;
+  padding: 0px;
+  margin-bottom: 30px;
+  background-color: #BBBBBB;
+  border-radius: 5px;
+}
+
+.progress-bar {
+  height: 100%;
+  padding: 0px;
+  background-color: #1F449C;
+  border-radius: 5px;
+}
+
+.gone {
+  display: none;
+}
+
+#page1 {
+  width: 0%;
+  animation: progress0to25 1s forwards;
+}
+
+#page2 {
+  width: 25;
+  animation: progress25to50 1s forwards;
+}
+
+#page3 {
+  width: 50%;
+  animation: progress50to75 1s forwards;
+}
+
+#page4 {
+  width: 75%;
+  animation: progress75to100 1s forwards;
+}
+
+@keyframes progress0to25 {
+    from { width: 0%; }
+    to { width: 25%; }
+}
+
+@keyframes progress25to50 {
+    from { width: 25%; }
+    to { width: 50%; }
+}
+
+@keyframes progress50to75 {
+    from { width: 50%; }
+    to { width: 75%; }
+}
+
+@keyframes progress75to100 {
+    from { width: 75%; }
+    to { width: 100%; }
+}
+
+.chart-container {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.bar {
+  fill: #1F449C;
+  stroke: #0f214d; /* Border color */
+  stroke-width: 2px; /* Border width */
+  rx: 3px; /* Border radius for rounded corners */
+}
+
+.bar:hover {
+  fill: #737373;
+  cursor: pointer;
+}
+
+.tick {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+}
+
+.loader {
+  display: none;
+  z-index: 999;
+  border: 6px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 6px solid #1F449C;
+  width: 40px;
+  height: 40px;
+  -webkit-animation: spin 1.5s linear infinite; /* Safari */
+  animation: spin 1.5s linear infinite;
+  }
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.settings-card {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(255, 255, 255, 0.6); /* semi-transparent background */
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 200px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: move;
+  font-size: 15px;
+  z-index: 1000; /* Ensure it stays above other elements */
+}
+
+.settings-card .settings-header {
+  display: flex;
+  align-items: center;
+}
+
+.comparison-card .comparison-header {
+  display: flex;
+  align-items: center;
+}
+
+.slider {
+  cursor: pointer;
+  background-color: #1F449C;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.inline {
+  display: flex;
+  margin: 10px 0px;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+h3 {
+  font-size: 20px;
+  margin: 10px 0px;
+}
+
+.mean-slider {
+  position: absolute;
+  cursor: pointer;
+  width: 100%; /* because we rotate 90 degrees, width is now height */
+  left: 50%;
+  transform: rotate(-90deg); /* Rotation for Firefox and others */
+  visibility: hidden;
+  z-index: 1; /* Ensure it is behind */
+  accent-color: #1F449C;
+}
+
+.purple-slider {
+  position: absolute;
+  cursor: pointer;
+  width: 100%; /* because we rotate 90 degrees, width is now height */
+  transform: rotate(-90deg); /* Rotation for Firefox and others */
+  visibility: hidden;
+  z-index: 1; /* Ensure it is behind */
+  accent-color: #AA3377;
+}
+
+.checkbox-container {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  opacity: 70%;
+  visibility: hidden;
+}
+
+.stochastic-checkbox {
+  cursor: pointer;
+  accent-color: #1F449C;
+}
+
+.purple-checkbox-container {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  opacity: 70%;
+  visibility: hidden;
+}
+
+.purple-checkbox {
+  cursor: pointer;
+  accent-color: #AA3377;
+}
+
+.comparison-card {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.6); /* semi-transparent background */
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 200px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: move;
+  font-size: 15px;
+  z-index: 1000; /* Ensure it stays above other elements */
+}
+
+.comparison-card .comparison-header {
+  display: flex;
+  align-items: center;
+}
+
+.comparison-text, .values-text {
+  color: grey;
+  padding: 6px 6px;
+  position: absolute;
+  border-radius: 4px;
+  bottom: 0;
+  right: 0;
+  text-align: right;
+}
+
+#comparison-information {
+  text-align: center;
+  position: absolute;
+  z-index: 3;
+  background-color: white;
+  padding: 15px 30px;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: grey;
+  border-width: 2px;
+  opacity: 90%;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2); /* Optional: semi-transparent background */
+    z-index: 3; /* High z-index to cover everything */
+    cursor: none; /* Hide the cursor */
+    display: none; /* Initially hidden */
+}
+
+.collapsed {
+  height: 0px;
+  overflow: hidden;
+  cursor: default;
+}
+.toggle-button {
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  font-size:20px;
+  cursor: pointer;
+}
