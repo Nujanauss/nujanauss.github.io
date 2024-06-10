@@ -130,6 +130,10 @@ body {
   padding-top: 20px;
 }
 
+.margin-10 {
+  margin-bottom: 10px;
+}
+
 .font-30 {
   font-size: 30px;
 }
@@ -413,7 +417,7 @@ body {
   width: 200px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: move;
-  font-size: 15px;
+  font-size: 14px;
   z-index: 1000; /* Ensure it stays above other elements */
 }
 
@@ -436,13 +440,32 @@ body {
   cursor: pointer;
 }
 
+.card-settings-body {
+  display: flex;
+  flex-direction: column;
+}
+
 .inline {
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
   margin: 10px 0px;
 }
 
+.align-center {
+  align-items: center;
+}
+
+label {
+  flex: 10;
+  text-align: start;
+}
+
 input[type="checkbox"] {
-    margin-right: 10px;
+  flex: 1;
+  margin-left: auto;
+  text-align: start;
 }
 
 h3 {
@@ -507,7 +530,7 @@ h3 {
   width: 200px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: move;
-  font-size: 15px;
+  font-size: 13px;
   z-index: 1000; /* Ensure it stays above other elements */
 }
 

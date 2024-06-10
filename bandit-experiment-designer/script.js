@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const noiseStdDevSlider = document.getElementById('noise-std-dev-slider');
 
     const numberOfRoundsSlider = document.getElementById('number-rounds-slider');
+    const roundForPurpleSlider = document.getElementById('round-for-purple-slider');
     const includeComparisonButton = document.getElementById('toggle-comparison-button');
     const comparisonFrequencyRoundsSlider = document.getElementById('comparison-frequency-rounds-slider');
     const comparisonFrequencySlider = document.getElementById('comparison-frequency-slider');
@@ -52,6 +53,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     toggleToolsButton.disabled = !toggleChartsButton.checked;
 
     let numberOfRounds = intTranslation(numberOfRoundsSlider.value);
+    let roundsUntilPurple = intTranslation(roundForPurpleSlider.value);
+    roundForPurpleSlider.max = numberOfRounds;
     comparisonFrequencyRoundsSlider.max = numberOfRounds;
     let includeComparison = includeComparisonButton.checked;
     let comparisonFrequencyRounds = intTranslation(comparisonFrequencyRoundsSlider.value);
@@ -102,6 +105,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     handleSliderInput(noiseStdDevSlider, updateNoiseStdDev, true, over100Translation, ".values-text");
 
     handleSliderInput(numberOfRoundsSlider, updateNumberRounds, false, intTranslation, ".comparison-text");
+    handleSliderInput(roundForPurpleSlider, updateRoundsUntilPurple, false, intTranslation, ".comparison-text");
     handleSliderInput(comparisonFrequencyRoundsSlider, updateFrequencyRounds, false, intTranslation, ".comparison-text");
     handleSliderInput(comparisonFrequencySlider, updateFrequency, false, intTranslation, ".comparison-text");
     handleSliderInput(probUpwardComparisonSlider, updateProbUpwardComparison, false, over100Translation, ".comparison-text");
@@ -175,6 +179,11 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
       numberOfRounds = value;
       comparisonFrequencyRoundsSlider.max = numberOfRounds;
+      roundForPurpleSlider.max = numberOfRounds;
+    }
+
+    function updateRoundsUntilPurple(value) {
+      roundsUntilPurple = value;
     }
 
     function updateFrequency(value) {
@@ -310,7 +319,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (!binary) { 
               comparersScore += Math.round(Math.min(additionalScore + gaussianRandom(comparisonMean, comparisonStdDev), 100));
             } else if (additionalScore == 0) { // binary: player either scores 0 or greenSquare
-              comparersScore += additionalScore + getFromStor('greenSquareScore');
+              comparersScore += additionalScore + 10;
             } else {
               comparersScore += additionalScore;
             }
@@ -376,20 +385,20 @@ document.addEventListener('DOMContentLoaded', async function() {
         const squareX = parseFloat(square.id.split(',')[0]);
         const squareY = parseFloat(square.id.split(',')[1]);
         var additionalScore = 0;
+        var randomVal = Math.random();
         if (binary) {
-            var randomVal = Math.random();
             if (randomVal < chanceToWin[moves][squareY][squareX]) { // CHANCE TO WIN IS HERE!
-              if (randomVal < chanceToWinPurple[moves][squareY][squareX]) {
-                additionalScore = getFromStor('purpleSquareScore');
+              if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[moves][squareY][squareX]) {
+                additionalScore = 200;
                 makePurple(square, additionalScore);
               } else {
-                additionalScore = getFromStor('greenSquareScore');
+                additionalScore = 10;
                 makeGreen(square, additionalScore);
               }
             }
-        } else if (!binary) {
-            if (randomVal < chanceToWinPurple[moves][squareY][squareX]) {
-                additionalScore = getFromStor('purpleSquareScore');
+        } else {
+            if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[moves][squareY][squareX]) {
+                additionalScore = 200;
                 makePurple(square, additionalScore);
             } else {
               additionalScore = Math.round(chanceToWin[moves][squareY][squareX] * 100);
@@ -441,10 +450,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         const originalColor = 'black';
         var newColor = 'black';
         var timeout = 300;
-        if ((score - previousScore) == getFromStor('greenSquareScore')) {
+        if ((score - previousScore) == 10) {
             newColor = '#228833';
             timeout = 500;
-        } else if ((score - previousScore) == getFromStor('purpleSquareScore')) {
+        } else if ((score - previousScore) == 200) {
             newColor = '#AA3377';
             timeout = 500;
         } else if (score < previousScore) {
@@ -762,7 +771,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                   const currentVal = chanceToWin[move-1][row][col];
                   if (stochasticValues[row][col]) {
                     noise = noiseMagnitude * gaussianRandom(0, noiseStdDev);
-                    chanceToWin[move][row][col] = lamda * currentVal + (1 - lamda) * theta + noise;
+                    chanceToWin[move][row][col] = Math.min(100, Math.max(0, lamda * currentVal + (1 - lamda) * theta + noise));
                     continue;
                   }
                   chanceToWin[move][row][col] = currentVal;
@@ -806,11 +815,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
     }
 
-    function getFromStor(varr) {
-      return JSON.parse(sessionStorage.getItem(varr));
-    }
 
-    // Function to make a card draggable
+    /* DRAG */
     function makeDraggable(card, ignoreElements = []) {
       let isDragging = false;
       let offsetX, offsetY;
@@ -837,10 +843,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       });
     }
 
-    // Elements to ignore during drag
     const ignoreElements = [movesSlider, gridColSlider, gridRowSlider, toggleStochasticButton, toggleBinaryButton, toggleChartsButton, decaySlider, decayCenterSlider, noiseStdDevSlider, comparisonFrequencySlider];
 
-    // Apply draggable functionality to both cards
     makeDraggable(settingsCard, ignoreElements);
     makeDraggable(comparisonCard, ignoreElements);
 
@@ -850,16 +854,74 @@ document.addEventListener('DOMContentLoaded', async function() {
       document.body.style.cursor = 'move';
     });
 
+    /* COLLAPSE */
     function toggleCollapse(card) {
       const isCollapsed = card.classList.toggle('collapsed');
       const button = card.querySelector('.toggle-button');
       button.innerHTML = isCollapsed ? '+' : '-';
     }
 
-    // Add event listeners to toggle buttons
     document.querySelectorAll('.toggle-button').forEach(button => {
       button.addEventListener('click', function() {
         toggleCollapse(button.closest('.card'));
       });
     });
+
+     /* SAVE */
+    function saveSettings() {
+      let settings = {
+        vars: {
+          moves: moves,
+          rows: rows,
+          cols: cols,
+          decay: decay,
+          decayCenter: decayCenter,
+          noiseStdDev: noiseStdDev,
+          stochastic: stochastic,
+          stochasticValues: stochasticValues,
+          purpleValues: purpleValues,
+          binary: binary,
+          meanValues: meanValues,
+          chanceToWin: chanceToWin,
+          chanceToWinPurple: chanceToWinPurple,
+          numberOfRounds: numberOfRounds,
+          roundsUntilPurple: roundsUntilPurple,
+          includeComparison: includeComparison,
+          comparisonFrequencyRounds: comparisonFrequencyRounds,
+          comparisonFrequency: comparisonFrequency,
+          comparisonOnNewPage: comparisonOnNewPage,
+          probUpwardComparison: probUpwardComparison,
+          comparisonMean: comparisonMean,
+          comparisonStdDev: comparisonStdDev,
+          greenSquareScore: 10,
+          purpleSquareScore: 200
+        }
+      };
+
+      const json = JSON.stringify(settings, null, 2);
+
+      // Create a Blob from the JSON string
+      const blob = new Blob([json], { type: 'application/json' });
+
+      // Create a link element
+      const a = document.createElement('a');
+
+      // Set the download attribute with a filename
+      a.download = 'settings.json';
+
+      // Create a URL for the Blob and set it as the href attribute
+      a.href = URL.createObjectURL(blob);
+
+      // Append the link to the document body
+      document.body.appendChild(a);
+
+      // Programmatically click the link to trigger the download
+      a.click();
+
+      // Remove the link from the document
+      document.body.removeChild(a);
+    }
+
+    // Add event listener to the save settings button
+    document.getElementById('save-settings').addEventListener('click', saveSettings);
 });

@@ -25,14 +25,14 @@
               <input class="pointer" type="checkbox" id="toggle-charts-button" value="false">
             </div>
             <div class="inline">
-              <label for="toggle-tools-button">Visualize reward value tools</label>
-              <input class="pointer" type="checkbox" id="toggle-tools-button" value="false">
+              <label for="toggle-tools-button">Visualize reward tools</label>
+              <input class="pointer align-right" type="checkbox" id="toggle-tools-button" value="false">
             </div>
             <div class="inline">
               <label for="toggle-binary-button">Toggle binary rewards</label>
               <input class="pointer" type="checkbox" id="toggle-binary-button" value="true" checked>
             </div>
-            <div class="inline">
+            <div class="inline align-center">
               <label for="toggle-stochastic-button">Toggle stochastic rewards</label>
               <input class="pointer" type="checkbox" id="toggle-stochastic-button" value="true" checked>
             </div>
@@ -56,6 +56,7 @@
           </div>
           <div id="grid-container"></div>
           <aside class="info">
+            <button id="save-settings" class="button enabled margin-10">Save settings</button>
             <div class="box">
               <div id="score">Score: 0</div>
               <div id="moves">Moves left: 50</div>
@@ -75,14 +76,16 @@
             <div class="toggle-button">-</div>
             <label for="number-rounds-slider">Number of rounds:</label><br>
             <input class='slider' type="range" id="number-rounds-slider" min="1" max="100" value="5">
-            <div class="inline">
-              <label for="toggle-comparison-button">Include social comparison</label>
+            <label for="round-for-purple-slider">Purple available from round:</label><br>
+            <input class='slider' type="range" id="round-for-purple-slider" min="1" max="100" value="1">
+            <div class="inline align-center">
+              <label for="toggle-comparison-button">Social comparison?</label>
               <input class="pointer" type="checkbox" id="toggle-comparison-button" value="false">
             </div>
             <label for="comparison-frequency-rounds-slider">Frequency (rounds):</label><br>
             <input class='slider' type="range" id="comparison-frequency-rounds-slider" min="1" max="5" value="1">
-            <div class="inline">
-              <label for="toggle-comparison-page-button">New page on comparison</label>
+            <div class="inline align-center">
+              <label for="toggle-comparison-page-button">New page comparison</label>
               <input class="pointer" type="checkbox" id="toggle-comparison-page-button" value="false">
             </div>
             <label for="comparison-frequency-slider">Frequency (moves):</label><br>

@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const chanceToWinPurple = settings.chanceToWinPurple;
 
     const numberOfRounds = settings.numberOfRounds;
+    const roundsUntilPurple = settings.roundsUntilPurple;
     const includeComparison = settings.includeComparison;
     const comparisonFrequencyRounds = settings.comparisonFrequencyRounds;
     const comparisonFrequency = settings.comparisonFrequency;
@@ -142,7 +143,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         var randomVal = Math.random();
         if (binary) {
             if (randomVal < chanceToWin[moves][squareY][squareX]) { // CHANCE TO WIN IS HERE!
-              if (randomVal < chanceToWinPurple[moves][squareY][squareX]) {
+              if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[moves][squareY][squareX]) {
                 additionalScore = purpleSquareScore;
                 makePurple(square, additionalScore);
               } else {
@@ -151,7 +152,7 @@ document.addEventListener('DOMContentLoaded', async function() {
               }
             }
         } else {
-            if (randomVal < chanceToWinPurple[moves][squareY][squareX]) {
+            if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[moves][squareY][squareX]) {
                 additionalScore = purpleSquareScore;
                 makePurple(square, additionalScore);
             } else {
