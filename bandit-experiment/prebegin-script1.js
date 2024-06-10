@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
   var noMovesText = document.getElementById('noOfMoves');
   if (settings.numberOfRounds > 1) {
-    noMovesText.innerHTML = settings.moves + " per round.";
+    noMovesText.innerHTML = settings.moves + " moves per trial.";
   } else {
     noMovesText.innerHTML = settings.moves + " moves in total.";
   }

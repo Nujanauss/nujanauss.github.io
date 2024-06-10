@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
     butt.addEventListener('click', generate);
   }
   if (settings.numberOfRounds == 1) {
-    document.getElementById('rounds').innerHTML = "1 round "
+    document.getElementById('rounds').innerHTML = " trial "
   } else {
-    document.getElementById('rounds').innerHTML = settings.numberOfRounds + " rounds ";
+    document.getElementById('rounds').innerHTML = settings.numberOfRounds + " trials ";
   }
   
   var comparisonText = document.getElementById('comparisonText');
@@ -22,9 +22,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   } else {
     if (settings.comparisonFrequencyRounds == 1) {
-      comparisonText.innerHTML = "Every round, ";
+      comparisonText.innerHTML = "Every trial, ";
     } else {
-      comparisonText.innerHTML = "Every " + settings.comparisonFrequencyRounds + " rounds,";
+      comparisonText.innerHTML = "Every " + settings.comparisonFrequencyRounds + " trials,";
     }
   }
   var pressedOnce = false;
