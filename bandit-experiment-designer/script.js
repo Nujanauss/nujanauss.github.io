@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     let cols = intTranslation(gridColSlider.value);
     let decay = over1000Translation(decaySlider.value);
     let decayCenter = over1000Translation(decayCenterSlider.value);
-    let noiseStdDev = over100Translation(noiseStdDevSlider.value);
+    let noiseStdDev = over1000Translation(noiseStdDevSlider.value);
     let showCharts = toggleChartsButton.checked;
     let showTools = toggleToolsButton.checked;
     let stochastic = toggleStochasticButton.checked;
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     handleSliderInput(gridRowSlider, updateRows, true, intTranslation, ".values-text");
     handleSliderInput(decaySlider, updateDecay, true, over1000Translation, ".values-text");
     handleSliderInput(decayCenterSlider, updateDecayCenter, true, over1000Translation, ".values-text");
-    handleSliderInput(noiseStdDevSlider, updateNoiseStdDev, true, over100Translation, ".values-text");
+    handleSliderInput(noiseStdDevSlider, updateNoiseStdDev, true, over1000Translation, ".values-text");
 
     handleSliderInput(numberOfRoundsSlider, updateNumberRounds, false, intTranslation, ".comparison-text");
     handleSliderInput(roundForPurpleSlider, updateRoundsUntilPurple, false, intTranslation, ".comparison-text");
@@ -758,7 +758,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function generateChanceToWin() {
-      var noiseMagnitude = 0.1;
       var noise = 0;
       const chanceToWin = Array.from({ length: moves }, () => {
         return meanValues.map(row => row.slice()); // deep copy
@@ -770,7 +769,7 @@ document.addEventListener('DOMContentLoaded', async function() {
               for (let col = 0; col < chanceToWin[move][row].length; col++) {
                   const currentVal = chanceToWin[move-1][row][col];
                   if (stochasticValues[row][col]) {
-                    noise = noiseMagnitude * gaussianRandom(0, noiseStdDev);
+                    noise = gaussianRandom(0, noiseStdDev);
                     chanceToWin[move][row][col] = Math.min(100, Math.max(0, lamda * currentVal + (1 - lamda) * theta + noise));
                     continue;
                   }
@@ -781,7 +780,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       return chanceToWin;
     }
 
-    function gaussianRandom(mean=0, stdev=1) { //stackOverflow
+    function gaussianRandom(mean, stdev) { //stackOverflow
       const u = 1 - Math.random(); // Converting [0,1) to (0,1]
       const v = Math.random();
       const z = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
