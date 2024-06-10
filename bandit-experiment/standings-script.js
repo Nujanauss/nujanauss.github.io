@@ -2,7 +2,7 @@ import { getUrlParameter, getScoresSoFar, nextRound, getComparersScoresSoFar } f
 
 document.addEventListener('DOMContentLoaded', function() {
     const round = getUrlParameter('round');
-    const finalRound = sessionStorage.getItem('finalRound');
+    const finalRound = JSON.parse(sessionStorage.getItem('gameSettings')).numberOfRounds;
     const scores = getScoresSoFar();
     const socialScores = getComparersScoresSoFar();
 

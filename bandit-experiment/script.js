@@ -139,8 +139,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         const squareX = parseFloat(square.id.split(',')[0]);
         const squareY = parseFloat(square.id.split(',')[1]);
         var additionalScore = 0;
+        var randomVal = Math.random();
         if (binary) {
-            var randomVal = Math.random();
             if (randomVal < chanceToWin[moves][squareY][squareX]) { // CHANCE TO WIN IS HERE!
               if (randomVal < chanceToWinPurple[moves][squareY][squareX]) {
                 additionalScore = purpleSquareScore;
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 makeGreen(square, additionalScore);
               }
             }
-        } else if (!binary) {
+        } else {
             if (randomVal < chanceToWinPurple[moves][squareY][squareX]) {
                 additionalScore = purpleSquareScore;
                 makePurple(square, additionalScore);
