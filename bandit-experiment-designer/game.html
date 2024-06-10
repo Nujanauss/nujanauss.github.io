@@ -22,19 +22,19 @@
             <input class='slider' type="range" id="grid-row-slider" min="1" max="12" value="1"><br>
             <div class="inline">
               <label for="toggle-charts-button">Visualize reward charts</label>
-              <input type="checkbox" id="toggle-charts-button" value="false">
+              <input class="pointer" type="checkbox" id="toggle-charts-button" value="false">
             </div>
             <div class="inline">
               <label for="toggle-tools-button">Visualize reward value tools</label>
-              <input type="checkbox" id="toggle-tools-button" value="false">
+              <input class="pointer" type="checkbox" id="toggle-tools-button" value="false">
             </div>
             <div class="inline">
               <label for="toggle-binary-button">Toggle binary rewards</label>
-              <input type="checkbox" id="toggle-binary-button" value="true" checked>
+              <input class="pointer" type="checkbox" id="toggle-binary-button" value="true" checked>
             </div>
             <div class="inline">
               <label for="toggle-stochastic-button">Toggle stochastic rewards</label>
-              <input type="checkbox" id="toggle-stochastic-button" value="true" checked>
+              <input class="pointer" type="checkbox" id="toggle-stochastic-button" value="true" checked>
             </div>
             <label for="decay-slider">Decay λ:</label><br>
             <input class='slider' type="range" id="decay-slider" min="800" max="1000" value="900"><br>
@@ -77,16 +77,16 @@
             <input class='slider' type="range" id="number-rounds-slider" min="1" max="100" value="5">
             <div class="inline">
               <label for="toggle-comparison-button">Include social comparison</label>
-              <input type="checkbox" id="toggle-comparison-button" value="false">
+              <input class="pointer" type="checkbox" id="toggle-comparison-button" value="false">
             </div>
             <label for="comparison-frequency-rounds-slider">Frequency (rounds):</label><br>
             <input class='slider' type="range" id="comparison-frequency-rounds-slider" min="1" max="5" value="1">
-            <label for="comparison-frequency-slider">Frequency (moves):</label><br>
-            <input class='slider' type="range" id="comparison-frequency-slider" min="1" max="100" value="2">
             <div class="inline">
               <label for="toggle-comparison-page-button">New page on comparison</label>
-              <input type="checkbox" id="toggle-comparison-page-button" value="false">
+              <input class="pointer" type="checkbox" id="toggle-comparison-page-button" value="false">
             </div>
+            <label for="comparison-frequency-slider">Frequency (moves):</label><br>
+            <input class='slider' type="range" id="comparison-frequency-slider" min="1" max="100" value="2">
             <label for="prob-upward-comparison-slider">Prob. upward comparison (per move):</label><br>
             <input class='slider' type="range" id="prob-upward-comparison-slider" min="0" max="100" value="60">
             <label for="comparison-mean-slider">Comparison difference mean μ (per move):</label><br>
@@ -96,7 +96,7 @@
             <output class="comparison-text"></output><br>
         </div>
     </div>
-    <script src="https://d3js.org/d3.v7.min.js"></script
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script type="module" src="shared.js"></script>
     <script type="module" src="script.js"></script>
 </body>

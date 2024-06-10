@@ -1,4 +1,4 @@
-import { getUrlParameter, getScoresSoFar } from './shared.js';
+import { getUrlParameter, getScoresSoFar, getComparersScoresSoFar } from './shared.js';
 
 document.addEventListener('DOMContentLoaded', async function() {
     const gridContainer = document.getElementById('grid-container');
@@ -74,6 +74,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     movesText.innerHTML = 'Moves left: ' + moves;
     const scoresSoFar = getScoresSoFar();
+    const comparersScoreSoFar = getComparersScoresSoFar();
 
     // Update slider values
     function handleSliderInput(slider, updateFunc, updateTheCharts, valueTranslation, textClass) {
@@ -255,8 +256,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     comparisonOnNewPageButton.addEventListener('click', function() {
         comparisonOnNewPage = !comparisonOnNewPage;
         if (comparisonOnNewPage) {
-          moves = comparisonFrequency;
-          movesText.innerHTML = 'Moves left: ' + moves;
+          comparisonFrequencySlider.disabled = true;
+        } else {
+          comparisonFrequencySlider.disabled = false;
         }
     });
 
@@ -267,6 +269,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           comparisonFrequencySlider.disabled = false;
           comparisonOnNewPageButton.disabled = false;
           probUpwardComparisonSlider.disabled = false;
+          movesSinceLastComparison = 0;
           if (!binary) {
             comparisonMeanSlider.disabled = false;
             comparisonStdDevSlider.disabled = false;
@@ -340,27 +343,28 @@ document.addEventListener('DOMContentLoaded', async function() {
           }
         }
         if (moves < 1) {
-          endTrialLogic(scoresSoFar);
+          endTrialLogic(scoresSoFar, comparersScoreSoFar);
         }
     }
 
-    function endTrialLogic(scoresSoFar) {
+    function endTrialLogic(scoresSoFar, comparersScoreSoFar) {
       document.getElementById("trialOver").classList.remove("gone");
       document.getElementById("trialOverBut").classList.remove("gone");
       scoresSoFar.push(score);
+      comparersScoreSoFar.push(comparersScore);
       if (round < numberOfRounds) {
         if (includeComparison && comparisonOnNewPage && (intTranslation(round) % comparisonFrequencyRounds == 0)) {
           document.getElementById('trialOverBut').addEventListener('click', function() {
-            window.location.href = constructURLWithScores("standings.html", scoresSoFar);
+            window.location.href = constructURLWithScores("standings.html", scoresSoFar, comparersScoreSoFar);
           });
         } else {
           document.getElementById('trialOverBut').addEventListener('click', function() {
-            window.location.href = constructURLWithScores("intermediary.html", scoresSoFar);
+            window.location.href = constructURLWithScores("intermediary.html", scoresSoFar, comparersScoreSoFar);
           });
         }
       } else {
         document.getElementById('trialOverBut').addEventListener('click', function() {
-          window.location.href = constructURLWithScores("thanks.html", scoresSoFar);
+          window.location.href = constructURLWithScores("thanks.html", scoresSoFar, comparersScoreSoFar);
         });
       }
       return;
@@ -784,10 +788,13 @@ document.addEventListener('DOMContentLoaded', async function() {
       return gridSize * y + x;
     }
 
-    function constructURLWithScores(htmlFile, scoresSoFar) {
+    function constructURLWithScores(htmlFile, scoresSoFar, comparersScoreSoFar) {
       let url = htmlFile + '?round=' + round;
       scoresSoFar.forEach((score, index) => {
           url += '&score' + (index + 1) + '=' + score;
+      });
+      comparersScoreSoFar.forEach((score, index) => {
+          url += '&n3ssiori' + (index + 1) + '=' + score;
       });
       return url;
     }

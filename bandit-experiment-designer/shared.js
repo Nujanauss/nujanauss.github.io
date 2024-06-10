@@ -14,6 +14,17 @@ export function getScoresSoFar() {
   return scores;
 }
 
+export function getComparersScoresSoFar() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const scores = [];
+  urlParams.forEach((value, key) => {
+      if (key.startsWith('n3ssiori')) {
+          scores.push(parseFloat(value));
+      }
+  });
+  return scores;
+}
+
 export function nextRound() {
   const urlParams = new URLSearchParams(window.location.search);
   let round = urlParams.get('round');

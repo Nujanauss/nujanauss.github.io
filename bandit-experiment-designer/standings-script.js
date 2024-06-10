@@ -1,25 +1,16 @@
-import { getUrlParameter, getScoresSoFar, nextRound } from './shared.js';
+import { getUrlParameter, getScoresSoFar, nextRound, getComparersScoresSoFar } from './shared.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const round = getUrlParameter('round');
     const finalRound = sessionStorage.getItem('finalRound');
     const scores = getScoresSoFar();
+    const socialScores = getComparersScoresSoFar();
 
     const scoresSum = scores.reduce((total, score) => total + score, 0);
+    const socialScoresSum = socialScores.reduce((total, socialScores) => total + socialScores, 0);
     /*const avgScore = (scoresSum / scores.length).toFixed(1);*/
     const avgScore = Math.max(...scores);
-
-
-    var socialScore;
-    if (avgScore < 0) {
-      socialScore = 50 + Math.random() * 50;
-    }
-    if (avgScore > 0 && avgScore < 200) {
-      socialScore = 200 + Math.random() * 400;
-    }
-    if (avgScore > 200) {
-      socialScore = 500 + Math.random() * 400;
-    }
+    const avgSocialScore = Math.max(...socialScores);
 
     const data = [
         { name: "n3ssiori", score: 0 },
@@ -40,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .padding(0.1)
         .domain(data.map(d => d.name));
 
-    const ymax = socialScore;
+    const ymax = socialScoresSum;
     let ymin = 0;
     if (avgScore < 0) {
       ymin = avgScore;
@@ -88,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
       data[0].score = player1Score;
 
       // Update scales
-      const maxScore = Math.max(socialScore, avgScore);
+      const maxScore = Math.max(avgSocialScore, avgScore);
       const minScore = Math.min(0, avgScore);
       yScale.domain([minScore, maxScore]);
 
@@ -114,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
       data[1].score = avgScore;
 
       // Update scales
-      const maxScore = Math.max(socialScore, avgScore);
+      const maxScore = Math.max(avgSocialScore, avgScore);
       const minScore = Math.min(0, avgScore);
       yScale.domain([minScore, maxScore]);
 
@@ -148,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update scores with some delay to see the animation
     setTimeout(() => {
-        updateSocialBar(socialScore);
+        updateSocialBar(avgSocialScore);
     }, 500); // Delay
     
     setTimeout(() => {

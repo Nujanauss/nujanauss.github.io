@@ -432,23 +432,13 @@ body {
   background-color: #1F449C;
 }
 
-#toggle-charts-button {
-    display: block;
-    margin-top: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-#toggle-tools-button {
-    display: block;
-    margin-top: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
+.pointer {
+  cursor: pointer;
 }
 
 .inline {
-    display: flex;
-    margin: 10px 0px;
+  display: flex;
+  margin: 10px 0px;
 }
 
 input[type="checkbox"] {
