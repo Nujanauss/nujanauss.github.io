@@ -1,12 +1,14 @@
-import { getUrlParameter } from './shared.js';
+import { getUrlParameter, getGameSettings } from './shared.js';
 
 document.addEventListener('DOMContentLoaded', function() {
+  const settings = getGameSettings();
+
   const butt = document.getElementById('prebegin2');
   if (butt) {
     butt.addEventListener('click', generate);
   }
-  document.getElementById('rounds').innerHTML = sessionStorage.getItem('finalRound');
-  document.getElementById('comparisonRound').innerHTML = sessionStorage.getItem('roundsTillComparison');
+  document.getElementById('rounds').innerHTML = settings.numberOfRounds;
+  document.getElementById('comparisonRound').innerHTML = settings.comparisonFrequencyRounds;
   var pressedOnce = false;
   function generate() {
     if (butt.disabled) {

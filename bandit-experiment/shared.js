@@ -25,6 +25,11 @@ export function getComparersScoresSoFar() {
   return scores;
 }
 
+export function getGameSettings() {
+    const settings = sessionStorage.getItem('gameSettings');
+    return settings ? JSON.parse(settings) : {};
+}
+
 export function nextRound() {
   const urlParams = new URLSearchParams(window.location.search);
   let round = urlParams.get('round');

@@ -1,4 +1,4 @@
-import { getUrlParameter, getScoresSoFar, getComparersScoresSoFar } from './shared.js';
+import { getUrlParameter, getScoresSoFar, getComparersScoresSoFar, getGameSettings } from './shared.js';
 
 document.addEventListener('DOMContentLoaded', async function() {
     const settings = getGameSettings();
@@ -288,11 +288,6 @@ document.addEventListener('DOMContentLoaded', async function() {
       document.getElementById("comparison-information").classList.add('gone');
       document.body.style.cursor = 'move';
     });
-
-    function getGameSettings() {
-        const settings = sessionStorage.getItem('gameSettings');
-        return settings ? JSON.parse(settings) : {};
-    }
 
     function gaussianRandom(mean=0, stdev=1) { //stackOverflow
       const u = 1 - Math.random(); // Converting [0,1) to (0,1]

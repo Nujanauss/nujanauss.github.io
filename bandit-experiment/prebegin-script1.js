@@ -1,12 +1,13 @@
-import { getUrlParameter } from './shared.js';
+import { getUrlParameter, getGameSettings } from './shared.js';
 
 document.addEventListener('DOMContentLoaded', async function() {
-  const vars = await loadGameSettings();
+  const settings = getGameSettings();
+
   const butt = document.getElementById('prebegin1');
   if (butt) {
     butt.addEventListener('click', generate);
   }
-  document.getElementById('noOfMoves').innerHTML = sessionStorage.getItem('moves');
+  document.getElementById('noOfMoves').innerHTML = settings.moves;
 
   var pressedOnce = false;
   function generate() {
@@ -31,11 +32,5 @@ document.addEventListener('DOMContentLoaded', async function() {
     } else {
       window.location.href = 'prebegin2.html'  + '?usr=lumi7el';
     }
-  }
-
-  async function loadGameSettings() {
-    const response = await fetch('settings.json');
-    const data = await response.json();
-    return data.vars;
   }
 });
