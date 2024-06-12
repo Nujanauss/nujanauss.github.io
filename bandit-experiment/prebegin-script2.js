@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var comparisonText = document.getElementById('comparisonText');
   if (!settings.comparisonOnNewPage) {
     if (settings.comparisonFrequency == 1) {
-      comparisonText.innerHTML = "Every move, ";
+      comparisonText.innerHTML = "On every move, ";
     } else {
       comparisonText.innerHTML = "Every " + settings.comparisonFrequency + " moves,";
     }

@@ -9,10 +9,27 @@
 <body>
     <div class="wrapper">
       <aside class="inter">
-      <div class="padding-50 font-30">Thank you!</div>
-      <div class="index-instructions">Your highest score was: <span id="player-score-max">5</span> and your total score was: <span id="player-score-sum">5</span></div>
-      <div class="index-instructions">We hope you enjoyed playing and have a lovely rest of the day.</div>
-      </aside>
+        <div class="padding-50 font-30">You're finished!</div>
+        <div class="index-instructions">Your highest score was: <span id="player-score-max">5</span> and your total score was: <span id="player-score-sum">5</span>. This translates to a bonus of <span id="bonus-calculation">$5</span>.</div>
+        <div class="index-instructions">Please enter your demographic information below and click the button to proceed to the final payment page.</div>
+        <form class="demos">
+          <label for="gender">Gender:</label>
+          <div class="dropdown-wrapper">
+            <select id="gender" name="gender" class="dropdown">
+              <option value="man">Woman</option>
+              <option value="woman">Man</option>
+              <option value="non-binary">Non-binary</option>
+              <option value="other">Other</option>
+              <option value="prefer-not-to-say">Prefer not to say</option>
+            </select>
+          </div>
+          <br><br>
+          <label for="age">Age:</label>
+          <div class="dropdown-wrapper">
+            <select id="age" name="age" class="dropdown"></select>
+          </div>
+        </form>
+        <button id="final-payment" class="button enabled">Final payment</button>
       </aside>
     </div>
 

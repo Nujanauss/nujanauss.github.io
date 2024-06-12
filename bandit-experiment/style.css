@@ -11,6 +11,19 @@ body {
   user-select: none;
 }
 
+.consent-wrapper {
+  overflow: auto !important;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  height: 95vh;
+  margin: auto;
+  width:70%;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -48,6 +61,27 @@ body {
   margin: 0 auto;
   padding-bottom:30px;
   width:50%;
+}
+
+.consent {
+  margin: 8px auto;
+  width: 70%;
+}
+
+.button-group {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.small-button {
+  font-size: 14px !important;
+    margin: auto 20px;
+}
+
+ul {
+  margin: 0px;
 }
 
 #scorer {
@@ -280,6 +314,26 @@ body {
 .button.enabled:hover {
   background-color: grey;
   color: white !important;
+}
+
+.demos {
+  padding-bottom: 30px;
+}
+
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown {
+  padding: 10px 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  border: 3px solid grey;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.1s;
 }
 
 #score-table {

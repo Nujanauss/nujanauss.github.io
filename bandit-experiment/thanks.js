@@ -16,4 +16,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (playerRowMax) {
       playerRowMax.innerHTML = maxScore;
     }
+
+    var ageSelect = document.getElementById('age');
+    for (var i = 18; i <= 99; i++) {
+      var option = document.createElement('option');
+      option.value = i;
+      option.text = i;
+      ageSelect.appendChild(option);
+    }
+    document.getElementById('final-payment').addEventListener('click', function() {
+      window.location.href = 'final.html';
+    });
 });
