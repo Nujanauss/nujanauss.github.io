@@ -374,41 +374,31 @@ ul {
 
 #page1 {
   width: 0%;
-  animation: progress0to25 1s forwards;
+  animation: progress0to33 1s forwards;
 }
 
 #page2 {
-  width: 25;
-  animation: progress25to50 1s forwards;
+  width: 33%;
+  animation: progress33to66 1s forwards;
 }
 
 #page3 {
-  width: 50%;
-  animation: progress50to75 1s forwards;
+  width: 66%;
+  animation: progress66to100 1s forwards;
 }
 
-#page4 {
-  width: 75%;
-  animation: progress75to100 1s forwards;
-}
-
-@keyframes progress0to25 {
+@keyframes progress0to33 {
     from { width: 0%; }
-    to { width: 25%; }
+    to { width: 33%; }
 }
 
-@keyframes progress25to50 {
-    from { width: 25%; }
-    to { width: 50%; }
+@keyframes progress33to66 {
+    from { width: 33%; }
+    to { width: 66%; }
 }
 
-@keyframes progress50to75 {
-    from { width: 50%; }
-    to { width: 75%; }
-}
-
-@keyframes progress75to100 {
-    from { width: 75%; }
+@keyframes progress66to100 {
+    from { width: 66%; }
     to { width: 100%; }
 }
 

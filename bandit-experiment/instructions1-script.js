@@ -1,15 +1,20 @@
+import { buttonToNewPage, getGameSettings } from './shared.js';
+
 document.addEventListener('DOMContentLoaded', async function() {
+  const vars = await loadGameSettings();
+  sessionStorage.setItem('gameSettings', JSON.stringify(vars));
+
   async function loadGameSettings() {
     const response = await fetch('settings.json');
     const data = await response.json();
     return data.vars;
   }
 
-  const vars = await loadGameSettings();
+  const settings = getGameSettings();
 
-  sessionStorage.setItem('gameSettings', JSON.stringify(vars));
+  if (settings.binary == false) {
+      document.getElementById('binary-dependent').innerHTML = 'will';
+  }
 
-  document.getElementById('nextButton1').addEventListener('click', function() {
-    window.location.href = 'instructions2.html';
-  });
+  buttonToNewPage('nextButton1', 'instructions2.html');
 });

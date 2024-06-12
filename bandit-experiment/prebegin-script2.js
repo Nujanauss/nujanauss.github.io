@@ -4,31 +4,37 @@ document.addEventListener('DOMContentLoaded', function() {
   const settings = getGameSettings();
 
   const butt = document.getElementById('prebegin2');
-  if (butt) {
-    butt.addEventListener('click', generate);
-  }
-  if (settings.numberOfRounds == 1) {
-    document.getElementById('rounds').innerHTML = " trial "
-  } else {
-    document.getElementById('rounds').innerHTML = settings.numberOfRounds + " trials ";
-  }
+  butt.addEventListener('click', generate);
   
-  var comparisonText = document.getElementById('comparisonText');
-  if (!settings.comparisonOnNewPage) {
-    if (settings.comparisonFrequency == 1) {
-      comparisonText.innerHTML = "On every move, ";
-    } else {
-      comparisonText.innerHTML = "Every " + settings.comparisonFrequency + " moves,";
-    }
+  if (!settings.includeComparison) {
+    Array.from(document.getElementsByClassName('hide-on-comparison')).forEach(element => element.style.display = 'none');
+    butt.innerHTML = 'Play';
+    document.getElementById('play-command').style.visibility = 'visible';
+    document.getElementById('comparison-text').style.display = 'none';
   } else {
-    if (settings.comparisonFrequencyRounds == 1) {
-      comparisonText.innerHTML = "Every trial, ";
+    if (!settings.comparisonOnNewPage) {
+      if (settings.comparisonFrequency < 2) {
+        document.getElementById('comparison-text').innerHTML = 'Every move, we will show you the average score of another player who played in exactly the same maze as you.';
+      } else {
+        document.getElementById('comparison-text').innerHTML = 'Every ' + settings.comparisonFrequency + ' moves, we will show you the average score of another player who previously played in exactly the same maze as you.';
+      }
     } else {
-      comparisonText.innerHTML = "Every " + settings.comparisonFrequencyRounds + " trials,";
+      if (settings.numberOfRounds > 1) {
+        if (settings.numberOfRounds / settings.comparisonFrequencyRounds > 1.999) {
+          document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' trials in total. After every ' + settings.comparisonFrequencyRounds + ' trials, we will show you the average score of another player who played in exactly the same maze as you.'
+        } else {
+          document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' trials in total. After trial ' + settings.comparisonFrequencyRounds + ' we will show you the average score of another player who played in exactly the same maze as you.'
+        }
+      }
     }
   }
+
   var pressedOnce = false;
   function generate() {
+    if (!settings.includeComparison) {
+      window.location.href = 'game.html?usr=lumi7el';
+      return;
+    }
     if (butt.disabled) {
       return;
     }

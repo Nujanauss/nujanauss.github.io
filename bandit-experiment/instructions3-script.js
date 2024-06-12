@@ -1,3 +1,3 @@
-document.getElementById('nextButton3').addEventListener('click', function() {
-    window.location.href = 'prebegin1.html';
-});
+import { buttonToNewPage } from './shared.js';
+
+buttonToNewPage('nextButton3', 'prebegin1.html');

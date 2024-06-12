@@ -41,3 +41,9 @@ export function nextRound() {
   });
   window.location.href = newUrl;
 }
+
+export function buttonToNewPage(buttonId, newPageHTML) {
+  document.getElementById(buttonId).addEventListener('click', function() {
+    window.location.href = newPageHTML;
+  });
+}

@@ -7,12 +7,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   if (butt) {
     butt.addEventListener('click', generate);
   }
-  var noMovesText = document.getElementById('noOfMoves');
-  if (settings.numberOfRounds > 1) {
-    noMovesText.innerHTML = settings.moves + " moves per trial.";
-  } else {
-    noMovesText.innerHTML = settings.moves + " moves in total.";
-  }
 
   var pressedOnce = false;
   function generate() {
@@ -21,12 +15,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
     if (!pressedOnce) {
       pressedOnce = true;
-      butt.disabled = true;
-      document.getElementById('username-generation').style.visibility = 'visible';
-      butt.classList.remove('enabled');
-      butt.style.cursor = 'not-allowed';
-      butt.style.color = 'grey';
-      
+      setTimeout(() => {
+        butt.disabled = true;
+        document.getElementById('username-generation').style.visibility = 'visible';
+        butt.classList.remove('enabled');
+        butt.style.cursor = 'not-allowed';
+        butt.style.color = 'grey';
+      }, 300);
+
       setTimeout(() => {
         butt.disabled = false;
         butt.innerHTML = 'Next';
