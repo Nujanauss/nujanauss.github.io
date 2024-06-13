@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     let score = 0, previousScore = 0;
     const successScore = settings.stochastic ? 500 : 100;
+    let decision = Array(), rewardReceived = Array(), timeStamps = Array();
     setupGrid();
 
     document.getElementById('trainingOver').innerHTML = 'Score above ' + successScore;
@@ -54,6 +55,11 @@ document.addEventListener('DOMContentLoaded', async function() {
             return;
         }
         var additionalScore = revealSquare(square);
+
+        decision[currentMove] = square;
+        rewardReceived[currentMove] = additionalScore;
+        timeStamps[currentMove] = new Date().toISOString().split('T')[1];
+
         score += additionalScore;
         currentMove = (currentMove + 1) % numberOfMoves;
 
@@ -63,11 +69,12 @@ document.addEventListener('DOMContentLoaded', async function() {
         previousScore = score;
 
         if (score > successScore) {
-          endTrialLogic(score);
+          endTrialLogic(successScore, decision, rewardReceived, timeStamps);
         }
     }
 
-    function endTrialLogic(scoresSoFar, comparersScoreSoFar) {
+    function endTrialLogic(successScore, decision, rewardReceived, timeStamps) {
+      saveTrainingData(decision, rewardReceived, timeStamps);
       document.getElementById('trainingOverBut').classList.remove('gone');
       document.getElementById('trainingOver').innerHTML = 'Nice! You scored more than ' + successScore;
       buttonToNewPage('trainingOverBut', 'prebegin1');
@@ -218,5 +225,32 @@ document.addEventListener('DOMContentLoaded', async function() {
       const z = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
       // Transform to the desired mean and standard deviation:
       return z * stdev + mean;
+    }
+    
+    function saveTrainingData(decision, rewardReceived, timeStamps) {
+      // Create the main object with the trainingData label
+      const data = {
+              move: {}
+      };
+
+      // Populate the trainingData object
+      let squareX;
+      let squareY;
+      decision.forEach((square, index) => {
+          squareX = parseFloat(square.id.split(',')[0]);
+          squareY = parseFloat(square.id.split(',')[1]);
+          data.move[index] = {
+              decisionX: squareX,
+              decisionY: squareY,
+              reward: rewardReceived[index],
+              timestamp: timeStamps[index]
+          };
+      });
+
+      // Convert the data object to a JSON string
+      const dataJSON = JSON.stringify(data);
+
+      // Store the JSON string in sessionStorage
+      sessionStorage.setItem("trainingData", dataJSON);
     }
 });

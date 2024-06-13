@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
     let score = 0, previousScore = 0, comparersScore = 0;
+    let decision = Array(numberOfMoves), rewardReceived = Array(numberOfMoves), comparison = Array(numberOfMoves), timeStamps = Array(numberOfMoves);
     setupGrid();
     var round = getRoundFromURL();
 
@@ -86,6 +87,12 @@ document.addEventListener('DOMContentLoaded', async function() {
           }
         }
 
+        var idx = numberOfMoves - movesRemaining - 1; // rewrite this out to SOS
+        decision[idx] = square;
+        rewardReceived[idx] = additionalScore;
+        comparison[idx] = comparersScore;
+        timeStamps[idx] = new Date().toISOString().split('T')[1];
+
         scoreText.innerHTML = 'Score: ' + score;
         movesText.innerHTML = 'Moves left: ' + movesRemaining;
         updateTextColor(scoreText, score, previousScore);
@@ -113,6 +120,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function endTrialLogic(scoresSoFar, comparersScoreSoFar) {
+      saveTrainingData(decision, comparison, rewardReceived, timeStamps);
       document.getElementById("trialOver").classList.remove("gone");
       document.getElementById("trialOverBut").classList.remove("gone");
       scoresSoFar.push(score);
@@ -142,7 +150,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         const squareY = parseFloat(square.id.split(',')[1]);
         var additionalScore = 0;
         var randomVal = Math.random();
-        var currentMove = numberOfMoves - movesRemaining - 1 
+        var currentMove = numberOfMoves - movesRemaining - 1;
         if (settings.rewardsChangeAcrossRounds) {
           currentMove += ((round - 1) * numberOfMoves);
         }
@@ -300,5 +308,33 @@ document.addEventListener('DOMContentLoaded', async function() {
       const z = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
       // Transform to the desired mean and standard deviation:
       return z * stdev + mean;
+    }
+
+    function saveTrainingData(decision, comparison, rewardReceived, timeStamps) {
+      // Create the main object with the trainingData label
+      const data = {
+              move: {}
+      };
+
+      // Populate the trainingData object
+      let squareX;
+      let squareY;
+      decision.forEach((square, index) => {
+          squareX = parseFloat(square.id.split(',')[0]);
+          squareY = parseFloat(square.id.split(',')[1]);
+          data.move[index] = {
+              decisionX: squareX,
+              decisionY: squareY,
+              reward: rewardReceived[index],
+              comparison: comparison[index],
+              timestamp: timeStamps[index]
+          };
+      });
+
+      // Convert the data object to a JSON string
+      const dataJSON = JSON.stringify(data);
+
+      // Store the JSON string in sessionStorage
+      sessionStorage.setItem(round, dataJSON);
     }
 });
