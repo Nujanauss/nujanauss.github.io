@@ -120,16 +120,16 @@ document.addEventListener('DOMContentLoaded', async function() {
       if (round < numberOfRounds) {
         if (includeComparison && comparisonOnNewPage && (round % comparisonFrequencyRounds == 0)) {
           document.getElementById('trialOverBut').addEventListener('click', function() {
-            window.location.href = constructURLWithScores("standings.html", scoresSoFar, comparersScoreSoFar);
+            window.location.href = constructURLWithScores("standings", scoresSoFar, comparersScoreSoFar);
           });
         } else {
           document.getElementById('trialOverBut').addEventListener('click', function() {
-            window.location.href = constructURLWithScores("intermediary.html", scoresSoFar, comparersScoreSoFar);
+            window.location.href = constructURLWithScores("intermediary", scoresSoFar, comparersScoreSoFar);
           });
         }
       } else {
         document.getElementById('trialOverBut').addEventListener('click', function() {
-          window.location.href = constructURLWithScores("thanks.html", scoresSoFar, comparersScoreSoFar);
+          window.location.href = constructURLWithScores("thanks", scoresSoFar, comparersScoreSoFar);
         });
       }
       return;

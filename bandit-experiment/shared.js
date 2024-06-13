@@ -35,7 +35,7 @@ export function nextRound() {
   let round = urlParams.get('round');
   round = parseInt(round) + 1; // Convert to integer and increment by one
   urlParams.set('round', round); // Update the 'round' parameter with the new value
-  let newUrl = 'game.html?';
+  let newUrl = 'game?';
   urlParams.forEach((value, key) => {
       newUrl += '&' + encodeURIComponent(key) + '=' + encodeURIComponent(value);
   });
