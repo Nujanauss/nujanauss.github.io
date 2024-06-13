@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var pressedOnce = false;
   function generate() {
     if (!settings.includeComparison) {
-      window.location.href = 'game.html?usr=lumi7el';
+      window.location.href = 'game?usr=lumi7el';
       return;
     }
     if (butt.disabled) {
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
         butt.style.cursor = 'pointer';
       }, 8000);
     } else {
-      window.location.href = 'game.html?usr=lumi7el&cmr=n3ssiori';
+      window.location.href = 'game?usr=lumi7el&cmr=n3ssiori';
     }
   }
 });

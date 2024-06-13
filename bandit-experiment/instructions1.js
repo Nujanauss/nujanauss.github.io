@@ -16,5 +16,5 @@ document.addEventListener('DOMContentLoaded', async function() {
       document.getElementById('binary-dependent').innerHTML = 'will';
   }
 
-  buttonToNewPage('nextButton1', 'instructions2.html');
+  buttonToNewPage('nextButton1', 'instructions2');
 });

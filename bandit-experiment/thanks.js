@@ -25,6 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
       ageSelect.appendChild(option);
     }
     document.getElementById('final-payment').addEventListener('click', function() {
-      window.location.href = 'final.html';
+      window.location.href = 'final';
     });
 });

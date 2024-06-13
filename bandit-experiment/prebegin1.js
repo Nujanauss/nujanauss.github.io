@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         butt.style.cursor = 'pointer';
       }, 3000);
     } else {
-      window.location.href = 'prebegin2.html'  + '?usr=lumi7el';
+      window.location.href = 'prebegin2'  + '?usr=lumi7el';
     }
   }
 });
