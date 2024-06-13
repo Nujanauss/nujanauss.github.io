@@ -16,6 +16,13 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   const settings = getGameSettings();
 
+  var playerData = {
+    "player": {
+        "prolificID": prolificID,
+    }
+  };
+  sessionStorage.setItem('playerData', JSON.stringify(playerData));
+
   if (settings.binary == false) {
       document.getElementById('binary-dependent').innerHTML = 'will';
   }

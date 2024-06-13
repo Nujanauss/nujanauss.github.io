@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
       playerRowMax.innerHTML = maxScore;
     }
 
+    var genderSelect = document.getElementById('gender');
     var ageSelect = document.getElementById('age');
     for (var i = 18; i <= 99; i++) {
       var option = document.createElement('option');
@@ -25,6 +26,19 @@ document.addEventListener('DOMContentLoaded', function() {
       ageSelect.appendChild(option);
     }
     document.getElementById('final-payment').addEventListener('click', function() {
+      var storedData = sessionStorage.getItem('userData');
+      var existingData = storedData ? JSON.parse(storedData) : {};
+      var additionalUserData = {
+          "player": {
+              "gender": genderSelect.value,
+              "age": ageSelect.value
+          }
+      };
+
+      // Merge additional user data with existing user data
+      existingData.user = Object.assign({}, existingData.user, additionalUserData.user);
+      var mergedDataString = JSON.stringify(existingData);
+      sessionStorage.setItem('userData', mergedDataString);
       window.location.href = 'final';
     });
 });
