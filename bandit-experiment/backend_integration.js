@@ -38,7 +38,7 @@ export async function create_participant(pid) {
  * @param id The internal id of the participant 
  * @param data The data to be saved
  */
-function send_incomplete(id, data) {
+export function send_incomplete(id, data) {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', `${BACKEND_URL}/${INCOMPLETE_SAVE_PATH}/${id}`);
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -53,7 +53,7 @@ function send_incomplete(id, data) {
  * @param id The internal id of the participant 
  * @param data The data to be saved
  */
-function send_complete(id, data) {
+export function send_complete(id, data) {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', `${BACKEND_URL}/${COMPLETE_SAVE_PATH}/${id}`);
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -69,7 +69,7 @@ function send_complete(id, data) {
  * @param data Whether or not the participant completed the experiment
  * succesfully
  */
-function complete(id, success = true) {
+export function complete(id, success = true) {
   var xhr = new XMLHttpRequest();
   var path = COMPLETE_SUCCESS_PATH;
   if (!success) {
@@ -87,7 +87,7 @@ function complete(id, success = true) {
  * 
  * @returns Prolific user id (String) or None if no user id was found 
  */
-function get_prolific_id() {
+export function get_prolific_id() {
   // parse our prolific user id from URL parameters
   var queryString = window.location.search;
   var urlParams = new URLSearchParams(queryString);
