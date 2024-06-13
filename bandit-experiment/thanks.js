@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
       };
 
       // Merge additional user data with existing user data
-      existingData.user = Object.assign({}, existingData.user, additionalUserData.user);
+      existingData.player = Object.assign({}, existingData.player, additionalUserData.player);
       var mergedDataString = JSON.stringify(existingData);
       sessionStorage.setItem('playerData', mergedDataString);
       window.location.href = 'final';
