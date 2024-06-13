@@ -387,9 +387,19 @@ ul {
   animation: progress50to75 1s forwards;
 }
 
-#page4s {
+#page4 {
   width: 75%;
   animation: progress75to100 1s forwards;
+}
+
+#page-prebegin1 {
+  width: 0%;
+  animation: progress0to50 1s forwards;
+}
+
+#page-prebegin2 {
+  width: 50%;
+  animation: progress50to100 1s forwards;
 }
 
 @keyframes progress0to25 {
@@ -409,6 +419,16 @@ ul {
 
 @keyframes progress75to100 {
     from { width: 75%; }
+    to { width: 100%; }
+}
+
+@keyframes progress0to50 {
+    from { width: 0%; }
+    to { width: 50%; }
+}
+
+@keyframes progress50to100 {
+    from { width: 50%; }
     to { width: 100%; }
 }
 
