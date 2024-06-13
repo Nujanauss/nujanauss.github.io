@@ -2,7 +2,7 @@ import { buttonToNewPage, getGameSettings } from './shared.js';
 import { create_participant } from './backend_integration.js';
 
 document.addEventListener('DOMContentLoaded', async function() {
-  const prolificID = prolificID;
+  const prolificID = 'prolificID';
   create_participant(prolificID);
 
   const vars = await loadGameSettings();
