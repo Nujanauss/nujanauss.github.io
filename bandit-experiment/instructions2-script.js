@@ -25,7 +25,11 @@ document.addEventListener('DOMContentLoaded', async function() {
       para1.innerHTML = 'You will have ' + settings.numberOfRounds + ' trials to maximise your score. In each trial, you will have ' + settings.moves + ' moves. Once you run out of moves, the trial is over.';
       if (settings.stochastic == true) {
         if (settings.binary == false) {
-          para2.innerHTML = 'After every move, each card will slightly change how much it rewards you. However, these changes are the same in every trial.';
+          if (settings.rewardsChangeAcrossRounds == false) {
+            para2.innerHTML = 'After every move, each card will slightly change how much it rewards you. However, these changes are the same in every trial.';
+          } else {
+            para2.innerHTML = 'After every move, each card will slightly change how much it rewards you.';
+          }
         } else {
           para2.innerHTML = 'After every move, the chance that a card will reward you will slightly change.';
         }
