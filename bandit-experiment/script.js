@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     const initialStochasticValue = 0.5;
     const initialPurpleValue = 0.;
 
-    var moves = settings.moves;
+    const numberOfMoves = settings.moves;
+    var movesRemaining = settings.moves;
 
     const rows = settings.rows;
     const cols = settings.cols;
@@ -44,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     setupGrid();
     var round = getRoundFromURL();
 
-    movesText.innerHTML = 'Moves left: ' + moves;
+    movesText.innerHTML = 'Moves left: ' + movesRemaining;
     const scoresSoFar = getScoresSoFar();
     const comparersScoreSoFar = getComparersScoresSoFar();
 
@@ -60,10 +61,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function gameLogic(square) {
-        if (moves < 1) {
+        if (movesRemaining < 1) {
             return;
         }
-        moves--;
+        movesRemaining--;
         var additionalScore = revealSquare(square);
         score += additionalScore;
 
@@ -86,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         scoreText.innerHTML = 'Score: ' + score;
-        movesText.innerHTML = 'Moves left: ' + moves;
+        movesText.innerHTML = 'Moves left: ' + movesRemaining;
         updateTextColor(scoreText, score, previousScore);
 
         previousScore = score;
@@ -106,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             comparersScore = 0;
           }
         }
-        if (moves < 1) {
+        if (movesRemaining < 1) {
           endTrialLogic(scoresSoFar, comparersScoreSoFar);
         }
     }
@@ -141,9 +142,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         const squareY = parseFloat(square.id.split(',')[1]);
         var additionalScore = 0;
         var randomVal = Math.random();
+        var currentMove = numberOfMoves - movesRemaining - 1 
+        if (settings.rewardsChangeAcrossRounds) {
+          currentMove += ((round - 1) * numberOfMoves);
+        }
         if (binary) {
-            if (randomVal < chanceToWin[moves][squareY][squareX]) { // CHANCE TO WIN IS HERE!
-              if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[moves][squareY][squareX]) {
+            if (randomVal < chanceToWin[currentMove][squareY][squareX]) { // CHANCE TO WIN IS HERE!
+              if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[currentMove][squareY][squareX]) {
                 additionalScore = purpleSquareScore;
                 makePurple(square, additionalScore);
               } else {
@@ -152,11 +157,11 @@ document.addEventListener('DOMContentLoaded', async function() {
               }
             }
         } else {
-            if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[moves][squareY][squareX]) {
+            if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[currentMove][squareY][squareX]) {
                 additionalScore = purpleSquareScore;
                 makePurple(square, additionalScore);
             } else {
-              additionalScore = Math.round(chanceToWin[moves][squareY][squareX] * 100);
+              additionalScore = Math.round(chanceToWin[currentMove][squareY][squareX] * 100);
               makeGreen(square, additionalScore);
             }
         }

@@ -6,24 +6,27 @@ document.addEventListener('DOMContentLoaded', async function() {
     const scoreText = document.getElementById('score');
     const settingsCard = document.getElementById('settings-card');
     const comparisonCard = document.getElementById('comparison-card');
+    const experimentCard = document.getElementById('experiment-card');
 
+    const numberOfRoundsSlider = document.getElementById('number-rounds-slider');
     const movesSlider = document.getElementById('moves-slider');
     const gridColSlider = document.getElementById('grid-col-slider');
     const gridRowSlider = document.getElementById('grid-row-slider');
-    const toggleStochasticButton = document.getElementById('toggle-stochastic-button');
-    const toggleBinaryButton = document.getElementById('toggle-binary-button');
+
     const toggleChartsButton = document.getElementById('toggle-charts-button');
     const toggleToolsButton = document.getElementById('toggle-tools-button');
+    const toggleBinaryButton = document.getElementById('toggle-binary-button');
+    const toggleStochasticButton = document.getElementById('toggle-stochastic-button');
     const decaySlider = document.getElementById('decay-slider');
     const decayCenterSlider = document.getElementById('decay-center-slider');
     const noiseStdDevSlider = document.getElementById('noise-std-dev-slider');
-
-    const numberOfRoundsSlider = document.getElementById('number-rounds-slider');
     const roundForPurpleSlider = document.getElementById('round-for-purple-slider');
+    const rewardsChangeAcrossRoundsButton = document.getElementById('toggle-continuous-reward');
+
     const includeComparisonButton = document.getElementById('toggle-comparison-button');
+    const comparisonOnNewPageButton = document.getElementById('toggle-comparison-page-button');
     const comparisonFrequencyRoundsSlider = document.getElementById('comparison-frequency-rounds-slider');
     const comparisonFrequencySlider = document.getElementById('comparison-frequency-slider');
-    const comparisonOnNewPageButton = document.getElementById('toggle-comparison-page-button');
     const probUpwardComparisonSlider = document.getElementById('prob-upward-comparison-slider');
     const comparisonMeanSlider = document.getElementById('comparison-mean-slider');
     const comparisonStdDevSlider = document.getElementById('comparison-std-dev-slider');
@@ -33,29 +36,28 @@ document.addEventListener('DOMContentLoaded', async function() {
     const initialStochasticValue = 0.5;
     const initialPurpleValue = 0.;
 
-    let moves = intTranslation(movesSlider.value); // Start with the initial value of the slider
-    comparisonFrequencySlider.max = moves;
+    let movesRemaining = intTranslation(movesSlider.value); // Start with the initial value of the slider
+    let numberOfMoves = intTranslation(movesSlider.value); // Start with the initial value of the slider
     let rows = intTranslation(gridRowSlider.value);
     let cols = intTranslation(gridColSlider.value);
     let decay = over1000Translation(decaySlider.value);
     let decayCenter = over1000Translation(decayCenterSlider.value);
     let noiseStdDev = over1000Translation(noiseStdDevSlider.value);
     let showCharts = toggleChartsButton.checked;
+
     let showTools = toggleToolsButton.checked;
     let stochastic = toggleStochasticButton.checked;
     let stochasticValues = Array.from({ length: rows }, () => Array(cols).fill(stochastic));
     let purpleValues = Array.from({ length: rows }, () => Array(cols).fill(0.));
     let binary = toggleBinaryButton.checked;
+    let rewardsChangeAcrossRounds = rewardsChangeAcrossRoundsButton.checked;
     var meanValues = generateMeanValues();
     var chanceToWin = generateChanceToWin();
     var chanceToWinPurple = generateChanceToWinPurple();
 
-    toggleToolsButton.disabled = !toggleChartsButton.checked;
-
     let numberOfRounds = intTranslation(numberOfRoundsSlider.value);
     let roundsUntilPurple = intTranslation(roundForPurpleSlider.value);
-    roundForPurpleSlider.max = numberOfRounds;
-    comparisonFrequencyRoundsSlider.max = numberOfRounds;
+
     let includeComparison = includeComparisonButton.checked;
     let comparisonFrequencyRounds = intTranslation(comparisonFrequencyRoundsSlider.value);
     let comparisonFrequency = intTranslation(comparisonFrequencySlider.value);
@@ -64,6 +66,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     let comparisonMean = over10Translation(comparisonMeanSlider.value);
     let comparisonStdDev = over10Translation(comparisonStdDevSlider.value);
 
+    comparisonFrequencySlider.max = movesRemaining;
+    toggleToolsButton.disabled = !toggleChartsButton.checked;
+    rewardsChangeAcrossRoundsButton.disabled = numberOfRounds < 2;
+    roundForPurpleSlider.max = numberOfRounds;
+    comparisonFrequencyRoundsSlider.max = numberOfRounds;
     comparisonFrequencyRoundsSlider.disabled = !includeComparison;
     comparisonFrequencySlider.disabled = !includeComparison;
     comparisonOnNewPageButton.disabled = !includeComparison;
@@ -75,7 +82,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     setupGrid();
     var round = getRoundFromURL();
 
-    movesText.innerHTML = 'Moves left: ' + moves;
+    movesText.innerHTML = 'Moves left: ' + movesRemaining;
     const scoresSoFar = getScoresSoFar();
     const comparersScoreSoFar = getComparersScoresSoFar();
 
@@ -97,15 +104,16 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
-    handleSliderInput(movesSlider, updateMoves, true, intTranslation, ".values-text");
-    handleSliderInput(gridColSlider, updateCols, true, intTranslation, ".values-text");
-    handleSliderInput(gridRowSlider, updateRows, true, intTranslation, ".values-text");
+    handleSliderInput(movesSlider, updateMoves, true, intTranslation, ".experiment-text");
+    handleSliderInput(gridColSlider, updateCols, true, intTranslation, ".experiment-text");
+    handleSliderInput(gridRowSlider, updateRows, true, intTranslation, ".experiment-text");
+    handleSliderInput(numberOfRoundsSlider, updateNumberRounds, false, intTranslation, ".experiment-text");
+
     handleSliderInput(decaySlider, updateDecay, true, over1000Translation, ".values-text");
     handleSliderInput(decayCenterSlider, updateDecayCenter, true, over1000Translation, ".values-text");
     handleSliderInput(noiseStdDevSlider, updateNoiseStdDev, true, over1000Translation, ".values-text");
+    handleSliderInput(roundForPurpleSlider, updateRoundsUntilPurple, false, intTranslation, ".values-text");
 
-    handleSliderInput(numberOfRoundsSlider, updateNumberRounds, false, intTranslation, ".comparison-text");
-    handleSliderInput(roundForPurpleSlider, updateRoundsUntilPurple, false, intTranslation, ".comparison-text");
     handleSliderInput(comparisonFrequencyRoundsSlider, updateFrequencyRounds, false, intTranslation, ".comparison-text");
     handleSliderInput(comparisonFrequencySlider, updateFrequency, false, intTranslation, ".comparison-text");
     handleSliderInput(probUpwardComparisonSlider, updateProbUpwardComparison, false, over100Translation, ".comparison-text");
@@ -129,9 +137,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function updateMoves(value) {
-      moves = intTranslation(value);
-      comparisonFrequencySlider.max = moves;
-      movesText.innerHTML = 'Moves left: ' + moves;
+      movesRemaining = intTranslation(value);
+      numberOfMoves = intTranslation(value);
+      comparisonFrequencySlider.max = movesRemaining;
+      movesText.innerHTML = 'Moves left: ' + movesRemaining;
     }
 
     function updateCols(value) {
@@ -180,10 +189,26 @@ document.addEventListener('DOMContentLoaded', async function() {
       numberOfRounds = value;
       comparisonFrequencyRoundsSlider.max = numberOfRounds;
       roundForPurpleSlider.max = numberOfRounds;
+      if (numberOfRounds < 2) {
+        rewardsChangeAcrossRoundsButton.disabled = true;
+        rewardsChangeAcrossRounds = false;
+        rewardsChangeAcrossRoundsButton.checked = false;
+        chanceToWin = generateChanceToWin();
+        chanceToWinPurple = generateChanceToWinPurple();
+        updateCharts();
+      } else {
+        rewardsChangeAcrossRoundsButton.disabled = false;
+        if (rewardsChangeAcrossRounds) {
+          chanceToWin = generateChanceToWin();
+          chanceToWinPurple = generateChanceToWinPurple();
+          updateCharts();
+        }
+      }
     }
 
     function updateRoundsUntilPurple(value) {
       roundsUntilPurple = value;
+      updateCharts();
     }
 
     function updateFrequency(value) {
@@ -271,6 +296,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     });
 
+    rewardsChangeAcrossRoundsButton.addEventListener('click', function() {
+        rewardsChangeAcrossRounds = !rewardsChangeAcrossRounds;
+        chanceToWin = generateChanceToWin();
+        chanceToWinPurple = generateChanceToWinPurple();
+        updateCharts();
+    });
+
     includeComparisonButton.addEventListener('click', function() {
         includeComparison = !includeComparison;
         if (includeComparison) {
@@ -305,10 +337,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function gameLogic(square) {
-        if (moves < 1) {
+        if (movesRemaining < 1) {
             return;
         }
-        moves--;
+        movesRemaining--;
         var additionalScore = revealSquare(square);
         score += additionalScore;
 
@@ -331,7 +363,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         scoreText.innerHTML = 'Score: ' + score;
-        movesText.innerHTML = 'Moves left: ' + moves;
+        movesText.innerHTML = 'Moves left: ' + movesRemaining;
         updateTextColor(scoreText, score, previousScore);
 
         previousScore = score;
@@ -351,7 +383,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             comparersScore = 0;
           }
         }
-        if (moves < 1) {
+        if (movesRemaining < 1) {
           endTrialLogic(scoresSoFar, comparersScoreSoFar);
         }
     }
@@ -386,9 +418,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         const squareY = parseFloat(square.id.split(',')[1]);
         var additionalScore = 0;
         var randomVal = Math.random();
+        var currentMove = numberOfMoves - movesRemaining - 1 
+        if (rewardsChangeAcrossRounds) {
+          currentMove += ((round - 1) * numberOfMoves);
+        }
         if (binary) {
-            if (randomVal < chanceToWin[moves][squareY][squareX]) { // CHANCE TO WIN IS HERE!
-              if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[moves][squareY][squareX]) {
+            if (randomVal < chanceToWin[currentMove][squareY][squareX]) { // CHANCE TO WIN IS HERE!
+              if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[currentMove][squareY][squareX]) {
                 additionalScore = 200;
                 makePurple(square, additionalScore);
               } else {
@@ -397,11 +433,11 @@ document.addEventListener('DOMContentLoaded', async function() {
               }
             }
         } else {
-            if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[moves][squareY][squareX]) {
+            if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[currentMove][squareY][squareX]) {
                 additionalScore = 200;
                 makePurple(square, additionalScore);
             } else {
-              additionalScore = Math.round(chanceToWin[moves][squareY][squareX] * 100);
+              additionalScore = Math.round(chanceToWin[currentMove][squareY][squareX] * 100);
               makeGreen(square, additionalScore);
             }
         }
@@ -619,16 +655,39 @@ document.addEventListener('DOMContentLoaded', async function() {
 
       // Create data for the chart using chanceToWin values
       const data = chanceToWin.map((row, i) => ({ x: i + 1, y: row[y][x] }));
-      const purpleData = chanceToWinPurple.map((row, i) => ({ x: i + 1, y: row[y][x] }));
+
+      // Create and extend purpleData
+      let purpleData = [];
+      if (rewardsChangeAcrossRounds) {
+        // Add zero values until roundsUntilPurple
+        for (let i = 0; i < movesRemaining * (roundsUntilPurple - 1); i++) {
+          purpleData.push({ x: i + 1, y: 0 });
+        }
+
+        // Add actual purple data and repeat as necessary
+        for (let round = roundsUntilPurple - 1; round < numberOfRounds; round++) {
+          for (let i = 0; i < movesRemaining; i++) {
+            const index = i % chanceToWinPurple.length;
+            purpleData.push({ x: purpleData.length + 1, y: chanceToWinPurple[index][y][x] });
+          }
+        }
+      } else {
+        // Repeat the purple data for the number of rounds
+        for (let round = 0; round < numberOfRounds; round++) {
+          for (let i = 0; i < movesRemaining; i++) {
+            const index = i % chanceToWinPurple.length;
+            purpleData.push({ x: purpleData.length + 1, y: chanceToWinPurple[index][y][x] });
+          }
+        }
+      }
 
       // Set the scales
       const xScale = d3.scaleLinear()
-          .domain([0, moves])
+          .domain([1, data.length])
           .range([0, square.clientWidth]);
 
-      var yDomainMax = 1;
       const yScale = d3.scaleLinear()
-          .domain([0, yDomainMax])
+          .domain([0, 1])
           .range([square.clientHeight, 0]);
 
       // Create the line generator
@@ -652,6 +711,22 @@ document.addEventListener('DOMContentLoaded', async function() {
           .attr('fill', 'none')
           .attr('stroke', '#AA3377')
           .attr('stroke-width', 1.5);
+
+      // Draw dashed vertical lines for each round
+      if (rewardsChangeAcrossRounds) {
+        for (let i = 1; i < numberOfRounds; i++) {
+            const xPosition = (i / numberOfRounds) * square.clientWidth;
+            svg.append('line')
+                .attr('x1', xPosition)
+                .attr('y1', 0)
+                .attr('x2', xPosition)
+                .attr('y2', square.clientHeight)
+                .attr('stroke', '#1F449C')
+                .attr('stroke-opacity', 0.5)
+                .attr('stroke-width', 1)
+                .attr('stroke-dasharray', '5,5');
+        }
+      }
     }
 
     function updateCharts() {
@@ -752,14 +827,15 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function generateChanceToWinPurple() {
-      return Array.from({ length: moves }, () => {
+      return Array.from({ length: movesRemaining }, () => {
         return purpleValues.map(row => row.slice()); // deep copy
       });
     }
 
     function generateChanceToWin() {
       var noise = 0;
-      const chanceToWin = Array.from({ length: moves }, () => {
+      const totalMoves = rewardsChangeAcrossRounds ? movesRemaining * numberOfRounds : movesRemaining;
+      const chanceToWin = Array.from({ length: totalMoves }, (_, index) => {
         return meanValues.map(row => row.slice()); // deep copy
       });
       const lamda = decay;
@@ -846,6 +922,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     makeDraggable(settingsCard, ignoreElements);
     makeDraggable(comparisonCard, ignoreElements);
+    makeDraggable(experimentCard, ignoreElements);
 
     document.getElementById("read-comparison").addEventListener('click', function() {
       overlay.style.display = 'none';
@@ -862,7 +939,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     document.querySelectorAll('.toggle-button').forEach(button => {
       button.addEventListener('click', function() {
-        toggleCollapse(button.closest('.card'));
+        toggleCollapse(button.closest('.card-body'));
       });
     });
 
@@ -870,7 +947,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     function saveSettings() {
       let settings = {
         vars: {
-          moves: moves,
+          moves: numberOfMoves,
           rows: rows,
           cols: cols,
           decay: decay,
@@ -883,6 +960,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           meanValues: meanValues,
           chanceToWin: chanceToWin,
           chanceToWinPurple: chanceToWinPurple,
+          rewardsChangeAcrossRounds: rewardsChangeAcrossRounds,
           numberOfRounds: numberOfRounds,
           roundsUntilPurple: roundsUntilPurple,
           includeComparison: includeComparison,
