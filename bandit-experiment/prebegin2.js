@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
       if (settings.numberOfRounds > 1) {
         if (settings.numberOfRounds / settings.comparisonFrequencyRounds > 1.999) {
-          document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' trials in total. After every ' + settings.comparisonFrequencyRounds + ' trials, we will show you the average score of another player who played in exactly the same maze as you.'
+          document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' trials in total. Every ' + settings.comparisonFrequencyRounds + ' trials, we will show you the average score of another player who played in exactly the same maze as you.'
         } else {
           document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' trials in total. After trial ' + settings.comparisonFrequencyRounds + ' we will show you the average score of another player who played in exactly the same maze as you.'
         }
