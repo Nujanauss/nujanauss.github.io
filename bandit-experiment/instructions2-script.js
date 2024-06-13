@@ -41,5 +41,5 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
       }
     }
-    buttonToNewPage('nextButton2', 'instructions3.html');
+    buttonToNewPage('nextButton2', 'instructions3');
 });
