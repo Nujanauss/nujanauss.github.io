@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
       ageSelect.appendChild(option);
     }
     document.getElementById('final-payment').addEventListener('click', function() {
-      var storedData = sessionStorage.getItem('userData');
+      var storedData = sessionStorage.getItem('playerData');
       var existingData = storedData ? JSON.parse(storedData) : {};
       var additionalUserData = {
           "player": {
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Merge additional user data with existing user data
       existingData.user = Object.assign({}, existingData.user, additionalUserData.user);
       var mergedDataString = JSON.stringify(existingData);
-      sessionStorage.setItem('userData', mergedDataString);
+      sessionStorage.setItem('playerData', mergedDataString);
       window.location.href = 'final';
     });
 });
