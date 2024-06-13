@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         butt.classList.remove('enabled');
         butt.style.cursor = 'not-allowed';
         butt.style.color = 'grey';
-      }, 300);
+      }, 700);
 
       setTimeout(() => {
         butt.disabled = false;
