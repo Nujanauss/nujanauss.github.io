@@ -631,10 +631,10 @@ h3 {
   width:95%;
 }
 
-#final-payment-button-wrapper {
+#final-payment-button-wrapper, #consent-buttons-wrapper {
   margin-bottom: 50px;
 }
-#thanks-title {
+#thanks-title, #consent-first-sentence {
   margin-top: 50px;
 }
 
