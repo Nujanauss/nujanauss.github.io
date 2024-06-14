@@ -19,6 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var genderSelect = document.getElementById('gender');
     var ageSelect = document.getElementById('age');
+    var option = document.createElement('option');
+    option.value = "prefer-not-to-say";
+    option.text = 'Prefer not to say';
+    ageSelect.appendChild(option);
     for (var i = 18; i <= 99; i++) {
       var option = document.createElement('option');
       option.value = i;
@@ -37,8 +41,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Merge additional user data with existing user data
       existingData.player = Object.assign({}, existingData.player, additionalUserData.player);
+      const comment = document.getElementById('comments').value;
+      existingData.comment = comment;
       var mergedDataString = JSON.stringify(existingData);
+
       sessionStorage.setItem('playerData', mergedDataString);
+
+      //sessionStorage.setItem('comment', document.getElementById('comments').value);
       window.location.href = 'final';
     });
 });

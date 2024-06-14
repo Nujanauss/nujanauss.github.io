@@ -316,26 +316,6 @@ ul {
   color: white !important;
 }
 
-.demos {
-  padding-bottom: 30px;
-}
-
-.dropdown-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown {
-  padding: 10px 20px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  border: 3px solid grey;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.1s;
-}
-
 #score-table {
     border-collapse: separate;
     border-spacing: 0;
@@ -636,4 +616,83 @@ h3 {
   right: 5px;
   font-size:20px;
   cursor: pointer;
+}
+
+.thanks-wrapper {
+  overflow: auto !important;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  height: 95vh;
+  margin: auto;
+  width:95%;
+}
+
+#final-payment-button-wrapper {
+  margin-bottom: 50px;
+}
+#thanks-title {
+  margin-top: 50px;
+}
+
+.final-user-input {
+  display: flex;
+  align-items: center; /* Center the comments box vertically */
+  gap: 20px;
+  justify-content: center;
+}
+
+form.demos {
+  display: inline-block;
+  text-align: right;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.comments {
+  display: inline-block;
+  width: 300px;
+}
+
+.comments textarea {
+  width: 100%;
+  height: 100px;
+  resize: none;
+  overflow-y: scroll;
+  font-size: 14px !important;
+  padding: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  border: 3px solid grey;
+  border-radius: 5px;
+  cursor: text;
+  transition: background-color 0.1s;
+}
+
+.demos {
+  padding: 30px;
+}
+
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  padding-left: 10px;
+}
+
+.dropdown {
+  padding: 10px 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  border: 3px solid grey;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.1s;
 }
