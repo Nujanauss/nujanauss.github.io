@@ -1,4 +1,6 @@
-import { getGameSettings, buttonToNewPage } from './shared.js';
+import { getGameSettings, buttonToNewPage, initializeFocusTracker } from './shared.js';
+
+initializeFocusTracker();
 
 document.addEventListener('DOMContentLoaded', async function() {
     var para1 = document.getElementById('one');

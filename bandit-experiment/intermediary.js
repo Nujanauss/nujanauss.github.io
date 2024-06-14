@@ -1,4 +1,6 @@
-import { getScoresSoFar, nextRound } from './shared.js';
+import { getScoresSoFar, nextRound. initializeFocusTracker } from './shared.js';
+
+initializeFocusTracker();
 
 document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);

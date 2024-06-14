@@ -1,4 +1,6 @@
-import { getUrlParameter, getGameSettings } from './shared.js';
+import { getUrlParameter, getGameSettings, initializeFocusTracker } from './shared.js';
+
+initializeFocusTracker();
 
 document.addEventListener('DOMContentLoaded', function() {
   const settings = getGameSettings();

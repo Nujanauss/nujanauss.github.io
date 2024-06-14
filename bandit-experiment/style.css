@@ -662,10 +662,13 @@ form.demos {
 }
 
 .comments textarea {
-  width: 100%;
   height: 100px;
+}
+
+textarea {
+  width: 100%;
+  height: 20px;
   resize: none;
-  overflow-y: scroll;
   font-size: 14px !important;
   padding: 10px;
   font-family: 'Montserrat', sans-serif;

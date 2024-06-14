@@ -1,4 +1,6 @@
-import { getUrlParameter, getScoresSoFar, getComparersScoresSoFar, getGameSettings } from './shared.js';
+import { getUrlParameter, getScoresSoFar, getComparersScoresSoFar, getGameSettings, initializeFocusTracker } from './shared.js';
+
+initializeFocusTracker();
 
 document.addEventListener('DOMContentLoaded', async function() {
     const settings = getGameSettings();

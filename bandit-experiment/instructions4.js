@@ -1,5 +1,6 @@
-import { buttonToNewPage, getGameSettings } from './shared.js';
+import { buttonToNewPage, getGameSettings, initializeFocusTracker } from './shared.js';
 
+initializeFocusTracker();
 const settings = getGameSettings();
 
 if (settings.stochastic) {

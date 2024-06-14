@@ -1,5 +1,7 @@
-import { buttonToNewPage, getGameSettings,  } from './shared.js';
+import { buttonToNewPage, getGameSettings, initializeFocusTracker  } from './shared.js';
 import { create_participant } from './backend_integration.js';
+
+initializeFocusTracker();
 
 document.addEventListener('DOMContentLoaded', async function() {
   const prolificID = 'prolificID';

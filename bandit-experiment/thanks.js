@@ -1,4 +1,6 @@
-import { getUrlParameter, getScoresSoFar, nextRound } from './shared.js';
+import { getUrlParameter, getScoresSoFar, nextRound, initializeFocusTracker } from './shared.js';
+
+initializeFocusTracker();
 
 document.addEventListener('DOMContentLoaded', function() {
     const round = getUrlParameter('round');

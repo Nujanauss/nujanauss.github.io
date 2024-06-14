@@ -64,3 +64,35 @@ function addToInstructionTimings(buttonId, timestamp) {
 
   sessionStorage.setItem('instructionTimings', JSON.stringify(instructionTimings));
 }
+
+export function initializeFocusTracker() {
+  // Initialize focus object in sessionStorage if not already exists
+  if (!sessionStorage.getItem('focus')) {
+    const initialFocus = {};
+    sessionStorage.setItem('focus', JSON.stringify(initialFocus));
+  }
+
+  // Function to update focus data in sessionStorage
+  function updateFocusData(focusType) {
+    const focusData = JSON.parse(sessionStorage.getItem('focus')) || {};
+    const currentTime = new Date().toISOString().split('T')[1];
+    const currentPage = window.location.pathname.split('/').pop(); // Get the current HTML file name
+    if (!focusData[currentPage]) {
+      focusData[currentPage] = {
+        'in-focus': [],
+        'out-focus': []
+      };
+    }
+    focusData[currentPage][focusType].push(currentTime);
+    sessionStorage.setItem('focus', JSON.stringify(focusData));
+  }
+
+  // Event listener for visibility change
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === 'visible') {
+      updateFocusData('in-focus');
+    } else {
+      updateFocusData('out-focus');
+    }
+  });
+}
