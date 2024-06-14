@@ -827,7 +827,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function generateChanceToWinPurple() {
-      return Array.from({ length: movesRemaining }, () => {
+      const totalMoves = rewardsChangeAcrossRounds ? movesRemaining * numberOfRounds : movesRemaining;
+      return Array.from({ length: totalMoves }, (_, index) => {
         return purpleValues.map(row => row.slice()); // deep copy
       });
     }
