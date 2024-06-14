@@ -5,6 +5,16 @@ initializeFocusTracker();
 document.addEventListener('DOMContentLoaded', async function() {
   const settings = getGameSettings();
 
+  if (!settings.binary) {
+    if (settings.stochastic) {
+      document.getElementById('real-thing').innerHTML = 'Now let\'s move onto the real thing. This time there will be some reward associated with every card. However, this reward may change every move.';
+    } else {
+      document.getElementById('real-thing').innerHTML = 'Now let\'s move onto the real thing. This time there will be some reward associated with every card.';
+    }
+  } else {
+    document.getElementById('real-thing').innerHTML = 'Now let\'s move onto the real thing. This time there is some chance that each card will reward you after you select it.';
+  }
+
   const butt = document.getElementById('prebegin1');
   butt.addEventListener('click', generate);
 
