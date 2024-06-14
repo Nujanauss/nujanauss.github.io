@@ -1,4 +1,4 @@
-import { getScoresSoFar, nextRound. initializeFocusTracker } from './shared.js';
+import { getScoresSoFar, nextRound, initializeFocusTracker } from './shared.js';
 
 initializeFocusTracker();
 

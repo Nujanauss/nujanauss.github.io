@@ -19,14 +19,13 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const gridContainer = document.getElementById('grid-container');
     const movesText = document.getElementById('moves');
-    const scoreText = document.getElementById('score');
 
     const initialStochasticValue = 0.5;
     const initialPurpleValue = 0.;
     const round = 1;
     var currentMove = 0;
 
-    const numberOfMoves = trainingSettings.moves;
+    const numberOfMoves = 8;
     const rows = trainingSettings.rows;
     const cols = trainingSettings.cols;
     const decay = trainingSettings.decay;
@@ -50,27 +49,20 @@ document.addEventListener('DOMContentLoaded', async function() {
     let decision = Array(), rewardReceived = Array(), timeStamps = Array();
     setupGrid();
 
-    document.getElementById('trainingOver').innerHTML = 'Score above ' + successScore;
-
     function gameLogic(square) {
-        if (score > successScore) {
+        if (currentMove > 7) {
             return;
         }
-        var additionalScore = revealSquare(square);
+        revealSquare(square);
 
         decision[currentMove] = square;
-        rewardReceived[currentMove] = additionalScore;
         timeStamps[currentMove] = new Date().toISOString().split('T')[1];
 
-        score += additionalScore;
-        currentMove = (currentMove + 1) % numberOfMoves;
+        currentMove = currentMove + 1;
 
-        scoreText.innerHTML = 'Score: ' + score;
-        updateTextColor(scoreText, score, previousScore);
+        movesText.innerHTML = 'Moves left: ' + (numberOfMoves - currentMove);
 
-        previousScore = score;
-
-        if (score > successScore) {
+        if (currentMove > 7) {
           endTrialLogic(successScore, decision, rewardReceived, timeStamps);
         }
     }
@@ -78,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     function endTrialLogic(successScore, decision, rewardReceived, timeStamps) {
       saveTrainingData(decision, rewardReceived, timeStamps);
       document.getElementById('trainingOverBut').classList.remove('gone');
-      document.getElementById('trainingOver').innerHTML = 'Nice! You scored more than ' + successScore;
+      document.getElementById('trainingOver').innerHTML = 'Nice! You selected ' + numberOfMoves + ' cards.';
       buttonToNewPage('trainingOverBut', 'prebegin1');
       return;
     }
@@ -121,7 +113,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         pseudoElement.classList.add('green');
         const text = document.createElement('div');
         text.classList.add('square-score');
-        text.innerHTML = additionalScore;
+        text.innerHTML = '';
         pseudoElement.appendChild(text);
         square.appendChild(pseudoElement);
         square.classList.add('greenish');
@@ -138,7 +130,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         pseudoElement.classList.add('gold');
         const text = document.createElement('div');
         text.classList.add('square-score');
-        text.innerHTML = additionalScore;
+        text.innerHTML = '';
         pseudoElement.appendChild(text);
         square.appendChild(pseudoElement);
         square.classList.add('goldish');
