@@ -44,6 +44,23 @@ export function nextRound() {
 
 export function buttonToNewPage(buttonId, newPageHTML) {
   document.getElementById(buttonId).addEventListener('click', function() {
+    addToInstructionTimings(buttonId, new Date().toISOString().split('T')[1]);
     window.location.href = newPageHTML;
   });
+}
+
+function addToInstructionTimings(buttonId, timestamp) {
+  let instructionTimings = JSON.parse(sessionStorage.getItem('instructionTimings'));
+
+  if (!instructionTimings) {
+    instructionTimings = {
+      instruction: {}
+    };
+  }
+
+  instructionTimings.instruction[buttonId] = {
+    time: timestamp
+  };
+
+  sessionStorage.setItem('instructionTimings', JSON.stringify(instructionTimings));
 }

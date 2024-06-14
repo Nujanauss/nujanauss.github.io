@@ -1,4 +1,4 @@
-import { buttonToNewPage, getGameSettings } from './shared.js';
+import { buttonToNewPage, getGameSettings,  } from './shared.js';
 import { create_participant } from './backend_integration.js';
 
 document.addEventListener('DOMContentLoaded', async function() {
