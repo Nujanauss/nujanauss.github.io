@@ -74,19 +74,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (includeComparison) {
           movesSinceLastComparison++;
           scoreSinceLastComparison += additionalScore;
-          if (Math.random() < probUpwardComparison) { // upward comparison
-            if (!binary) { 
-              comparersScore += Math.round(Math.min(additionalScore + gaussianRandom(comparisonMean, comparisonStdDev), 100));
-            } else if (additionalScore == 0) { // binary: player either scores 0 or greenSquare
-              comparersScore += additionalScore + greenSquareScore;
-            } else {
-              comparersScore += additionalScore;
-            }
-          } else { // downward/lateral comparison
-            if (!binary) {
-              comparersScore += Math.round(Math.max(0, additionalScore - gaussianRandom(comparisonMean, comparisonStdDev)));
-            }
-          }
+          comparersScore += getComparersAdditional();
         }
 
         var idx = numberOfMoves - movesRemaining - 1; // rewrite this out to SOS
@@ -101,24 +89,27 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         previousScore = score;
 
-        if (includeComparison && movesSinceLastComparison == comparisonFrequency) {
-          if (!comparisonOnNewPage && (round % comparisonFrequencyRounds == 0)) {
-            document.getElementById("player-score-since-last-comparison").innerHTML = scoreSinceLastComparison;
-            document.getElementById("comparison-score-since-last-comparison").innerHTML = comparersScore;
-            document.getElementById("comparison-information").classList.remove("gone");
-            document.body.style.cursor = 'none !important';
-            document.getElementById("overlay").style.display = 'block';
-            setTimeout(() => {
-              document.getElementById("read-comparison").style.visibility = 'visible';
-            }, 3000);
-            movesSinceLastComparison = 0;
-            scoreSinceLastComparison = 0;
-            comparersScore = 0;
-          }
+        if (includeComparison && !comparisonOnNewPage && movesSinceLastComparison == comparisonFrequency && (round % comparisonFrequencyRounds == 0)) {
+          blockScreenForComparison();
         }
+
         if (movesRemaining < 1) {
           endTrialLogic(scoresSoFar, comparersScoreSoFar);
         }
+    }
+    
+    function blockScreenForComparison() {
+      document.getElementById("player-score-since-last-comparison").innerHTML = scoreSinceLastComparison;
+      document.getElementById("comparison-score-since-last-comparison").innerHTML = comparersScore;
+      document.getElementById("comparison-information").classList.remove("gone");
+      document.body.style.cursor = 'none !important';
+      document.getElementById("overlay").style.display = 'block';
+      setTimeout(() => {
+        document.getElementById("read-comparison").style.visibility = 'visible';
+      }, 3000);
+      movesSinceLastComparison = 0;
+      scoreSinceLastComparison = 0;
+      comparersScore = 0;
     }
 
     function endTrialLogic(scoresSoFar, comparersScoreSoFar) {
@@ -233,6 +224,58 @@ document.addEventListener('DOMContentLoaded', async function() {
         setTimeout(() => {
             scoreText.style.color = originalColor;
         }, timeout);
+    }
+
+    function getComparersAdditional(playersAdditionalScore) {
+      var randomVal = Math.random();
+      var currentMove = numberOfMoves - movesRemaining - 1;
+      if (settings.rewardsChangeAcrossRounds) {
+        currentMove += ((round - 1) * numberOfMoves);
+      }
+      // upward comparison
+      if (Math.random() < probUpwardComparison) {
+        if (binary) { 
+          return greenSquareScore;
+        }
+        if (settings.comparerUsesAvailableCards) {
+          return getUpwardComparisonAvailableValue(playersAdditionalScore);
+        }
+        return playersAdditionalScore += Math.round(Math.min(additionalScore + gaussianRandom(comparisonMean, comparisonStdDev), 100));
+      }
+      // downward comparison
+      if (binary) {
+        return 0;
+      }
+      if (settings.comparerUsesAvailableCards) {
+        return getDownwardLateralComparisonAvailableValue(playersAdditionalScore);
+      }
+      return playersAdditionalScore += Math.round(Math.max(0, additionalScore - gaussianRandom(comparisonMean, comparisonStdDev)));
+    }
+
+    function getUpwardComparisonAvailableValue(playersAdditionalScore) {
+      const flattenedCombinedArray = [ ...chanceToWin[currentMove].flat(2), ...chanceToWinPurple[currentMove].flat(2) ];
+      if (settings.optimalValueComparison) {
+        return Math.max(...flattenedCombinedArray);
+      } else {
+        var availableScores = shuffleArray(flattenedCombinedArray);
+        for (let value of availableScores) {
+          if (value > playersAdditionalScore) {// first value greater than playersAdditionalScore including purple
+            return value;
+          }
+        }
+      }
+      return playersAdditionalScore + gaussianRandom(10, 2); // just in case
+    }
+    
+    function getDownwardLateralComparisonAvailableValue(playersAdditionalScore) {
+      const flattenedCombinedArray = [ ...chanceToWin[currentMove].flat(2), ...chanceToWinPurple[currentMove].flat(2) ];
+      var availableScores = shuffleArray(flattenedCombinedArray);
+      for (let value of availableScores) {
+        if (value <= playersAdditionalScore) {// first value less than playersAdditionalScore
+          return value;
+        }
+      }
+      return 0; // just in case
     }
 
     function setupGrid() {

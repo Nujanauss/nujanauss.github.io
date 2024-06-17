@@ -16,20 +16,20 @@ document.addEventListener('DOMContentLoaded', function() {
   } else {
     if (!settings.comparisonOnNewPage) {
       if (settings.comparisonFrequency < 2) {
-        document.getElementById('comparison-text').innerHTML = 'Every move, we will show you the average score of another player who played with exactly the same cards as you, with the same rewards.';
+        document.getElementById('comparison-text').innerHTML = 'Every move, we will show you the average score of another player who previously played with exactly the same cards as you.';
       } else {
-        document.getElementById('comparison-text').innerHTML = 'Every ' + settings.comparisonFrequency + ' moves, we will show you the average score of another player who previously played with exactly the same cards as you, with the same rewards.';
+        document.getElementById('comparison-text').innerHTML = 'Every ' + settings.comparisonFrequency + ' moves, we will show you the average score of another player who previously played with exactly the same cards as you.';
       }
     } else {
       if (settings.numberOfRounds > 1) {
         if (settings.numberOfRounds / settings.comparisonFrequencyRounds > 1.999) {
           if (settings.comparisonFrequencyRounds == 1) {
-          document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' trials in total. Every trial, we will show you the average score of another player who played with exactly the same cards as you, with the same rewards.'
+          document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' trials in total. Every trial, we will show you the average score of another player who previously played with exactly the same cards as you.'
           } else {
-            document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' trials in total. Every ' + settings.comparisonFrequencyRounds + ' trials, we will show you the average score of another player who played with exactly the same cards as you, with the same rewards.'
+            document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' trials in total. Every ' + settings.comparisonFrequencyRounds + ' trials, we will show you the average score of another player who previously played with exactly the same cards as you.'
           }
         } else {
-          document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' trials in total. After trial ' + settings.comparisonFrequencyRounds + ' we will show you the average score of another player who played in exactly the same maze as you.'
+          document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' trials in total. After trial ' + settings.comparisonFrequencyRounds + ' we will show you the average score of another player who previously played with exactly the same cards as you.'
         }
       }
     }
