@@ -522,7 +522,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     function getComparersAdditional(playersAdditionalScore) {
       var randomVal = Math.random();
       var currentMove = numberOfMoves - movesRemaining - 1;
-      if (settings.rewardsChangeAcrossRounds) {
+      if (rewardsChangeAcrossRounds) {
         currentMove += ((round - 1) * numberOfMoves);
       }
       // upward comparison
@@ -530,7 +530,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (binary) { 
           return greenSquareScore;
         }
-        if (settings.comparerUsesAvailableCards) {
+        if (useAvailableCards) {
           return getUpwardComparisonAvailableValue(playersAdditionalScore, currentMove);
         }
         return playersAdditionalScore += Math.round(Math.min(additionalScore + gaussianRandom(comparisonMean, comparisonStdDev), 100));
@@ -539,7 +539,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       if (binary) {
         return 0;
       }
-      if (settings.comparerUsesAvailableCards) {
+      if (useAvailableCards) {
         return getDownwardLateralComparisonAvailableValue(playersAdditionalScore, currentMove);
       }
       return playersAdditionalScore += Math.round(Math.max(0, additionalScore - gaussianRandom(comparisonMean, comparisonStdDev)));
