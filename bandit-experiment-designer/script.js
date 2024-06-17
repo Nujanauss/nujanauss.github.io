@@ -147,6 +147,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       numberOfMoves = intTranslation(value);
       comparisonFrequencySlider.max = movesRemaining;
       movesText.innerHTML = 'Moves left: ' + movesRemaining;
+      chanceToWin = generateChanceToWin();
+      chanceToWinPurple = generateChanceToWinPurple();
     }
 
     function updateCols(value) {
@@ -222,12 +224,11 @@ document.addEventListener('DOMContentLoaded', async function() {
       if (value >= movesSlider.value) {
         return;
       }
+      comparisonFrequency = value;
       if (comparisonFrequency > 1) {
-          document.getElementById("no-comparison-trials").innerHTML = comparisonFrequency;
-          document.getElementById("is-trial-plural").innerHTML = "s";
-        } else {
-          document.getElementById("no-comparison-trials").innerHTML = "";
-          document.getElementById("is-trial-plural").innerHTML = "";
+        document.getElementById('no-comparison-trials').innerHTML = comparisonFrequency + ' moves';
+      } else {
+        document.getElementById('no-comparison-trials').innerHTML = 'move';
       }
       comparisonFrequency = value;
     }
@@ -377,7 +378,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (includeComparison) {
           movesSinceLastComparison++;
           scoreSinceLastComparison += additionalScore;
-          comparersScore += getComparersAdditional();
+          comparersScore += getComparersAdditional(additionalScore);
         }
 
         scoreText.innerHTML = 'Score: ' + score;
@@ -549,7 +550,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       const greenChances = chanceToWin[currentMove].flat(2);
       const purpleChances = chanceToWinPurple[currentMove].flat(2);
       
-      if (settings.optimalValueComparison) {
+      if (alwaysOptimalComparison) {
           if (purpleChances.some(chance => chance > 0)) { // purple is always optimal
               return 200;
           } else { // if no purple available
@@ -563,13 +564,13 @@ document.addEventListener('DOMContentLoaded', async function() {
               }
           });
           shuffleArray(availableScores);
-          for (let value of availableScores) { // first value greater than playersAdditionalScore including purple
-              if (value > playersAdditionalScore) {
-                  return value;
+          for (let val of availableScores) { // first value greater than playersAdditionalScore including purple
+              if (val > playersAdditionalScore) {
+                  return val;
               }
           }
       }
-      return playersAdditionalScore + gaussianRandom(10, 2); // just in case
+      return playersAdditionalScore; // just in case
     }
 
     function getDownwardLateralComparisonAvailableValue(playersAdditionalScore, currentMove) {

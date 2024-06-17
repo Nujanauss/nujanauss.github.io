@@ -98,6 +98,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
     
     function blockScreenForComparison() {
+      if (comparisonFrequency > 1) {
+        document.getElementById('no-comparison-trials').innerHTML = comparisonFrequency + ' moves';
+      } else {
+        document.getElementById('no-comparison-trials').innerHTML = 'move';
+      }
       document.getElementById("player-score-since-last-comparison").innerHTML = scoreSinceLastComparison;
       document.getElementById("comparison-score-since-last-comparison").innerHTML = comparersScore;
       document.getElementById("comparison-information").classList.remove("gone");
@@ -269,13 +274,13 @@ document.addEventListener('DOMContentLoaded', async function() {
               }
           });
           shuffleArray(availableScores);
-          for (let value of availableScores) { // first value greater than playersAdditionalScore including purple
-              if (value > playersAdditionalScore) {
-                  return value;
+          for (let val of availableScores) { // first value greater than playersAdditionalScore including purple
+              if (val > playersAdditionalScore) {
+                  return val;
               }
           }
       }
-      return playersAdditionalScore + gaussianRandom(10, 2); // just in case
+      return playersAdditionalScore; // just in case
     }
 
     function getDownwardLateralComparisonAvailableValue(playersAdditionalScore, currentMove) {
