@@ -30,11 +30,13 @@
               <label for="toggle-stochastic-button">Toggle stochastic rewards</label>
               <input class="pointer" type="checkbox" id="toggle-stochastic-button" value="true" checked>
             </div>
-            <label for="decay-slider">Decay λ:</label><br>
+            <label for="std-dev-slider">Std. dev. σ:</label><br>
+            <input class='slider' type="range" id="std-dev-slider" min="0" max="100" value="40"><br>
+            <label for="decay-slider">Mean decay λ:</label><br>
             <input class='slider' type="range" id="decay-slider" min="800" max="1000" value="900"><br>
-            <label for="decay-center-slider">Decay center θ:</label><br>
+            <label for="decay-center-slider">Mean decay center θ:</label><br>
             <input class='slider' type="range" id="decay-center-slider" min="0" max="1000" value="500"><br>
-            <label for="noise-std-dev-slider">Noise std. dev. σ:</label><br>
+            <label for="noise-std-dev-slider">Mean noise std. dev. σ:</label><br>
             <input class='slider' type="range" id="noise-std-dev-slider" min="0" max="100" value="10">
             <label for="round-for-purple-slider">Purple available from round:</label><br>
             <input class='slider' type="range" id="round-for-purple-slider" min="1" max="100" value="1">

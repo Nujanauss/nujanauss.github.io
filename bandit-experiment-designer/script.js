@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const toggleToolsButton = document.getElementById('toggle-tools-button');
     const toggleBinaryButton = document.getElementById('toggle-binary-button');
     const toggleStochasticButton = document.getElementById('toggle-stochastic-button');
+    const stdDevSlider = document.getElementById('std-dev-slider');
     const decaySlider = document.getElementById('decay-slider');
     const decayCenterSlider = document.getElementById('decay-center-slider');
     const noiseStdDevSlider = document.getElementById('noise-std-dev-slider');
@@ -42,6 +43,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     let numberOfMoves = intTranslation(movesSlider.value); // Start with the initial value of the slider
     let rows = intTranslation(gridRowSlider.value);
     let cols = intTranslation(gridColSlider.value);
+    let stdDev = over1000Translation(stdDevSlider.value);
     let decay = over1000Translation(decaySlider.value);
     let decayCenter = over1000Translation(decayCenterSlider.value);
     let noiseStdDev = over1000Translation(noiseStdDevSlider.value);
@@ -99,7 +101,6 @@ document.addEventListener('DOMContentLoaded', async function() {
             document.querySelector(textClass).innerHTML = translatedValue;
             updateFunc(translatedValue);
             if (updateTheCharts) {
-              meanValues = generateMeanValues();
               chanceToWin = generateChanceToWin();
               chanceToWinPurple = generateChanceToWinPurple();
               updateCharts();
@@ -115,6 +116,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     handleSliderInput(gridRowSlider, updateRows, true, intTranslation, ".experiment-text");
     handleSliderInput(numberOfRoundsSlider, updateNumberRounds, false, intTranslation, ".experiment-text");
 
+    handleSliderInput(stdDevSlider, updateStdDev, true, over1000Translation, ".values-text");
     handleSliderInput(decaySlider, updateDecay, true, over1000Translation, ".values-text");
     handleSliderInput(decayCenterSlider, updateDecayCenter, true, over1000Translation, ".values-text");
     handleSliderInput(noiseStdDevSlider, updateNoiseStdDev, true, over1000Translation, ".values-text");
@@ -180,6 +182,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     function updateDecay(value) {
       decay = value;
+    }
+
+    function updateStdDev(value) {
+      stdDev = value;
     }
 
     function updateDecayCenter(value) {
@@ -281,7 +287,6 @@ document.addEventListener('DOMContentLoaded', async function() {
           comparisonMeanSlider.disabled = false;
           comparisonStdDevSlider.disabled = false;
         }
-        meanValues = generateMeanValues();
         chanceToWin = generateChanceToWin();
         updateCharts();
     });
@@ -290,7 +295,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         stochastic = !stochastic;
         stochasticValues = Array.from({ length: rows }, () => Array(cols).fill(stochastic));
         updateCheckboxes();
-        meanValues = generateMeanValues();
         chanceToWin = generateChanceToWin();
         updateCharts();
     });
@@ -437,7 +441,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         const squareY = parseFloat(square.id.split(',')[1]);
         var additionalScore = 0;
         var randomVal = Math.random();
-        var currentMove = numberOfMoves - movesRemaining - 1 
+        var currentMove = numberOfMoves - movesRemaining - 1;
         if (rewardsChangeAcrossRounds) {
           currentMove += ((round - 1) * numberOfMoves);
         }
@@ -642,7 +646,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       });
       slider.addEventListener('input', function(event) {
           var mean = parseFloat(event.target.value);
-          meanValues[y][x] = mean / 1000;
+          meanValues[0][y][x] = mean / 1000;
           chanceToWin = generateChanceToWin();
           updateChart(x, y);
       });
@@ -860,17 +864,17 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function generateMeanValues() {
-        const meanValues = Array.from({ length: rows }, () => Array(cols).fill(initialStochasticValue));
+      const totalMoves = rewardsChangeAcrossRounds ? movesRemaining * numberOfRounds : movesRemaining;
+      const meanValues = Array.from({ length: totalMoves }, () => Array.from({ length: rows }, () => Array(cols).fill(initialStochasticValue)));
+      const squares = document.querySelectorAll('.square');
+      squares.forEach(square => {
+          const [x, y] = square.id.split(',').map(Number);
+          var slider = square.querySelector('.mean-slider');
+          var mean = over1000Translation(slider.value);
+          meanValues[0][y][x] = mean;
+      });
 
-        const squares = document.querySelectorAll('.square');
-        squares.forEach(square => {
-            const [x, y] = square.id.split(',').map(Number);
-            var slider = square.querySelector('.mean-slider');
-            var mean = over1000Translation(slider.value);
-            meanValues[y][x] = mean;
-        });
-
-        return meanValues;
+      return meanValues;
     }
 
     function generateChanceToWinPurple() {
@@ -894,23 +898,24 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function generateChanceToWin() {
+      meanValues = generateMeanValues();
       var noise = 0;
       const totalMoves = rewardsChangeAcrossRounds ? movesRemaining * numberOfRounds : movesRemaining;
-      const chanceToWin = Array.from({ length: totalMoves }, (_, index) => {
-        return meanValues.map(row => row.slice()); // deep copy
-      });
+      const chanceToWin = meanValues; // deep copy
       const lamda = decay;
       const theta = decayCenter;
       for (let move = 1; move < chanceToWin.length; move++) {
           for (let row = 0; row < chanceToWin[move].length; row++) {
               for (let col = 0; col < chanceToWin[move][row].length; col++) {
-                  const currentVal = chanceToWin[move-1][row][col];
+                  const currentMean = meanValues[move-1][row][col];
                   if (stochasticValues[row][col]) {
                     noise = gaussianRandom(0, noiseStdDev);
-                    chanceToWin[move][row][col] = Math.min(100, Math.max(0, lamda * currentVal + (1 - lamda) * theta + noise));
+                    var newMeanValue = Math.min(100, Math.max(0, lamda * currentMean + (1 - lamda) * theta + noise));
+                    meanValues[move][row][col] = newMeanValue;
+                    chanceToWin[move][row][col] = gaussianRandom(newMeanValue, stdDev)
                     continue;
                   }
-                  chanceToWin[move][row][col] = currentVal;
+                  chanceToWin[move][row][col] = currentMean;
               }
           }
       }
@@ -1011,6 +1016,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           moves: numberOfMoves,
           rows: rows,
           cols: cols,
+          stdDev: stdDev,
           decay: decay,
           decayCenter: decayCenter,
           noiseStdDev: noiseStdDev,
