@@ -528,7 +528,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       // upward comparison
       if (Math.random() < probUpwardComparison) {
         if (binary) { 
-          return greenSquareScore;
+          return 10;
         }
         if (useAvailableCards) {
           return getUpwardComparisonAvailableValue(playersAdditionalScore, currentMove);
@@ -551,7 +551,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       
       if (settings.optimalValueComparison) {
           if (purpleChances.some(chance => chance > 0)) { // purple is always optimal
-              return purpleSquareScore;
+              return 200;
           } else { // if no purple available
               return Math.round(Math.max(...greenChances) * 100);
           }
@@ -559,7 +559,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           var availableScores = greenChances.map(value => Math.round(value * 100)); // convert all green chances to scores
           purpleChances.forEach(value => { // same for purple chances
               if (value > 0) {
-                  availableScores.push(purpleSquareScore);
+                  availableScores.push(200);
               }
           });
           shuffleArray(availableScores);
