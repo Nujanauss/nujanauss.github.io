@@ -377,19 +377,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (includeComparison) {
           movesSinceLastComparison++;
           scoreSinceLastComparison += additionalScore;
-          if (Math.random() < probUpwardComparison) { // upward comparison
-            if (!binary) { 
-              comparersScore += Math.round(Math.min(additionalScore + gaussianRandom(comparisonMean, comparisonStdDev), 100));
-            } else if (additionalScore == 0) { // binary: player either scores 0 or greenSquare
-              comparersScore += additionalScore + 10;
-            } else {
-              comparersScore += additionalScore;
-            }
-          } else { // downward/lateral comparison
-            if (!binary) {
-              comparersScore += Math.round(Math.max(0, additionalScore - gaussianRandom(comparisonMean, comparisonStdDev)));
-            }
-          }
+          comparersScore += getComparersAdditional();
         }
 
         scoreText.innerHTML = 'Score: ' + score;
@@ -529,6 +517,70 @@ document.addEventListener('DOMContentLoaded', async function() {
         setTimeout(() => {
             scoreText.style.color = originalColor;
         }, timeout);
+    }
+
+    function getComparersAdditional(playersAdditionalScore) {
+      var randomVal = Math.random();
+      var currentMove = numberOfMoves - movesRemaining - 1;
+      if (settings.rewardsChangeAcrossRounds) {
+        currentMove += ((round - 1) * numberOfMoves);
+      }
+      // upward comparison
+      if (Math.random() < probUpwardComparison) {
+        if (binary) { 
+          return greenSquareScore;
+        }
+        if (settings.comparerUsesAvailableCards) {
+          return getUpwardComparisonAvailableValue(playersAdditionalScore, currentMove);
+        }
+        return playersAdditionalScore += Math.round(Math.min(additionalScore + gaussianRandom(comparisonMean, comparisonStdDev), 100));
+      }
+      // downward comparison
+      if (binary) {
+        return 0;
+      }
+      if (settings.comparerUsesAvailableCards) {
+        return getDownwardLateralComparisonAvailableValue(playersAdditionalScore, currentMove);
+      }
+      return playersAdditionalScore += Math.round(Math.max(0, additionalScore - gaussianRandom(comparisonMean, comparisonStdDev)));
+    }
+
+    function getUpwardComparisonAvailableValue(playersAdditionalScore, currentMove) {
+      const greenChances = chanceToWin[currentMove].flat(2);
+      const purpleChances = chanceToWinPurple[currentMove].flat(2);
+      
+      if (settings.optimalValueComparison) {
+          if (purpleChances.some(chance => chance > 0)) { // purple is always optimal
+              return purpleSquareScore;
+          } else { // if no purple available
+              return Math.round(Math.max(...greenChances) * 100);
+          }
+      } else {
+          availableScores = greenChances.map(value => Math.round(value * 100)); // convert all green chances to scores
+          purpleChances.forEach(value => { // same for purple chances
+              if (value > 0) {
+                  availableScores.push(purpleSquareScore);
+              }
+          });
+          availableScores = shuffleArray(availableScores);
+          for (let value of availableScores) { // first value greater than playersAdditionalScore including purple
+              if (value > playersAdditionalScore) {
+                  return value;
+              }
+          }
+      }
+      return playersAdditionalScore + gaussianRandom(10, 2); // just in case
+    }
+
+    function getDownwardLateralComparisonAvailableValue(playersAdditionalScore, currentMove) {
+      const flattenedCombinedArray = [ ...chanceToWin[currentMove].flat(2), ...chanceToWinPurple[currentMove].flat(2) ];
+      var availableScores = shuffleArray(flattenedCombinedArray);
+      for (let value of availableScores) {
+        if (value <= playersAdditionalScore) {// first value less than playersAdditionalScore
+          return Math.round(value * 100);
+        }
+      }
+      return 0; // just in case
     }
 
     function setupGrid() {

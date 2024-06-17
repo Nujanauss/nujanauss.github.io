@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (includeComparison) {
           movesSinceLastComparison++;
           scoreSinceLastComparison += additionalScore;
-          comparersScore += getComparersAdditional();
+          comparersScore += getComparersAdditional(additionalScore);
         }
 
         var idx = numberOfMoves - movesRemaining - 1; // rewrite this out to SOS
@@ -252,26 +252,39 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function getUpwardComparisonAvailableValue(playersAdditionalScore, currentMove) {
-      const flattenedCombinedArray = [ ...chanceToWin[currentMove].flat(2), ...chanceToWinPurple[currentMove].flat(2) ];
+      const greenChances = chanceToWin[currentMove].flat(2);
+      const purpleChances = chanceToWinPurple[currentMove].flat(2);
+      
       if (settings.optimalValueComparison) {
-        return Math.max(...flattenedCombinedArray);
-      } else {
-        var availableScores = shuffleArray(flattenedCombinedArray);
-        for (let value of availableScores) {
-          if (value > playersAdditionalScore) {// first value greater than playersAdditionalScore including purple
-            return value;
+          if (purpleChances.some(chance => chance > 0)) { // purple is always optimal
+              return purpleSquareScore;
+          } else { // if no purple available
+              return Math.round(Math.max(...greenChances) * 100);
           }
-        }
+      } else {
+          var availableScores = greenChances.map(value => Math.round(value * 100)); // convert all green chances to scores
+          purpleChances.forEach(value => { // same for purple chances
+              if (value > 0) {
+                  availableScores.push(purpleSquareScore);
+              }
+          });
+          shuffleArray(availableScores);
+          for (let value of availableScores) { // first value greater than playersAdditionalScore including purple
+              if (value > playersAdditionalScore) {
+                  return value;
+              }
+          }
       }
       return playersAdditionalScore + gaussianRandom(10, 2); // just in case
     }
-    
+
     function getDownwardLateralComparisonAvailableValue(playersAdditionalScore, currentMove) {
       const flattenedCombinedArray = [ ...chanceToWin[currentMove].flat(2), ...chanceToWinPurple[currentMove].flat(2) ];
-      var availableScores = shuffleArray(flattenedCombinedArray);
-      for (let value of availableScores) {
-        if (value <= playersAdditionalScore) {// first value less than playersAdditionalScore
-          return value;
+      shuffleArray(flattenedCombinedArray);
+      for (let value of flattenedCombinedArray) {
+        var val = Math.round(value * 100);
+        if (val <= playersAdditionalScore) {// first value less than playersAdditionalScore
+          return val;
         }
       }
       return 0; // just in case
