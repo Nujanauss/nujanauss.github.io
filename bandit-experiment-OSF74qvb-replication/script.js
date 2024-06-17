@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function getDownwardLateralComparisonAvailableValue(playersAdditionalScore, currentMove) {
-      const flattenedCombinedArray = [ ...chanceToWin[currentMove].flat(2), ...chanceToWinPurple[currentMove].flat(2) ];
+      const flattenedCombinedArray = [ ...chanceToWin[currentMove].flat(2) ];
       shuffleArray(flattenedCombinedArray);
       for (let value of flattenedCombinedArray) {
         var val = Math.round(value * 100);

@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
   } else {
     if (!settings.comparisonOnNewPage) {
       if (settings.comparisonFrequency < 2) {
-        document.getElementById('comparison-text').innerHTML = 'After every move, we will show you the average score of another player who previously played with exactly the same cards as you.';
+        document.getElementById('comparison-text').innerHTML = 'After every move, we will show you the score of another player who previously played with exactly the same cards as you.';
       } else {
         document.getElementById('comparison-text').innerHTML = 'Every ' + settings.comparisonFrequency + ' moves, we will show you the average score of another player who previously played with exactly the same cards as you.';
       }
