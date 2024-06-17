@@ -28,6 +28,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     const comparisonFrequencyRoundsSlider = document.getElementById('comparison-frequency-rounds-slider');
     const comparisonFrequencySlider = document.getElementById('comparison-frequency-slider');
     const probUpwardComparisonSlider = document.getElementById('prob-upward-comparison-slider');
+    const useAvailableCardsButton = document.getElementById('toggle-use-availble-cards-button');
+    const alwaysOptimalComparisonButton = document.getElementById('toggle-use-optimal-value-always-button');
     const comparisonMeanSlider = document.getElementById('comparison-mean-slider');
     const comparisonStdDevSlider = document.getElementById('comparison-std-dev-slider');
 
@@ -63,6 +65,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     let comparisonFrequency = intTranslation(comparisonFrequencySlider.value);
     let comparisonOnNewPage = comparisonOnNewPageButton.checked;
     let probUpwardComparison = over100Translation(probUpwardComparisonSlider.value);
+    let useAvailableCards = useAvailableCardsButton.checked;
+    let alwaysOptimalComparison = alwaysOptimalComparisonButton.checked;
     let comparisonMean = over10Translation(comparisonMeanSlider.value);
     let comparisonStdDev = over10Translation(comparisonStdDevSlider.value);
 
@@ -75,6 +79,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     comparisonFrequencySlider.disabled = !includeComparison;
     comparisonOnNewPageButton.disabled = !includeComparison;
     probUpwardComparisonSlider.disabled = !includeComparison;
+    alwaysOptimalComparisonButton.disabled = !includeComparison;
+    useAvailableCardsButton.disabled = !includeComparison;
     comparisonMeanSlider.disabled = !includeComparison && binary;
     comparisonStdDevSlider.disabled = !includeComparison && binary;
 
@@ -269,7 +275,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (binary) {
           comparisonMeanSlider.disabled = true;
           comparisonStdDevSlider.disabled = true;
-        } else {
+        } else if (!useAvailableCards){
           comparisonMeanSlider.disabled = false;
           comparisonStdDevSlider.disabled = false;
         }
@@ -310,6 +316,8 @@ document.addEventListener('DOMContentLoaded', async function() {
           comparisonFrequencySlider.disabled = false;
           comparisonOnNewPageButton.disabled = false;
           probUpwardComparisonSlider.disabled = false;
+          alwaysOptimalComparisonButton.disabled = false;
+          useAvailableCardsButton.disabled = false;
           movesSinceLastComparison = 0;
           if (!binary) {
             comparisonMeanSlider.disabled = false;
@@ -320,9 +328,30 @@ document.addEventListener('DOMContentLoaded', async function() {
           comparisonFrequencySlider.disabled = true;
           comparisonOnNewPageButton.disabled = true;
           probUpwardComparisonSlider.disabled = true;
+          alwaysOptimalComparisonButton.disabled = true;
+          useAvailableCardsButton.disabled = true;
           comparisonMeanSlider.disabled = true;
           comparisonStdDevSlider.disabled = true;
         }
+    });
+
+    useAvailableCardsButton.addEventListener('click', function() {
+      useAvailableCards = !useAvailableCards;
+      if (useAvailableCards) {
+        comparisonMeanSlider.disabled = true;
+        comparisonStdDevSlider.disabled = true;
+        alwaysOptimalComparisonButton.disabled = false;
+      } else {
+        alwaysOptimalComparisonButton.disabled = true;
+        if (!binary){
+          comparisonMeanSlider.disabled = false;
+          comparisonStdDevSlider.disabled = false;
+        }
+      }
+    });
+
+    alwaysOptimalComparisonButton.addEventListener('click', function() {
+      alwaysOptimalComparison = !alwaysOptimalComparison;
     });
 
     function getRoundFromURL() {
@@ -969,6 +998,8 @@ document.addEventListener('DOMContentLoaded', async function() {
           comparisonFrequency: comparisonFrequency,
           comparisonOnNewPage: comparisonOnNewPage,
           probUpwardComparison: probUpwardComparison,
+          comparerUsesAvailableCards: useAvailableCards,
+          optimalValueComparison: alwaysOptimalComparison,
           comparisonMean: comparisonMean,
           comparisonStdDev: comparisonStdDev,
           greenSquareScore: 10,

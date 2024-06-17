@@ -75,11 +75,11 @@
           <div class="card-body comparison-body">
             <div class="toggle-button">-</div>
             <div class="inline align-center">
-              <label for="toggle-comparison-button">Social comparison?</label>
+              <label for="toggle-comparison-button">Social comparison</label>
               <input class="pointer" type="checkbox" id="toggle-comparison-button" value="false">
             </div>
             <div class="inline align-center">
-              <label for="toggle-comparison-page-button">Comparison on new page?</label>
+              <label for="toggle-comparison-page-button">Comparison on new page</label>
               <input class="pointer" type="checkbox" id="toggle-comparison-page-button" value="false">
             </div>
             <label for="comparison-frequency-rounds-slider">Frequency (rounds):</label><br>
@@ -88,6 +88,14 @@
             <input class='slider' type="range" id="comparison-frequency-slider" min="1" max="100" value="2">
             <label for="prob-upward-comparison-slider">Prob. upward comparison (per move):</label><br>
             <input class='slider' type="range" id="prob-upward-comparison-slider" min="0" max="100" value="60">
+            <div class="inline align-center">
+              <label for="toggle-use-availble-cards-button">Use only available cards</label>
+              <input class="pointer" type="checkbox" id="toggle-use-availble-cards-button" value="true" checked>
+            </div>
+            <div class="inline align-center">
+              <label for="toggle-use-optimal-value-always-button">Always use optimal card</label>
+              <input class="pointer" type="checkbox" id="toggle-use-optimal-value-always-button" value="false">
+            </div>
             <label for="comparison-mean-slider">Comparison difference mean μ (per move):</label><br>
             <input class='slider' type="range" id="comparison-mean-slider" min="0" max="1000" value="500">
             <label for="comparison-std-dev-slider">Comparison difference std. dev. σ (per move):</label><br>
