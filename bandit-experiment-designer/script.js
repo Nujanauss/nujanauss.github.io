@@ -556,13 +556,13 @@ document.addEventListener('DOMContentLoaded', async function() {
               return Math.round(Math.max(...greenChances) * 100);
           }
       } else {
-          availableScores = greenChances.map(value => Math.round(value * 100)); // convert all green chances to scores
+          var availableScores = greenChances.map(value => Math.round(value * 100)); // convert all green chances to scores
           purpleChances.forEach(value => { // same for purple chances
               if (value > 0) {
                   availableScores.push(purpleSquareScore);
               }
           });
-          availableScores = shuffleArray(availableScores);
+          shuffleArray(availableScores);
           for (let value of availableScores) { // first value greater than playersAdditionalScore including purple
               if (value > playersAdditionalScore) {
                   return value;
@@ -574,10 +574,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     function getDownwardLateralComparisonAvailableValue(playersAdditionalScore, currentMove) {
       const flattenedCombinedArray = [ ...chanceToWin[currentMove].flat(2), ...chanceToWinPurple[currentMove].flat(2) ];
-      var availableScores = shuffleArray(flattenedCombinedArray);
-      for (let value of availableScores) {
-        if (value <= playersAdditionalScore) {// first value less than playersAdditionalScore
-          return Math.round(value * 100);
+      shuffleArray(flattenedCombinedArray);
+      for (let value of flattenedCombinedArray) {
+        var val = Math.round(value * 100);
+        if (val <= playersAdditionalScore) {// first value less than playersAdditionalScore
+          return val;
         }
       }
       return 0; // just in case
