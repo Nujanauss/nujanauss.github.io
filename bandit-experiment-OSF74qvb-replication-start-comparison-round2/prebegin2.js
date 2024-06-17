@@ -17,8 +17,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!settings.comparisonOnNewPage) {
       if (settings.comparisonFrequency < 2) {
         document.getElementById('comparison-text').innerHTML = 'After every move, we will show you the score of another player who previously played with exactly the same cards as you.';
+        if (settings.comparisonFrequencyRounds > 1) {
+          document.getElementById('comparison-text').innerHTML = 'After every move, we will show you the score of another player who previously played with exactly the same cards as you. This may not happen immediately.';
+        }
       } else {
         document.getElementById('comparison-text').innerHTML = 'Every ' + settings.comparisonFrequency + ' moves, we will show you the average score of another player who previously played with exactly the same cards as you.';
+        if (settings.comparisonFrequencyRounds > 1) {
+          document.getElementById('comparison-text').innerHTML = 'Every ' + settings.comparisonFrequency + ' moves, we will show you the average score of another player who previously played with exactly the same cards as you. This may not happen immediately.';
+        }
       }
     } else {
       if (settings.numberOfRounds > 1) {
