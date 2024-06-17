@@ -55,10 +55,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     let rewardsChangeAcrossRounds = rewardsChangeAcrossRoundsButton.checked;
     var meanValues = generateMeanValues();
     var chanceToWin = generateChanceToWin();
-    var chanceToWinPurple = generateChanceToWinPurple();
 
     let numberOfRounds = intTranslation(numberOfRoundsSlider.value);
     let roundsUntilPurple = intTranslation(roundForPurpleSlider.value);
+    var chanceToWinPurple = generateChanceToWinPurple();
 
     let includeComparison = includeComparisonButton.checked;
     let comparisonFrequencyRounds = intTranslation(comparisonFrequencyRoundsSlider.value);
@@ -214,6 +214,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     function updateRoundsUntilPurple(value) {
       roundsUntilPurple = value;
+      chanceToWinPurple = generateChanceToWinPurple();
       updateCharts();
     }
 
@@ -453,7 +454,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
         if (binary) {
             if (randomVal < chanceToWin[currentMove][squareY][squareX]) { // CHANCE TO WIN IS HERE!
-              if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[currentMove][squareY][squareX]) {
+              if (randomVal < chanceToWinPurple[currentMove][squareY][squareX]) {
                 additionalScore = 200;
                 makePurple(square, additionalScore);
               } else {
@@ -462,7 +463,7 @@ document.addEventListener('DOMContentLoaded', async function() {
               }
             }
         } else {
-            if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[currentMove][squareY][squareX]) {
+            if (randomVal < chanceToWinPurple[currentMove][squareY][squareX]) {
                 additionalScore = 200;
                 makePurple(square, additionalScore);
             } else {
@@ -684,31 +685,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 
       // Create data for the chart using chanceToWin values
       const data = chanceToWin.map((row, i) => ({ x: i + 1, y: row[y][x] }));
-
-      // Create and extend purpleData
-      let purpleData = [];
-      if (rewardsChangeAcrossRounds) {
-        // Add zero values until roundsUntilPurple
-        for (let i = 0; i < movesRemaining * (roundsUntilPurple - 1); i++) {
-          purpleData.push({ x: i + 1, y: 0 });
-        }
-
-        // Add actual purple data and repeat as necessary
-        for (let round = roundsUntilPurple - 1; round < numberOfRounds; round++) {
-          for (let i = 0; i < movesRemaining; i++) {
-            const index = i % chanceToWinPurple.length;
-            purpleData.push({ x: purpleData.length + 1, y: chanceToWinPurple[index][y][x] });
-          }
-        }
-      } else {
-        // Repeat the purple data for the number of rounds
-        for (let round = 0; round < numberOfRounds; round++) {
-          for (let i = 0; i < movesRemaining; i++) {
-            const index = i % chanceToWinPurple.length;
-            purpleData.push({ x: purpleData.length + 1, y: chanceToWinPurple[index][y][x] });
-          }
-        }
-      }
+      
+      const purpleData = chanceToWinPurple.map((row, i) => ({ x: i + 1, y: row[y][x] }));
 
       // Set the scales
       const xScale = d3.scaleLinear()
@@ -841,25 +819,24 @@ document.addEventListener('DOMContentLoaded', async function() {
         return meanValues;
     }
 
-    function generatePurpleValues() {
-      const purpleValues = Array.from({ length: rows }, () => Array(cols).fill(initialPurpleValue));
-
-        const squares = document.querySelectorAll('.square');
-        squares.forEach(square => {
-            const [x, y] = square.id.split(',').map(Number);
-            var slider = square.querySelector('.purple-slider');
-            var mean = over1000Translation(slider.value);
-            purpleValues[y][x] = mean;
-        });
-
-        return purpleValues;
-    }
-
     function generateChanceToWinPurple() {
       const totalMoves = rewardsChangeAcrossRounds ? movesRemaining * numberOfRounds : movesRemaining;
-      return Array.from({ length: totalMoves }, (_, index) => {
+      const chanceToWinPurple = Array.from({ length: totalMoves }, (_, index) => {
         return purpleValues.map(row => row.slice()); // deep copy
       });
+      if (roundsUntilPurple < 2) {
+        return chanceToWinPurple;
+      }
+      for (let move = 0; move < chanceToWinPurple.length; move++) {
+          for (let row = 0; row < chanceToWinPurple[move].length; row++) {
+              for (let col = 0; col < chanceToWinPurple[move][row].length; col++) {
+                  if (move < ((roundsUntilPurple - 1) * numberOfMoves)) {
+                    chanceToWinPurple[move][row][col] = 0.;
+                  }
+              }
+          }
+      }
+      return chanceToWinPurple;
     }
 
     function generateChanceToWin() {

@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     const chanceToWinPurple = settings.chanceToWinPurple;
 
     const numberOfRounds = settings.numberOfRounds;
-    const roundsUntilPurple = settings.roundsUntilPurple;
     const includeComparison = settings.includeComparison;
     const comparisonFrequencyRounds = settings.comparisonFrequencyRounds;
     const comparisonFrequency = settings.comparisonFrequency;
@@ -149,7 +148,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
         if (binary) {
             if (randomVal < chanceToWin[currentMove][squareY][squareX]) { // CHANCE TO WIN IS HERE!
-              if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[currentMove][squareY][squareX]) {
+              if (randomVal < chanceToWinPurple[currentMove][squareY][squareX]) {
                 additionalScore = purpleSquareScore;
                 makePurple(square, additionalScore);
               } else {
@@ -158,7 +157,7 @@ document.addEventListener('DOMContentLoaded', async function() {
               }
             }
         } else {
-            if (round >= roundsUntilPurple && randomVal < chanceToWinPurple[currentMove][squareY][squareX]) {
+            if (randomVal < chanceToWinPurple[currentMove][squareY][squareX]) {
                 additionalScore = purpleSquareScore;
                 makePurple(square, additionalScore);
             } else {
@@ -238,7 +237,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           return greenSquareScore;
         }
         if (settings.comparerUsesAvailableCards) {
-          return getUpwardComparisonAvailableValue(playersAdditionalScore);
+          return getUpwardComparisonAvailableValue(playersAdditionalScore, currentMove);
         }
         return playersAdditionalScore += Math.round(Math.min(additionalScore + gaussianRandom(comparisonMean, comparisonStdDev), 100));
       }
@@ -247,12 +246,12 @@ document.addEventListener('DOMContentLoaded', async function() {
         return 0;
       }
       if (settings.comparerUsesAvailableCards) {
-        return getDownwardLateralComparisonAvailableValue(playersAdditionalScore);
+        return getDownwardLateralComparisonAvailableValue(playersAdditionalScore, currentMove);
       }
       return playersAdditionalScore += Math.round(Math.max(0, additionalScore - gaussianRandom(comparisonMean, comparisonStdDev)));
     }
 
-    function getUpwardComparisonAvailableValue(playersAdditionalScore) {
+    function getUpwardComparisonAvailableValue(playersAdditionalScore, currentMove) {
       const flattenedCombinedArray = [ ...chanceToWin[currentMove].flat(2), ...chanceToWinPurple[currentMove].flat(2) ];
       if (settings.optimalValueComparison) {
         return Math.max(...flattenedCombinedArray);
@@ -267,7 +266,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       return playersAdditionalScore + gaussianRandom(10, 2); // just in case
     }
     
-    function getDownwardLateralComparisonAvailableValue(playersAdditionalScore) {
+    function getDownwardLateralComparisonAvailableValue(playersAdditionalScore, currentMove) {
       const flattenedCombinedArray = [ ...chanceToWin[currentMove].flat(2), ...chanceToWinPurple[currentMove].flat(2) ];
       var availableScores = shuffleArray(flattenedCombinedArray);
       for (let value of availableScores) {
