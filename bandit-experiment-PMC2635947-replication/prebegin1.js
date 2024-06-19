@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   if (!settings.binary) {
     if (settings.stochastic) {
-      document.getElementById('real-thing').innerHTML = 'Now let\'s move onto the real thing. This time there will be some reward associated with every card. However, this reward may change every move.';
+      document.getElementById('real-thing').innerHTML = 'Now let\'s move onto the real thing. This time there will be some reward associated with every card. However, this reward may change every trial.';
     } else {
       document.getElementById('real-thing').innerHTML = 'Now let\'s move onto the real thing. This time there will be some reward associated with every card.';
     }

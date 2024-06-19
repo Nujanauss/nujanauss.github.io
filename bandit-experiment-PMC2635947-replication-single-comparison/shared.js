@@ -96,3 +96,41 @@ export function initializeFocusTracker() {
     }
   });
 }
+
+export function checkRefresh() {
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("here");
+    const pathArray = window.location.pathname.split('/');
+    console.log(pathArray);
+    const experimentName = pathArray[1];
+    console.log(experimentName);
+    
+    // Check if the page was refreshed
+    const refreshed = localStorage.getItem('refreshed');
+    console.log(`Refreshed: ${refreshed}`);
+    
+    if (refreshed === 'true') {
+        // Redirect to another page if the page was refreshed
+        window.location.href = '../consent-rescinded.html';
+        return;
+    }
+
+    // Set refreshed flag to true
+    localStorage.setItem('refreshed', 'true');
+  });
+
+  window.addEventListener('beforeunload', () => {
+    // Set a flag in sessionStorage to indicate that the page is being unloaded
+    sessionStorage.setItem('is_unloading', 'true');
+  });
+
+  window.addEventListener('load', () => {
+    // Check if the page was being unloaded
+    if (sessionStorage.getItem('is_unloading') === 'true') {
+      sessionStorage.removeItem('is_unloading');
+    } else {
+      // The page was not being unloaded, hence it was a refresh
+      localStorage.setItem('refreshed', 'false');
+    }
+  });
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid World Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="wrapper">
+      <aside class="check-inter">
+        <div class="padding-50 font-30">Checking test</div>
+        <div class="check">
+            <div id="1" class="question">When I click on a card, it will always reward me.</div>
+            <div class="answers">
+                <label>True <input type="radio" name="question-1" value="true"></label>
+                <label> False <input type="radio" name="question-1" value="false"></label>
+            </div>
+        </div>
+        <div class="check">
+            <div id="2" class="question">How much I receive from a card may change after each trial.</div>
+            <div class="answers">
+                <label>True <input type="radio" name="question-2" value="true"></label>
+                <label> False <input type="radio" name="question-2" value="false"></label>
+            </div>
+        </div>
+        <div class="check">
+            <div id="3" class="question">I must maximise my score on the final round to get the highest bonus.</div>
+            <div class="answers">
+                <label>True <input type="radio" name="question-3" value="true"></label>
+                <label> False <input type="radio" name="question-3" value="false"></label>
+            </div>
+        </div>
+        <div id="final-check" class="check">
+            <div id="4" class="question">n3ssiori played with exactly the same cards as me.</div>
+            <div class="answers">
+                <label>True <input type="radio" name="question-4" value="true"></label>
+                <label> False <input type="radio" name="question-4" value="false"></label>
+            </div>
+        </div>
+      </aside>
+      <div id="correct" class="index-instructions gone">Perfect! When you're ready to play, click Play.</div>
+      <button id="check-next" class="button">Check</button>
+      <div id="error-msg" class="error" style="display: none;"></div>
+    </div>
+    <script type="module" src="check.js"></script>
+    <script type="module" src="backend_integration.js"></script>
+</body>
+</html>

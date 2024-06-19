@@ -68,6 +68,21 @@ body {
   width: 70%;
 }
 
+.consent-checkboxes {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.consent-checkboxes input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.checkbox-label {
+    display: inline-block;
+    flex-grow: 1; /* Allows the label to fill remaining space */
+}
+
 .button-group {
   display: flex;
   flex-flow: row;
@@ -164,8 +179,20 @@ ul {
   padding-top: 20px;
 }
 
+.margin-bottom-10 {
+  margin-bottom: 10px;
+}
+
+.margin-bottom-20 {
+  margin-bottom: 20px;
+}
+
 .font-30 {
   font-size: 30px;
+}
+
+.font-15 {
+  font-size: 15px;
 }
 
 .square {
@@ -244,7 +271,7 @@ ul {
 }
 
 .square-score {
-  font-size: 10px;
+  font-size: 20px;
   color: white;
   animation: explodeAndFade 2s forwards;
 }
@@ -457,35 +484,6 @@ ul {
   100% { transform: rotate(360deg); }
 }
 
-.settings-card {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: rgba(255, 255, 255, 0.6); /* semi-transparent background */
-  border: 1px solid #ccc;
-  padding: 10px;
-  width: 200px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  cursor: move;
-  font-size: 15px;
-  z-index: 1000; /* Ensure it stays above other elements */
-}
-
-.settings-card .settings-header {
-  display: flex;
-  align-items: center;
-}
-
-.comparison-card .comparison-header {
-  display: flex;
-  align-items: center;
-}
-
-.slider {
-  cursor: pointer;
-  background-color: #1F449C;
-}
-
 .pointer {
   cursor: pointer;
 }
@@ -504,72 +502,6 @@ h3 {
   margin: 10px 0px;
 }
 
-.mean-slider {
-  position: absolute;
-  cursor: pointer;
-  width: 100%; /* because we rotate 90 degrees, width is now height */
-  left: 50%;
-  transform: rotate(-90deg); /* Rotation for Firefox and others */
-  visibility: hidden;
-  z-index: 1; /* Ensure it is behind */
-  accent-color: #1F449C;
-}
-
-.purple-slider {
-  position: absolute;
-  cursor: pointer;
-  width: 100%; /* because we rotate 90 degrees, width is now height */
-  transform: rotate(-90deg); /* Rotation for Firefox and others */
-  visibility: hidden;
-  z-index: 1; /* Ensure it is behind */
-  accent-color: #AA3377;
-}
-
-.checkbox-container {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  opacity: 70%;
-  visibility: hidden;
-}
-
-.stochastic-checkbox {
-  cursor: pointer;
-  accent-color: #1F449C;
-}
-
-.purple-checkbox-container {
-  position: absolute;
-  bottom: 5px;
-  left: 5px;
-  opacity: 70%;
-  visibility: hidden;
-}
-
-.purple-checkbox {
-  cursor: pointer;
-  accent-color: #AA3377;
-}
-
-.comparison-card {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(255, 255, 255, 0.6); /* semi-transparent background */
-  border: 1px solid #ccc;
-  padding: 10px;
-  width: 200px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  cursor: move;
-  font-size: 15px;
-  z-index: 1000; /* Ensure it stays above other elements */
-}
-
-.comparison-card .comparison-header {
-  display: flex;
-  align-items: center;
-}
-
 .comparison-text, .values-text {
   color: grey;
   padding: 6px 6px;
@@ -583,6 +515,7 @@ h3 {
 #comparison-information {
   text-align: center;
   position: absolute;
+  padding-top: 0px;
   z-index: 3;
   background-color: white;
   padding: 15px 30px;
@@ -591,6 +524,12 @@ h3 {
   border-color: grey;
   border-width: 2px;
   opacity: 90%;
+  top: -120%;
+}
+
+#comparison-box-first-line {
+  margin: 5px;
+  margin-bottom: 15px;
 }
 
 #overlay {
@@ -601,7 +540,6 @@ h3 {
     height: 100%;
     background: rgba(0, 0, 0, 0.2); /* Optional: semi-transparent background */
     z-index: 3; /* High z-index to cover everything */
-    cursor: none; /* Hide the cursor */
     display: none; /* Initially hidden */
 }
 
@@ -631,11 +569,84 @@ h3 {
   width:95%;
 }
 
+.align-right {
+  text-align: right;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.score-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+.comparison-box-text {
+  margin-bottom: 20px; 
+}
+
+.spacer {
+  flex-grow: 1;
+  margin: 0 5px; /* Adjust as needed to control the space between text and number */
+}
+
+.move-screen-button {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
 #final-payment-button-wrapper, #consent-buttons-wrapper {
   margin-bottom: 50px;
 }
 #thanks-title, #consent-first-sentence {
   margin-top: 50px;
+}
+
+.check-inter {
+  width: auto;
+  text-align: center;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: left;
+  justify-content: center;
+  padding-bottom: 0px;
+}
+.check {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+  text-align: left;
+  font-size: 16px;
+  margin-bottom: 23px;
+}
+.check .question {
+  flex: 1; /* Take up remaining space */
+  margin-right: 10px; /* Space between question and answers */
+}
+.check .answers {
+  display: flex;
+  flex-direction: column; /* Stack answers vertically */
+  text-align: right;
+}
+.check .answers label {
+  margin-bottom: 5px; /* Space between each answer */
+}
+.check .answers input[type="radio"] {
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+.error {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
+#correct {
+  text-align: center;
+  padding-top: 20px;
 }
 
 .final-user-input {

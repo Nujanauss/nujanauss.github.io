@@ -10,35 +10,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (!settings.includeComparison) {
     Array.from(document.getElementsByClassName('hide-on-comparison')).forEach(element => element.style.display = 'none');
-    butt.innerHTML = 'Play';
+    butt.innerHTML = 'Quick check';
     document.getElementById('play-command').style.visibility = 'visible';
     document.getElementById('comparison-text').style.display = 'none';
   } else {
     if (!settings.comparisonOnNewPage) {
       if (settings.comparisonFrequency < 2) {
-        document.getElementById('comparison-text').innerHTML = 'After every move, we will show you the score of another player who previously played with exactly the same cards as you.';
+        document.getElementById('comparison-text').innerHTML = 'After every trial, we will show you the score of another player who previously played with exactly the same cards as you.';
         if (settings.comparisonFrequencyRounds > 1) {
-          document.getElementById('comparison-text').innerHTML = 'After every move, we will show you the score of another player who previously played with exactly the same cards as you. This may not happen immediately.';
+          document.getElementById('comparison-text').innerHTML = 'After every trial, we will show you the score of another player who previously played with exactly the same cards as you. This may not happen immediately.';
         }
       } else {
-        document.getElementById('comparison-text').innerHTML = 'Every ' + settings.comparisonFrequency + ' moves, we will show you the average score of another player who previously played with exactly the same cards as you.';
+        document.getElementById('comparison-text').innerHTML = 'Every ' + settings.comparisonFrequency + ' trials, we will show you the average score of another player who previously played with exactly the same cards as you.';
         if (settings.comparisonFrequencyRounds > 1) {
-          document.getElementById('comparison-text').innerHTML = 'Every ' + settings.comparisonFrequency + ' moves, we will show you the average score of another player who previously played with exactly the same cards as you. This may not happen immediately.';
+          document.getElementById('comparison-text').innerHTML = 'Every ' + settings.comparisonFrequency + ' trials, we will show you the average score of another player who previously played with exactly the same cards as you. This may not happen immediately.';
         }
       }
     } else {
       if (settings.numberOfRounds > 1) {
         if (settings.numberOfRounds / settings.comparisonFrequencyRounds > 2.1) {
           if (settings.comparisonFrequencyRounds == 1) {
-          document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' trials in total. After every trial, we will show you the average score of another player who previously played with exactly the same cards as you.'
+          document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' rounds in total. After every round, we will show you the average score of another player who previously played with exactly the same cards as you.'
           } else {
-            document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' trials in total. After every ' + settings.comparisonFrequencyRounds + ' trials, we will show you the average score of another player who previously played with exactly the same cards as you.'
+            document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' rounds in total. After every ' + settings.comparisonFrequencyRounds + ' rounds, we will show you the average score of another player who previously played with exactly the same cards as you.'
           }
         } else {
           if (settings.comparisonFrequencyRounds == 1) {
-            document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' trials in total. After the first trial, we will show you the average score of another player who previously played with exactly the same cards as you.'
+            document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' rounds in total. After the first round, we will show you the average score of another player who previously played with exactly the same cards as you.'
           } else {
-            document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' trials in total. After trial ' + settings.comparisonFrequencyRounds + ', we will show you the average score of another player who previously played with exactly the same cards as you.'
+            document.getElementById('comparison-text').innerHTML = 'You will play ' + settings.numberOfRounds + ' rounds in total. After round ' + settings.comparisonFrequencyRounds + ', we will show you the average score of another player who previously played with exactly the same cards as you.'
           }
           
         }
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var pressedOnce = false;
   function generate() {
     if (!settings.includeComparison) {
-      window.location.href = 'game?usr=lumi7el';
+      window.location.href = 'check?usr=lumi7el';
       return;
     }
     if (butt.disabled) {
@@ -91,13 +91,13 @@ document.addEventListener('DOMContentLoaded', function() {
       setTimeout(() => {
         document.getElementById('play-command').style.visibility = 'visible';
         butt.disabled = false;
-        butt.innerHTML = 'Play';
+        butt.innerHTML = 'Quick check';
         butt.classList.add('enabled');
         butt.style.color = 'black';
         butt.style.cursor = 'pointer';
       }, 8000);
     } else {
-      window.location.href = 'game?usr=lumi7el&cmr=n3ssiori';
+      window.location.href = 'check?usr=lumi7el&cmr=n3ssiori';
     }
   }
 });

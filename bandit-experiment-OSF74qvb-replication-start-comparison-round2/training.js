@@ -1,9 +1,12 @@
-import { getUrlParameter, getScoresSoFar, getComparersScoresSoFar, getGameSettings, buttonToNewPage, initializeFocusTracker } from './shared.js';
+import { checkRefresh, getUrlParameter, getScoresSoFar, getComparersScoresSoFar, getGameSettings, buttonToNewPage, initializeFocusTracker } from './shared.js';
 
+checkRefresh();
 initializeFocusTracker();
 
 document.addEventListener('DOMContentLoaded', async function() {
     const settings = getGameSettings();
+
+    let isClickable = true;
 
     const trainingSettings = await loadTrainingSettings();
     async function loadTrainingSettings() {
@@ -60,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         currentMove = currentMove + 1;
 
-        movesText.innerHTML = 'Moves left: ' + (numberOfMoves - currentMove);
+        movesText.innerHTML = 'Trials left: ' + (numberOfMoves - currentMove);
 
         if (currentMove > 7) {
           endTrialLogic(successScore, decision, rewardReceived, timeStamps);
@@ -113,7 +116,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         pseudoElement.classList.add('green');
         const text = document.createElement('div');
         text.classList.add('square-score');
-        text.innerHTML = '';
+        text.innerHTML = '0';
         pseudoElement.appendChild(text);
         square.appendChild(pseudoElement);
         square.classList.add('greenish');
@@ -192,7 +195,13 @@ document.addEventListener('DOMContentLoaded', async function() {
       square.style.margin = `${padding / 2}px`;
 
       square.addEventListener('click', function(event) {
-          gameLogic(square);
+          if (isClickable) {
+              isClickable = false;
+              gameLogic(square);
+              setTimeout(() => {
+                  isClickable = true;
+              }, 500); // 500 ms debounce time
+          }
       });
 
       return square;
