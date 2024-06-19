@@ -900,7 +900,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     function generateChanceToWin() {
       meanValues = generateMeanValues();
       var noise = 0;
-      const totalMoves = rewardsChangeAcrossRounds ? movesRemaining * numberOfRounds : movesRemaining;
+      const totalMoves = rewardsChangeAcrossRounds ? movesSlider.value * numberOfRounds : movesSlider.value;
       const chanceToWin = meanValues; // deep copy
       const lamda = decay;
       const theta = decayCenter;

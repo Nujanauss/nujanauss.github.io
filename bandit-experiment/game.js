@@ -1,9 +1,11 @@
-import { getUrlParameter, getScoresSoFar, getComparersScoresSoFar, getGameSettings, initializeFocusTracker } from './shared.js';
+import { checkRefresh, getUrlParameter, getScoresSoFar, getComparersScoresSoFar, getGameSettings, initializeFocusTracker } from './shared.js';
 
 initializeFocusTracker();
 
 document.addEventListener('DOMContentLoaded', async function() {
     const settings = getGameSettings();
+
+    let isClickable = true;
 
     const gridContainer = document.getElementById('grid-container');
     const movesText = document.getElementById('moves');
@@ -47,7 +49,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     setupGrid();
     var round = getRoundFromURL();
 
-    movesText.innerHTML = 'Moves left: ' + movesRemaining;
+    movesText.innerHTML = 'Trials left: ' + movesRemaining;
     const scoresSoFar = getScoresSoFar();
     const comparersScoreSoFar = getComparersScoresSoFar();
 
@@ -83,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         timeStamps[idx] = new Date().toISOString().split('T')[1];
 
         scoreText.innerHTML = 'Score: ' + score;
-        movesText.innerHTML = 'Moves left: ' + movesRemaining;
+        movesText.innerHTML = 'Trials left: ' + movesRemaining;
         updateTextColor(scoreText, score, previousScore);
 
         previousScore = score;
@@ -99,9 +101,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     function blockScreenForComparison() {
       if (comparisonFrequency > 1) {
-        document.getElementById('no-comparison-trials').innerHTML = comparisonFrequency + ' moves';
+        document.getElementById('no-comparison-trials').innerHTML = comparisonFrequency + ' trials,';
       } else {
-        document.getElementById('no-comparison-trials').innerHTML = 'move';
+        document.getElementById('no-comparison-trials').innerHTML = 'trial,';
       }
       document.getElementById("player-score-since-last-comparison").innerHTML = scoreSinceLastComparison;
       document.getElementById("comparison-score-since-last-comparison").innerHTML = comparersScore;
@@ -115,6 +117,12 @@ document.addEventListener('DOMContentLoaded', async function() {
       scoreSinceLastComparison = 0;
       comparersScore = 0;
     }
+
+    document.getElementById("read-comparison").addEventListener('click', function() {
+      overlay.style.display = 'none';
+      document.getElementById("comparison-information").classList.add('gone');
+      document.body.style.cursor = 'move';
+    });
 
     function endTrialLogic(scoresSoFar, comparersScoreSoFar) {
       saveTrainingData(decision, comparison, rewardReceived, timeStamps);
@@ -326,7 +334,13 @@ document.addEventListener('DOMContentLoaded', async function() {
       square.style.margin = `${padding / 2}px`;
 
       square.addEventListener('click', function(event) {
-          gameLogic(square);
+          if (isClickable) {
+              isClickable = false;
+              gameLogic(square);
+              setTimeout(() => {
+                  isClickable = true;
+              }, 500); // 500 ms debounce time
+          }
       });
 
       return square;
@@ -357,12 +371,6 @@ document.addEventListener('DOMContentLoaded', async function() {
           [array[i], array[j]] = [array[j], array[i]];
       }
     }
-    
-    document.getElementById("read-comparison").addEventListener('click', function() {
-      overlay.style.display = 'none';
-      document.getElementById("comparison-information").classList.add('gone');
-      document.body.style.cursor = 'move';
-    });
 
     function gaussianRandom(mean=0, stdev=1) { //stackOverflow
       const u = 1 - Math.random(); // Converting [0,1) to (0,1]
