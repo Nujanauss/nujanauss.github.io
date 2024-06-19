@@ -111,7 +111,7 @@ export function checkRefresh() {
     
     if (refreshed === 'true') {
         // Redirect to another page if the page was refreshed
-        window.location.href = '../consent-rescinded.html';
+        window.location.href = './consent-rescinded.html';
         return;
     }
 
