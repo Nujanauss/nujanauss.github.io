@@ -142,7 +142,6 @@ export function checkRefresh2() {
       window.location.href = './consent-rescinded.html';
       return;
     }
-    localStorage.setItem('refreshed', 'true');
   });
 
   window.addEventListener('keydown', (event) => {
