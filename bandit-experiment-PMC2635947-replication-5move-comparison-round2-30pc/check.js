@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
               answer: answer.value === 'true' ? true : false
             });
           }
-          if (answers.length > 3) {
+          if (new Set(answers.map(item => item.question)).size > 3) {
               submitButton.classList.remove('disabled');
               submitButton.classList.add('enabled');
               submitButton.disabled = false;
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   });
 
-  if (answers.length < 4) {
+  if (new Set(answers.map(item => item.question)).size < 4) {
     submitButton.classList.add('disabled');
     submitButton.disabled = true;
     submitButton.style.cursor = 'not-allowed';
