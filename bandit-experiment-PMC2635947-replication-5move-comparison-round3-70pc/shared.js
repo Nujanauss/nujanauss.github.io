@@ -134,3 +134,57 @@ export function checkRefresh() {
     }
   });
 }
+
+export function checkRefresh2() {
+  document.addEventListener('DOMContentLoaded', () => {
+    const refreshed = localStorage.getItem('refreshed');
+    if (refreshed === 'true') {
+      window.location.href = './consent-rescinded/';
+      return;
+    }
+  });
+
+  window.addEventListener('keydown', (event) => {
+    // Check for F5 (keyCode 116) or Ctrl+R (Ctrl key + R keyCode 82)
+    if (event.keyCode === 116 || (event.ctrlKey && event.keyCode === 82)) {
+      localStorage.setItem('refreshed', 'true');
+    }
+  });
+
+  window.addEventListener('beforeunload', () => {
+    // Set a flag in sessionStorage to indicate that the page is being unloaded
+    sessionStorage.setItem('is_unloading', 'true');
+  });
+
+  window.addEventListener('load', () => {
+    // Check if the page was being unloaded
+    if (sessionStorage.getItem('is_unloading') === 'true') {
+      sessionStorage.removeItem('is_unloading');
+    } else {
+      // The page was not being unloaded, hence it was a refresh
+      localStorage.setItem('refreshed', 'false');
+    }
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      // Reset the refresh flag when the tab is brought back into view
+      localStorage.setItem('refreshed', 'false');
+    }
+  });
+
+  // Function to detect if the refresh button is clicked
+  function detectRefreshButtonClick() {
+    const beforeRefreshUrl = window.location.href;
+    window.addEventListener('unload', () => {
+      setTimeout(() => {
+        const afterRefreshUrl = window.location.href;
+        if (beforeRefreshUrl === afterRefreshUrl) {
+          localStorage.setItem('refreshed', 'true');
+        }
+      }, 0);
+    });
+  }
+
+  detectRefreshButtonClick();
+}

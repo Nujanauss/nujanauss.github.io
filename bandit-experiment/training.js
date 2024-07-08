@@ -1,6 +1,5 @@
-import { checkRefresh2, getUrlParameter, getScoresSoFar, getComparersScoresSoFar, getGameSettings, buttonToNewPage, initializeFocusTracker } from './shared.js';
+import { getUrlParameter, getScoresSoFar, getComparersScoresSoFar, getGameSettings, buttonToNewPage, initializeFocusTracker } from './shared.js';
 
-checkRefresh2();
 initializeFocusTracker();
 
 document.addEventListener('DOMContentLoaded', async function() {

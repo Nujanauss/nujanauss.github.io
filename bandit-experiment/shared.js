@@ -139,7 +139,7 @@ export function checkRefresh2() {
   document.addEventListener('DOMContentLoaded', () => {
     const refreshed = localStorage.getItem('refreshed');
     if (refreshed === 'true') {
-      window.location.href = './consent-rescinded.html';
+      window.location.href = './consent-rescinded/';
       return;
     }
   });
@@ -187,4 +187,15 @@ export function checkRefresh2() {
   }
 
   detectRefreshButtonClick();
+}
+
+export function checkRefresh3() {
+  const pageAccessedByReload = (
+  (window.performance.navigation && window.performance.navigation.type === 1) ||
+    window.performance
+      .getEntriesByType('navigation')
+      .map((nav) => nav.type)
+      .includes('reload')
+  );
+  alert(pageAccessedByReload);
 }
