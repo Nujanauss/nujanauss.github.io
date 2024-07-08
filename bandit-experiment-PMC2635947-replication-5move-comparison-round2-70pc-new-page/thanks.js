@@ -1,5 +1,6 @@
-import { getUrlParameter, getScoresSoFar, nextRound, initializeFocusTracker } from './shared.js';
+import { checkRefresh, getUrlParameter, getScoresSoFar, nextRound, initializeFocusTracker } from './shared.js';
 
+checkRefresh();
 initializeFocusTracker();
 
 document.addEventListener('DOMContentLoaded', function() {

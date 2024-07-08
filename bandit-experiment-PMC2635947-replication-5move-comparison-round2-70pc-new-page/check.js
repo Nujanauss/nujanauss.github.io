@@ -1,6 +1,7 @@
-import { buttonToNewPage, initializeFocusTracker } from './shared.js';
+import { checkRefresh, buttonToNewPage, initializeFocusTracker } from './shared.js';
 import { create_participant, get_prolific_id } from './backend_integration.js';
 
+checkRefresh();
 initializeFocusTracker();
 
 const correctAnswers = [
