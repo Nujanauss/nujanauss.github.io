@@ -106,6 +106,6 @@ export function checkRefresh() {
       .includes('reload')
   );
   if (pageAccessedByReload) {
-    window.location.href = './consent-rescinded/';
+    window.location.href = 'consent-rescinded';
   }
 }
