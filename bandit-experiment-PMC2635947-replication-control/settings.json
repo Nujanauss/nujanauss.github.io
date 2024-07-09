@@ -3637,7 +3637,7 @@
     "includeComparison": false,
     "comparisonFrequencyRounds": 2,
     "comparisonFrequency": 1,
-    "comparisonOnNewPage": true,
+    "comparisonOnNewPage": false,
     "probUpwardComparison": 0.7,
     "comparerUsesAvailableCards": true,
     "optimalValueComparison": false,

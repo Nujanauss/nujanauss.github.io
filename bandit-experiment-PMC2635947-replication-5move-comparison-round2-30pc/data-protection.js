@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   const checkboxes = document.querySelectorAll('.consent-checkboxes input[type="checkbox"]');
 
   checkboxes.forEach(checkbox => {
+      checkbox.style.cursor = 'pointer';
       checkbox.addEventListener('change', () => {
           if (Array.from(checkboxes).every(cb => cb.checked)) {
               submitButton.classList.remove('disabled');

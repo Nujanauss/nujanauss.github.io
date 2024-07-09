@@ -44,6 +44,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     const greenSquareScore = settings.greenSquareScore;
     const purpleSquareScore = settings.purpleSquareScore;
 
+    if (!includeComparison) {
+      document.getElementById("comparer-score-container").classList.remove("score-container");
+      document.getElementById("comparer-score-container").classList.add("gone");
+    }
 
     let score = 0, previousScore = 0, comparersScore = 0;
     let decision = Array(numberOfMoves), rewardReceived = Array(numberOfMoves), comparison = Array(numberOfMoves), timeStamps = Array(numberOfMoves);
@@ -73,11 +77,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         var additionalScore = revealSquare(square);
         score += additionalScore;
 
-        if (includeComparison) {
-          movesSinceLastComparison++;
-          scoreSinceLastComparison += additionalScore;
-          comparersScore += getComparersAdditional(additionalScore);
-        }
+        movesSinceLastComparison++;
+        scoreSinceLastComparison += additionalScore;
+        comparersScore += getComparersAdditional(additionalScore);
 
         var idx = numberOfMoves - movesRemaining - 1; // rewrite this out to SOS
         decision[idx] = square;
@@ -91,7 +93,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         previousScore = score;
 
-        if (includeComparison && !comparisonOnNewPage && movesSinceLastComparison == comparisonFrequency && (round % comparisonFrequencyRounds == 0)) {
+        if (!comparisonOnNewPage && movesSinceLastComparison == comparisonFrequency) {
           blockScreenForComparison();
         }
 
@@ -107,7 +109,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         document.getElementById('no-comparison-trials').innerHTML = 'trial,';
       }
       document.getElementById("player-score-since-last-comparison").innerHTML = scoreSinceLastComparison;
-      document.getElementById("comparison-score-since-last-comparison").innerHTML = comparersScore;
+      if (round % comparisonFrequencyRounds == 0) {
+        document.getElementById("comparison-score-since-last-comparison").innerHTML = comparersScore;
+      } else {
+        document.getElementById("comparison-score-since-last-comparison").innerHTML = '???';
+      }
       document.getElementById("comparison-information").classList.remove("gone");
       document.body.style.cursor = 'none !important';
       document.getElementById("overlay").style.display = 'block';
