@@ -109,10 +109,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         document.getElementById('no-comparison-trials').innerHTML = 'trial,';
       }
       document.getElementById("player-score-since-last-comparison").innerHTML = scoreSinceLastComparison;
-      if (round % comparisonFrequencyRounds == 0) {
-        document.getElementById("comparison-score-since-last-comparison").innerHTML = comparersScore;
+      document.getElementById("comparison-score-since-last-comparison").innerHTML = comparersScore;
+      if (round % comparisonFrequencyRounds == 0) { // if it's not comparison round, then don't show anything
+        document.getElementById("comparer-score-container").classList.add("score-container");
+        document.getElementById("comparer-score-container").classList.remove("gone");
       } else {
-        document.getElementById("comparison-score-since-last-comparison").innerHTML = '???';
+        document.getElementById("comparer-score-container").classList.remove("score-container");
+        document.getElementById("comparer-score-container").classList.add("gone");
       }
       document.getElementById("comparison-information").classList.remove("gone");
       document.body.style.cursor = 'none !important';

@@ -3636,7 +3636,7 @@
     "roundsUntilPurple": 1,
     "includeComparison": false,
     "comparisonFrequencyRounds": 2,
-    "comparisonFrequency": 1,
+    "comparisonFrequency": 5,
     "comparisonOnNewPage": false,
     "probUpwardComparison": 0.7,
     "comparerUsesAvailableCards": true,
