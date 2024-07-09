@@ -1,7 +1,7 @@
 import { checkRefresh, getGameSettings, buttonToNewPage, initializeFocusTracker } from './shared.js';
 import { create_participant, get_prolific_id } from './backend_integration.js';
 
-//checkRefresh();
+checkRefresh();
 initializeFocusTracker();
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -10,33 +10,37 @@ document.addEventListener('DOMContentLoaded', function() {
   let correctAnswers;
   if (settings.includeComparison) {
     correctAnswers = [
-      { question: "1", answer: true },
-      { question: "2", answer: true },
+      { question: "1", answer: !settings.binary },
+      { question: "2", answer: !settings.binary },
       { question: "3", answer: false },
       { question: "4", answer: true }
     ];
   } else {
     document.getElementById('final-check').style.display = 'none';
     correctAnswers = [
-      { question: "1", answer: true },
-      { question: "2", answer: true },
+      { question: "1", answer: !settings.binary },
+      { question: "2", answer: !settings.binary },
       { question: "3", answer: false }
     ];
   }
 
   let answers = [];
+  let checkedAnswerLog = [];
   let questions = document.querySelectorAll('.check');
   questions.forEach(question => {
       let qID = question.querySelector('.question').id;
       question.querySelectorAll('input[type="radio"]').forEach(answer => {
         answer.addEventListener('change', () => {
+          document.getElementById('error-msg').style.visibility = 'hidden';
+          question.querySelector('.question').style.color = '#333';
           if (answer.checked) {
             answers.push({
               question: qID,
-              answer: answer.value === 'true' ? true : false
+              answer: answer.value === 'true' ? true : false,
+              timestamp: new Date().toISOString().split('T')[1]
             });
           }
-          if (new Set(answers.map(item => item.question)).size > correctAnswers.length - 1) {
+          if (new Set(answers.map(item => item.question)).size > correctAnswers.length - 1) { // if we have enough answers, release Check button
               submitButton.classList.remove('disabled');
               submitButton.classList.add('enabled');
               submitButton.disabled = false;
@@ -46,39 +50,36 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   });
 
-  if (new Set(answers.map(item => item.question)).size < correctAnswers.length) {
+  if (new Set(answers.map(item => item.question)).size < correctAnswers.length) { // else cannot Check until all answers complete
     submitButton.classList.add('disabled');
     submitButton.disabled = true;
     submitButton.style.cursor = 'not-allowed';
   }
 
   submitButton.addEventListener('click', () => {
-    let errorMessages = [];
     let questionsChecked = [];
+    checkedAnswerLog.push({timestamp: new Date().toISOString().split('T')[1]});
     for (let i = answers.length - 1; i >= 0; i--) { // work backwards because of updating answers
       let userAnswer = answers[i];
-      let correctAnswer = correctAnswers.find(answer => answer.question === userAnswer.question);
       if (questionsChecked.includes(userAnswer.question)) {
         continue;
       }
       questionsChecked.push(userAnswer.question);
+      let correctAnswer = correctAnswers.find(answer => answer.question === userAnswer.question);
       if (userAnswer.answer !== correctAnswer.answer) {
         let questionElement = document.getElementById(userAnswer.question);
-        let selectedRadio = questionElement.nextElementSibling.querySelector(`input[type="radio"][value="${userAnswer.answer.toString()}"]`);
-
-        if (selectedRadio) {
-          selectedRadio.style.accentColor = 'red';
-        }
-        errorMessages.push(`Question ${i + 1} is incorrect.`);
-        let errorMsg = document.getElementById('error-msg');
-        errorMsg.textContent = 'There was a mistake. Please correct the highlighted answers.';
-        errorMessages.forEach(msg => {
-          errorMsg.textContent += `\n${msg}`;
-        });
+        //let selectedRadio = questionElement.nextElementSibling.querySelector(`input[type="radio"][value="${userAnswer.answer.toString()}"]`);
+        //selectedRadio.style.accentColor = '#b50000';
+        questionElement.style.color = '#b50000';
+        document.getElementById('error-msg').style.visibility = 'visible';
         return;
       }
     }
-    sessionStorage.setItem('checkQuestions', JSON.stringify(answers));
+    let checkQuestions = {
+      answers: answers,
+      checkedAnswerLog: checkedAnswerLog
+    };
+    sessionStorage.setItem('checkQuestions', JSON.stringify(checkQuestions));
     document.getElementById('correct').classList.remove('gone');
     document.getElementById('final-check').style.marginBottom = '0px';
     submitButton.innerHTML = 'Play';
