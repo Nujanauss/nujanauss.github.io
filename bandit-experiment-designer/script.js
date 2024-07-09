@@ -912,7 +912,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     noise = gaussianRandom(0, noiseStdDev);
                     var newMeanValue = Math.min(100, Math.max(0, lamda * currentMean + (1 - lamda) * theta + noise));
                     meanValues[move][row][col] = newMeanValue;
-                    chanceToWin[move][row][col] = gaussianRandom(newMeanValue, stdDev)
+                    chanceToWin[move][row][col] = Math.min(100, Math.max(0, gaussianRandom(newMeanValue, stdDev));
                     continue;
                   }
                   chanceToWin[move][row][col] = currentMean;
