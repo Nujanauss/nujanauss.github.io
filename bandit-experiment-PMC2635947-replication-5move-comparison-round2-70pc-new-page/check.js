@@ -1,18 +1,28 @@
-import { checkRefresh, buttonToNewPage, initializeFocusTracker } from './shared.js';
+import { checkRefresh, getGameSettings, buttonToNewPage, initializeFocusTracker } from './shared.js';
 import { create_participant, get_prolific_id } from './backend_integration.js';
 
-checkRefresh();
+//checkRefresh();
 initializeFocusTracker();
 
-const correctAnswers = [
-    { question: "1", answer: true },
-    { question: "2", answer: true },
-    { question: "3", answer: false },
-    { question: "4", answer: true }
-];
-
 document.addEventListener('DOMContentLoaded', function() {
+  const settings = getGameSettings();
   const submitButton = document.getElementById('check-next');
+  let correctAnswers;
+  if (settings.includeComparison) {
+    correctAnswers = [
+      { question: "1", answer: true },
+      { question: "2", answer: true },
+      { question: "3", answer: false },
+      { question: "4", answer: true }
+    ];
+  } else {
+    document.getElementById('final-check').style.display = 'none';
+    correctAnswers = [
+      { question: "1", answer: true },
+      { question: "2", answer: true },
+      { question: "3", answer: false }
+    ];
+  }
 
   let answers = [];
   let questions = document.querySelectorAll('.check');
@@ -26,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
               answer: answer.value === 'true' ? true : false
             });
           }
-          if (new Set(answers.map(item => item.question)).size > 3) {
+          if (new Set(answers.map(item => item.question)).size > correctAnswers.length - 1) {
               submitButton.classList.remove('disabled');
               submitButton.classList.add('enabled');
               submitButton.disabled = false;
@@ -36,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   });
 
-  if (new Set(answers.map(item => item.question)).size < 4) {
+  if (new Set(answers.map(item => item.question)).size < correctAnswers.length) {
     submitButton.classList.add('disabled');
     submitButton.disabled = true;
     submitButton.style.cursor = 'not-allowed';
