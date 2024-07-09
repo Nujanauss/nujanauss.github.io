@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid World Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="consent-wrapper">
+        <h2 id="consent-first-sentence" class="consent">Data Protection Form for online experiments on cognitive control</h2>
+        <div class="consent">Please click <a href="./static/data-protection-form.pdf">here</a> to view our Data Protection Information Sheet. It is yours to keep.</div>
+        <div class="consent">I have received and taken note of the Data Protection Information Sheet for this study. In doing so, I had sufficient time and opportunity to ask questions about data protection and reconsider my participation in the study. I am aware that:</div>
+        <div class="consent">
+          <ul>
+            <li>The processing and use of the collected data occurs in a pseudoanonymised form within the scope of the legally prescribed provisions. As a general rule, the storage occurs in the form of answered questionnaires, as well as electronic data, for a duration of 10 years or longer, if this is required by the purpose of the study.</li>
+            <li>By providing further personal data in pseudoanonymised form, collected personal data may be used for the preparation of anonymised scientific research work and may also be published and used in an anonymised form in medical journals and scientific publications, so that a direct assignment to my person cannot be established.</li>
+            <li>The information obtained during the course of this study may also be sent in an anonymised form to cooperation partners within the scope of the European General Data Protection Regulation for scientific purposes and to cooperation partners outside of the European Union, i.e. to countries with a lower data protection level (this also applies to the USA).</li>
+            <li>The data collected within the scope of the study can also be used and processed in the future inside of the Max Planck Institute.</li>
+          </ul>
+        </div>
+        <div class="consent">I was informed about my rights. In particular, that at any time:</div>
+        <div class="consent">
+            <ul>
+              <li>I can withdraw this declaration of consent.</li>
+              <li>I can request information about my stored data and request the correction or blocking of data.</li>
+              <li>If I choose to stop participating in this study, I can request that any of my personal data associated with this study are immediately deleted or anonymised.</li>
+              <li>I can request that my personal data are handed out to me or to third parties (if technically feasible).</li>
+            </ul>
+        </div>
+        <div class="consent">I hereby declare that:</div>
+        <div class="consent">
+            <ul>
+              <li>I have been adequately informed about the collection and processing of my personal data and rights.</li>
+              <li>I consent to the collection and processing of personal data within the scope of the study and its pseudoanonymised disclosure, so that only persons conducting the study can establish a link between the data and my person.</li>
+            </ul>
+        </div>
+        <div class="consent">Your online username may be connected to your individual responses, but we will not be asking for any additional personally identifying information, and we will handle responses as confidentially as possible.</div>
+        <div class="consent">We cannot however guarantee the confidentiality of information transmitted over the internet. We will keep deidentified data collected as part of this experiment indefinitely. Data used in scientific publications will remain completely anonymous.</div>
+        <div class="consent consent-checkboxes">
+            <input type="checkbox" id="checkbox-y">
+            <label for="checkbox-y" class="checkbox-label">I agree to participate in this experiment.</label>
+        </div>
+        <div class="consent consent-checkboxes">
+            <input type="checkbox" id="checkbox-z">
+            <label for="checkbox-z" class="checkbox-label">I consent to the use of my data described in the Data Protection Information Sheet and confirm having received a copy of the Data Protection Sheet.</label>
+        </div>
+        <div class="consent consent-checkboxes">
+            <input type="checkbox" id="checkbox-x">
+            <label for="checkbox-x" class="checkbox-label">I consent to data transfer from the MPI for Biological Cybernetics encrypted database to the project-related collaborators: inside of the Max Planck Society and affiliated research institutes, or at partnering institutions like the University of Tuebingen and New York University.</label>
+        </div>
+        <div id="consent-buttons-wrapper" class="consent button-group">
+            <button id="submit-button" class="button small-button disabled" disabled>Submit</button>
+            <button id="data-consent-rescinded" class="button small-button enabled">I do not consent to all of the above</button>
+        </div>
+    </div>
+    <script type="module" src="data-protection.js"></script>
+</body>
+</html>
