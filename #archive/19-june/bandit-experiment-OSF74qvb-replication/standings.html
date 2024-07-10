@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid World Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <aside class="inter">
+          <div class="padding-50 font-30">Highest scores</div>
+          <div class="chart-container">
+              <svg id="barChart" width="400" height="300"></svg>
+          </div>
+          <button id="next" class="button" disabled>Next Round</button>
+        </aside>
+    </div>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script type="module" src="shared.js"></script>
+    <script type="module" src="standings.js"></script>
+</body>
+</html>

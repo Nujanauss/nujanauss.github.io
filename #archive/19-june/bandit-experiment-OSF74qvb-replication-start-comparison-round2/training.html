@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid World Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="grid-info-wrapper">
+          <div id="grid-container"></div>
+          <aside class="info">
+            <div class="box">
+              <div id="score">Score: 0</div>
+              <div id="moves">Trials left: 8</div>
+            </div>
+            <div id="trainingOver" class="padding-top-20 dark-grey-coloured">
+              Press on any of the cards 8 times.
+            </div>
+            <button id="trainingOverBut" class="button enabled gone">Next</button>
+          </aside>
+        </div>
+    </div>
+    <script type="module" src="shared.js"></script>
+    <script type="module" src="training.js"></script>
+</body>
+</html>
