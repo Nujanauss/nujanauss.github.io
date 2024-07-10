@@ -1,4 +1,4 @@
-import { buttonToNewPage, initializeFocusTracker } from './shared.js';
+import { buttonToNewPage, initializeFocusTracker } from '../bandit-experiment/shared.js';
 
 initializeFocusTracker();
 
