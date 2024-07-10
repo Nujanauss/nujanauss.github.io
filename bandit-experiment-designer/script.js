@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function updateFrequencyRounds(value) {
-      if (value >= numberOfRoundsSlider.value) {
+      if (value > numberOfRoundsSlider.value) {
         return;
       }
       numberOfRoundsSlider.min = value;
@@ -341,9 +341,16 @@ document.addEventListener('DOMContentLoaded', async function() {
           alwaysOptimalComparisonButton.disabled = false;
           useAvailableCardsButton.disabled = false;
           movesSinceLastComparison = 0;
-          if (!binary) {
-            comparisonMeanSlider.disabled = false;
-            comparisonStdDevSlider.disabled = false;
+          if (useAvailableCards) {
+            comparisonMeanSlider.disabled = true;
+            comparisonStdDevSlider.disabled = true;
+            alwaysOptimalComparisonButton.disabled = false;
+          } else {
+            alwaysOptimalComparisonButton.disabled = true;
+            if (!binary){
+              comparisonMeanSlider.disabled = false;
+              comparisonStdDevSlider.disabled = false;
+            }
           }
         } else {
           comparisonFrequencyRoundsSlider.disabled = true;
