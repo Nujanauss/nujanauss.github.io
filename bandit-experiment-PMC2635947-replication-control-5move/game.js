@@ -110,10 +110,10 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
       document.getElementById("player-score-since-last-comparison").innerHTML = scoreSinceLastComparison;
       document.getElementById("comparison-score-since-last-comparison").innerHTML = comparersScore;
-      if (round % comparisonFrequencyRounds == 0) { // if it's not comparison round, then don't show anything
+      if (!includeComparison || round % comparisonFrequencyRounds == 0) { // if it's not comparison round, then don't show anything
         document.getElementById("comparer-score-container").classList.add("score-container");
         document.getElementById("comparer-score-container").classList.remove("gone");
-      } else {
+      } else if (includeComparison) { // else it's a comparison round
         document.getElementById("comparer-score-container").classList.remove("score-container");
         document.getElementById("comparer-score-container").classList.add("gone");
       }
