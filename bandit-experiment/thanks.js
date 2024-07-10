@@ -1,4 +1,4 @@
-import { checkRefresh, getUrlParameter, getScoresSoFar, nextRound, initializeFocusTracker } from './shared.js';
+import { checkRefresh, getUrlParameter, getScoresSoFar, nextRound, initializeFocusTracker, getGameSettings } from './shared.js';
 
 checkRefresh();
 initializeFocusTracker();
@@ -8,17 +8,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const finalRound = getUrlParameter('rounds');
     const scores = getScoresSoFar();
 
-    const scoresSum = scores.reduce((total, score) => total + score, 0);
     /*const avgScore = (scoresSum / scores.length).toFixed(1);*/
     const maxScore = Math.max(...scores);
-    var playerRowSum = document.getElementById('player-score-sum');
-    if (playerRowSum) {
-      playerRowSum.innerHTML = scoresSum;
-    }
     var playerRowMax = document.getElementById('player-score-max');
     if (playerRowMax) {
       playerRowMax.innerHTML = maxScore;
     }
+
+    const scoresSum = scores.reduce((total, score) => total + score, 0);
+    var playerRowSum = document.getElementById('player-score-sum');
+    if (playerRowSum) {
+      playerRowSum.innerHTML = scoresSum;
+    }
+
+    let maximumPossible = sumHighestValues(getGameSettings().chanceToWin) * 100;
+    let bonus = 5 * (scoresSum / maximumPossible);
+    document.getElementById('bonus-calculation').innerHTML = '€' + bonus.toFixed(2);
 
     var genderSelect = document.getElementById('gender');
     var ageSelect = document.getElementById('age');
@@ -53,4 +58,15 @@ document.addEventListener('DOMContentLoaded', function() {
       //sessionStorage.setItem('comment', document.getElementById('comments').value);
       window.location.href = 'final';
     });
+
+    function sumHighestValues(chanceToWin) {
+      let sum = 0;
+      for (let i = 0; i < chanceToWin.length; i++) {
+          for (let j = 0; j < chanceToWin[i].length; j++) {
+              let highestValue = Math.max(...chanceToWin[i][j]);
+              sum += highestValue;
+          }
+      }
+      return sum;
+    };
 });
