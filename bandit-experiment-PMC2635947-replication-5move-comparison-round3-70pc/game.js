@@ -103,11 +103,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
     
     function blockScreenForComparison() {
-      if (comparisonFrequency > 1) {
-        document.getElementById('no-comparison-trials').innerHTML = comparisonFrequency + ' trials,';
-      } else {
-        document.getElementById('no-comparison-trials').innerHTML = 'trial,';
-      }
+      document.getElementById('no-comparison-trials').innerHTML = comparisonFrequency > 1 ? comparisonFrequency + ' trials,' : 'trial,';
       document.getElementById("player-score-since-last-comparison").innerHTML = scoreSinceLastComparison;
       document.getElementById("comparison-score-since-last-comparison").innerHTML = comparersScore;
       if (!includeComparison || round % comparisonFrequencyRounds == 0) { // if it's not comparison round, then don't show anything
@@ -120,6 +116,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       document.getElementById("comparison-information").classList.remove("gone");
       document.body.style.cursor = 'none !important';
       document.getElementById("overlay").style.display = 'block';
+
       setTimeout(() => {
         document.getElementById("read-comparison").style.visibility = 'visible';
         document.getElementById("comparison-information").addEventListener('click', function() {
@@ -128,6 +125,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           document.body.style.cursor = 'default';
         });
       }, 3000);
+
       movesSinceLastComparison = 0;
       scoreSinceLastComparison = 0;
       comparersScore = 0;
