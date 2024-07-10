@@ -567,7 +567,7 @@
     "rewardsChangeAcrossRounds": false,
     "numberOfRounds": 5,
     "roundsUntilPurple": 1,
-    "includeComparison": false,
+    "includeComparison": true,
     "comparisonFrequencyRounds": 1,
     "comparisonFrequency": 2,
     "comparisonOnNewPage": false,

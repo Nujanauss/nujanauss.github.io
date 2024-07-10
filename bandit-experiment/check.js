@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
       { question: "1", answer: !settings.binary },
       { question: "2", answer: !settings.binary },
       { question: "3", answer: false },
+      { question: "3a", answer: false },
       { question: "4", answer: true }
     ];
   } else {
@@ -20,7 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
     correctAnswers = [
       { question: "1", answer: !settings.binary },
       { question: "2", answer: !settings.binary },
-      { question: "3", answer: false }
+      { question: "3", answer: false },
+      { question: "3a", answer: false }
     ];
   }
 
