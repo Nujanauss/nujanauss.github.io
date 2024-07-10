@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     const movesSlider = document.getElementById('moves-slider');
     const gridColSlider = document.getElementById('grid-col-slider');
     const gridRowSlider = document.getElementById('grid-row-slider');
+    const idSlider = document.getElementById('id-slider');
+    const toggleNewSampleButton = document.getElementById('toggle-new-sample');
 
     const toggleChartsButton = document.getElementById('toggle-charts-button');
     const toggleToolsButton = document.getElementById('toggle-tools-button');
@@ -43,6 +45,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     let numberOfMoves = intTranslation(movesSlider.value); // Start with the initial value of the slider
     let rows = intTranslation(gridRowSlider.value);
     let cols = intTranslation(gridColSlider.value);
+    let id = intTranslation(idSlider.value);
     let stdDev = over1000Translation(stdDevSlider.value);
     let decay = over1000Translation(decaySlider.value);
     let decayCenter = over1000Translation(decayCenterSlider.value);
@@ -115,6 +118,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     handleSliderInput(gridColSlider, updateCols, true, intTranslation, ".experiment-text");
     handleSliderInput(gridRowSlider, updateRows, true, intTranslation, ".experiment-text");
     handleSliderInput(numberOfRoundsSlider, updateNumberRounds, false, intTranslation, ".experiment-text");
+    handleSliderInput(idSlider, updateID, false, intTranslation, ".experiment-text");
 
     handleSliderInput(stdDevSlider, updateStdDev, true, over1000Translation, ".values-text");
     handleSliderInput(decaySlider, updateDecay, true, over1000Translation, ".values-text");
@@ -167,6 +171,10 @@ document.addEventListener('DOMContentLoaded', async function() {
       purpleValues = Array.from({ length: rows }, () => Array(cols).fill(0.));
       updateCheckboxes();
       setupGrid();
+    }
+
+    function updateID(value) {
+      id = intTranslation(value);
     }
 
     function updateCheckboxes() {
@@ -258,6 +266,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     function updateComparisonStdDev(value) {
       comparisonStdDev = value;
     }
+
+    toggleNewSampleButton.addEventListener('click', function() {
+      setTimeout(function() {
+        toggleNewSampleButton.checked = false;
+      }, 200);
+      chanceToWin = generateChanceToWin();
+      updateCharts();
+    });
 
     toggleChartsButton.addEventListener('click', function() {
         showCharts = !showCharts;
@@ -1013,6 +1029,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     function saveSettings() {
       let settings = {
         vars: {
+          id: id,
           moves: numberOfMoves,
           rows: rows,
           cols: cols,
