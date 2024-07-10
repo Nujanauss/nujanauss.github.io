@@ -98,14 +98,15 @@ export function initializeFocusTracker() {
 }
 
 export function checkRefresh() {
+  const hasConsentRescinded = JSON.parse(sessionStorage.getItem('focus')).hasOwnProperty('consent-rescinded');
   const pageAccessedByReload = (
-  (window.performance.navigation && window.performance.navigation.type === 1) ||
-    window.performance
-      .getEntriesByType('navigation')
-      .map((nav) => nav.type)
-      .includes('reload')
+    (window.performance.navigation && window.performance.navigation.type === 1) ||
+      window.performance
+        .getEntriesByType('navigation')
+        .map((nav) => nav.type)
+        .includes('reload')
   );
-  if (pageAccessedByReload) {
+  if (pageAccessedByReload || hasConsentRescinded) {
     window.location.href = 'consent-rescinded';
   }
 }
