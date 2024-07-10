@@ -615,11 +615,10 @@ h3 {
   padding-bottom: 0px;
 }
 .check {
-  display: grid;
+  display: flex;
   grid-template-columns: auto auto;
   column-gap: 10px;
   align-items: center;
-  margin-bottom: 10px;
   text-align: left;
   font-size: 16px;
   margin-bottom: 23px;
