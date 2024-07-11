@@ -79,12 +79,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         movesSinceLastComparison++;
         scoreSinceLastComparison += additionalScore;
-        comparersScore += getComparersAdditional(additionalScore);
+
+        var comparersAdditionalScore = getComparersAdditional(additionalScore);
+        comparersScore += comparersAdditionalScore;
 
         var idx = numberOfMoves - movesRemaining - 1; // rewrite this out to SOS
         decision[idx] = square;
         rewardReceived[idx] = additionalScore;
-        comparison[idx] = comparersScore;
+        comparison[idx] = comparersAdditionalScore;
         timeStamps[idx] = new Date().toISOString().split('T')[1];
 
         scoreText.innerHTML = 'Score: ' + score;
