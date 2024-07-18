@@ -1,6 +1,8 @@
 import { getUrlParameter, getScoresSoFar, getComparersScoresSoFar } from './shared.js';
 
 document.addEventListener('DOMContentLoaded', async function() {
+    const colorPalette = ['#1F449C', '#AA3377', '#2E8B57', '#FF6347', '#6A5ACD', '#FFA500', '#8A2BE2', '#008080', '#FFD700', '#CD5C5C'];
+
     const gridContainer = document.getElementById('grid-container');
     const movesText = document.getElementById('moves');
     const scoreText = document.getElementById('score');
@@ -658,7 +660,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       const slider = document.createElement('input');
       slider.type = 'range';
       slider.classList.add('mean-slider');
-      slider.min = 0;
+      slider.min = 1;
       slider.max = 1000;
       slider.value = slider.max * initialStochasticValue;
       slider.addEventListener('mousedown', function(event) {
@@ -671,6 +673,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           var mean = parseFloat(event.target.value);
           meanValues[0][y][x] = mean / 1000;
           chanceToWin = generateChanceToWin();
+          updateCompositeChart(x, y);
           updateChart(x, y);
       });
       square.appendChild(slider);
@@ -815,9 +818,11 @@ document.addEventListener('DOMContentLoaded', async function() {
                 .attr('stroke-dasharray', '5,5');
         }
       }
+      addCurveToCompositeChart(data, colorPalette[x], x, y);
     }
 
     function updateCharts() {
+      resetCompositeChart();
       const squares = document.querySelectorAll('.square');
       squares.forEach(square => {
           // Remove existing SVG elements
@@ -933,9 +938,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                   const currentMean = meanValues[move-1][row][col];
                   if (stochasticValues[row][col]) {
                     noise = gaussianRandom(0, noiseStdDev);
-                    var newMeanValue = Math.min(100, Math.max(0, lamda * currentMean + (1 - lamda) * theta + noise));
+                    var newMeanValue = Math.min(1, Math.max(0.01, lamda * currentMean + (1 - lamda) * theta + noise));
                     meanValues[move][row][col] = newMeanValue;
-                    chanceToWin[move][row][col] = Math.min(100, Math.max(0, gaussianRandom(newMeanValue, stdDev)));
+                    chanceToWin[move][row][col] = Math.min(1, Math.max(0.01, gaussianRandom(newMeanValue, stdDev)));
                     continue;
                   }
                   chanceToWin[move][row][col] = currentMean;
@@ -1031,6 +1036,83 @@ document.addEventListener('DOMContentLoaded', async function() {
         toggleCollapse(button.closest('.card-body'));
       });
     });
+    
+    /* COMPOSITE CHART */
+    function initializeCompositeChart() {
+        const compositeSvg = d3.select('body')
+            .append('svg')
+            .attr('id', 'composite-chart')
+            .attr('width', 300)
+            .attr('height', 300)
+            .style('position', 'absolute')
+            .style('bottom', '10px')
+            .style('right', '10px')
+            .style('border', '1px solid #ccc');
+
+        // Create scales for the composite chart
+        compositeSvg.append('g')
+            .attr('class', 'x-axis')
+            .attr('transform', 'translate(0, 290)');
+
+        compositeSvg.append('g')
+            .attr('class', 'y-axis')
+            .attr('transform', 'translate(10, 0)');
+    }
+
+    initializeCompositeChart();
+
+    function addCurveToCompositeChart(data, color, x, y) {
+        const compositeSvg = d3.select('#composite-chart');
+
+        // Set the scales
+        const xScale = d3.scaleLinear()
+            .domain([1, data.length])
+            .range([10, 290]);
+
+        const yScale = d3.scaleLinear()
+            .domain([0, 1])
+            .range([290, 10]);
+
+        // Create the line generator
+        const line = d3.line()
+            .x(d => xScale(d.x))
+            .y(d => yScale(d.y));
+
+        // Append the line path
+        compositeSvg.append('path')
+            .datum(data)
+            .attr('id', `${x}-${y}`)  // Unique ID based on x and y
+            .attr('d', line)
+            .attr('fill', 'none')
+            .attr('stroke', color)
+            .attr('stroke-width', 1.5);
+    }
+    
+    function resetCompositeChart() {
+        // Select the composite chart SVG
+        const compositeSvg = d3.select('#composite-chart');
+
+        // Remove all paths (lines) inside the composite chart
+        compositeSvg.selectAll('path').remove();
+    }
+
+    function updateCompositeChart(x, y) {
+      // Select the specific path to remove based on x and y
+      const compositeSvg = d3.select('#composite-chart');
+      const pathId = `${x}-${y}`;
+      const paths = d3.select('#composite-chart').selectAll('path');
+      const pathToRemove = paths.filter(function() {
+        return d3.select(this).attr('id') === pathId;
+      });
+
+      // Check if the path exists and then remove it
+      if (!pathToRemove.empty()) {
+        pathToRemove.remove();
+      } else {
+        console.warn(`Path with ID ${pathId} not found.`);
+      }
+    }
+
 
      /* SAVE */
     function saveSettings() {
