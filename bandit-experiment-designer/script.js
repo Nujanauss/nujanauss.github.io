@@ -226,6 +226,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           chanceToWin = generateChanceToWin();
           chanceToWinPurple = generateChanceToWinPurple();
           updateCharts();
+          addLinesOrNotToComposite();
         }
       }
     }
@@ -331,6 +332,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         chanceToWin = generateChanceToWin();
         chanceToWinPurple = generateChanceToWinPurple();
         updateCharts();
+        addLinesOrNotToComposite();
     });
 
     includeComparisonButton.addEventListener('click', function() {
@@ -1038,12 +1040,15 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
     
     /* COMPOSITE CHART */
+    const compositeChartHeight = 300;
+    const compositeChartWidth = 300;
+
     function initializeCompositeChart() {
         const compositeSvg = d3.select('body')
             .append('svg')
             .attr('id', 'composite-chart')
-            .attr('width', 300)
-            .attr('height', 300)
+            .attr('width', compositeChartWidth)
+            .attr('height', compositeChartHeight)
             .style('position', 'absolute')
             .style('bottom', '10px')
             .style('right', '10px')
@@ -1110,6 +1115,27 @@ document.addEventListener('DOMContentLoaded', async function() {
         pathToRemove.remove();
       } else {
         console.warn(`Path with ID ${pathId} not found.`);
+      }
+    }
+
+    function addLinesOrNotToComposite() {
+      const compositeSvg = d3.select('#composite-chart');
+      if (rewardsChangeAcrossRounds) {
+        d3.select('#composite-chart').selectAll('line').remove();
+        for (let i = 1; i < numberOfRounds; i++) {
+            const xPosition = (i / numberOfRounds) * compositeChartWidth;
+            compositeSvg.append('line')
+                .attr('x1', xPosition)
+                .attr('y1', 0)
+                .attr('x2', xPosition)
+                .attr('y2', compositeChartHeight)
+                .attr('stroke', '#1F449C')
+                .attr('stroke-opacity', 0.5)
+                .attr('stroke-width', 1)
+                .attr('stroke-dasharray', '5,5');
+        }
+      } else {
+        d3.select('#composite-chart').selectAll('line').remove();
       }
     }
 
