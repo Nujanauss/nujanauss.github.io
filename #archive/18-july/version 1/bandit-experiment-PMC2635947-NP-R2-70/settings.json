@@ -1,7 +1,7 @@
 {
   "vars": {
     "id": 1,
-    "moves": 5,
+    "moves": 50,
     "rows": 1,
     "cols": 4,
     "stdDev": 0.04,
@@ -3635,7 +3635,7 @@
     "rewardsChangeAcrossRounds": true,
     "numberOfRounds": 3,
     "roundsUntilPurple": 1,
-    "includeComparison": false,
+    "includeComparison": true,
     "comparisonFrequencyRounds": 2,
     "comparisonFrequency": 5,
     "comparisonOnNewPage": true,

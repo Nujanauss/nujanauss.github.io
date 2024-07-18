@@ -771,7 +771,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
       // Create data for the chart using chanceToWin values
       const data = chanceToWin.map((row, i) => ({ x: i + 1, y: row[y][x] }));
-      
       const purpleData = chanceToWinPurple.map((row, i) => ({ x: i + 1, y: row[y][x] }));
 
       // Set the scales
