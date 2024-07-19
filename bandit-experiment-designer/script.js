@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     let id = intTranslation(idSlider.value);
     let stdDev = over1000Translation(stdDevSlider.value);
     let decay = over1000Translation(decaySlider.value);
-    let decayCenter = over1000Translation(decayCenterSlider.value);
+    let decayCenter = over100Translation(decayCenterSlider.value);
     let noiseStdDev = over1000Translation(noiseStdDevSlider.value);
     let showCharts = toggleChartsButton.checked;
 
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     handleSliderInput(stdDevSlider, updateStdDev, true, over1000Translation, ".values-text");
     handleSliderInput(decaySlider, updateDecay, true, over1000Translation, ".values-text");
-    handleSliderInput(decayCenterSlider, updateDecayCenter, true, over1000Translation, ".values-text");
+    handleSliderInput(decayCenterSlider, updateDecayCenter, true, over100Translation, ".values-text");
     handleSliderInput(noiseStdDevSlider, updateNoiseStdDev, true, over1000Translation, ".values-text");
     handleSliderInput(roundForPurpleSlider, updateRoundsUntilPurple, false, intTranslation, ".values-text");
 
@@ -674,7 +674,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       slider.addEventListener('input', function(event) {
           var mean = parseFloat(event.target.value);
           meanValues[0][y][x] = mean / 1000;
-          chanceToWin = generateChanceToWin();
+          chanceToWin = generateChanceToWinForXY(x, y);
           updateCompositeChart(x, y);
           updateChart(x, y);
       });
@@ -716,7 +716,7 @@ document.addEventListener('DOMContentLoaded', async function() {
               stochasticValues[y][x] = false;
           }
           chanceToWin = generateChanceToWin();
-          updateChart(x, y);
+          updateCharts();
       });
 
       const checkboxContainer = document.createElement('div');
@@ -746,7 +746,7 @@ document.addEventListener('DOMContentLoaded', async function() {
               document.getElementById(`purple-${x},${y}`).style.visibility = 'hidden';
           }
           chanceToWinPurple = generateChanceToWinPurple();
-          updateChart(x, y);
+          updateCharts();
       });
 
       const checkboxContainer = document.createElement('div');
@@ -893,7 +893,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function generateMeanValues() {
-      const totalMoves = rewardsChangeAcrossRounds ? movesRemaining * numberOfRounds : movesRemaining;
+      const totalMoves = rewardsChangeAcrossRounds ? movesSlider.value * numberOfRounds : movesSlider.value;
       const meanValues = Array.from({ length: totalMoves }, () => Array.from({ length: rows }, () => Array(cols).fill(initialStochasticValue)));
       const squares = document.querySelectorAll('.square');
       squares.forEach(square => {
@@ -905,9 +905,18 @@ document.addEventListener('DOMContentLoaded', async function() {
 
       return meanValues;
     }
+    
+    function updateMeanValuesForXY(x, y, meanValues) {
+      const updateMeanValues = [...meanValues]; // Shallow copy to avoid mutating original meanValues array
+      const square = document.querySelector(`.square[id='${x},${y}']`);
+      var slider = square.querySelector('.mean-slider');
+      var mean = over1000Translation(slider.value);
+      updateMeanValues.forEach(move => move[y][x] = mean);
+      return updateMeanValues;
+    }
 
     function generateChanceToWinPurple() {
-      const totalMoves = rewardsChangeAcrossRounds ? movesRemaining * numberOfRounds : movesRemaining;
+      const totalMoves = rewardsChangeAcrossRounds ? movesSlider.value * numberOfRounds : movesSlider.value;
       const chanceToWinPurple = Array.from({ length: totalMoves }, (_, index) => {
         return purpleValues.map(row => row.slice()); // deep copy
       });
@@ -946,6 +955,26 @@ document.addEventListener('DOMContentLoaded', async function() {
                   }
                   chanceToWin[move][row][col] = currentMean;
               }
+          }
+      }
+      return chanceToWin;
+    }
+
+    function generateChanceToWinForXY(x, y) {
+      meanValues = updateMeanValuesForXY(x, y, meanValues); // Update meanValues only for (x, y)
+      var noise = 0;
+      const totalMoves = rewardsChangeAcrossRounds ? movesSlider.value * numberOfRounds : movesSlider.value;
+      const lamda = decay;
+      const theta = decayCenter;
+      for (let move = 1; move < totalMoves; move++) {
+          const currentMean = meanValues[move - 1][y][x];
+          if (stochasticValues[y][x]) {
+              noise = gaussianRandom(0, noiseStdDev);
+              var newMeanValue = Math.min(1, Math.max(0.01, lamda * currentMean + (1 - lamda) * theta + noise));
+              meanValues[move][y][x] = newMeanValue;
+              chanceToWin[move][y][x] = Math.min(1, Math.max(0.01, gaussianRandom(newMeanValue, stdDev)));
+          } else {
+              chanceToWin[move][y][x] = currentMean;
           }
       }
       return chanceToWin;
