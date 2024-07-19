@@ -1079,8 +1079,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             .attr('height', compositeChartHeight)
             .style('position', 'absolute')
             .style('bottom', '10px')
-            .style('right', '10px')
-            .style('border', '1px solid #ccc');
+            .style('right', '10px');
 
         // Create scales for the composite chart
         compositeSvg.append('g')
