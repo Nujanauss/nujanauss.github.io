@@ -155,13 +155,13 @@ function loadDataProtection() {
 
 function loadInstructions1() {
     const prolificID = 'prolificID-' + Math.round((Math.random() * (10000 - 1) + 1));
-    create_participant(prolificID);
+    const pid = create_participant(prolificID);
 
     settings = getGameSettings();
 
     var playerData = {
       "player": {
-          "prolificID": prolificID,
+          "prolificID": pid,
       }
     };
     sessionStorage.setItem('playerData', JSON.stringify(playerData));
@@ -1513,7 +1513,7 @@ function checkRefresh() {
 // The backend URL is composed of a hostname (localhost for testing, kyblab2.etc
 // for running) and a port (which is specific to a particular experiment)
 // These should be set for each experiment
-const BACKEND_HOST = "http://kyblab2.tuebingen.mpg.de/";
+const BACKEND_HOST = "http://kyblab2.tuebingen.mpg.de";
 const BACKEND_PORT = "8005";
 const BACKEND_URL = `${BACKEND_HOST}:${BACKEND_PORT}`;
 
