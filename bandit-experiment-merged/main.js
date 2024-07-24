@@ -161,7 +161,7 @@ function loadInstructions1() {
 
     var playerData = {
       "player": {
-          "prolificID": pid,
+          "prolificID": prolificID,
       }
     };
     sessionStorage.setItem('playerData', JSON.stringify(playerData));
