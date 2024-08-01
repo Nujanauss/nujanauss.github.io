@@ -154,14 +154,25 @@ function loadDataProtection() {
 }
 
 function loadInstructions1() {
-    const prolificID = 'prolificID-' + Math.round((Math.random() * (10000 - 1) + 1));
+    const TARGET = "PROLIFIC_PID";
+    let params = new URLSearchParams(window.location.search);
+    let prolificID;
+    if (params.has(TARGET)) {
+      prolificID = params.get(TARGET);
+    } else {
+      window.location.href = 'consent-rescinded';
+      return;
+    }
     const pid = create_participant(prolificID);
-
+    if (pid === null || pid === "") {
+      window.location.href = 'consent-rescinded';
+      return;
+    }
     settings = getGameSettings();
 
     var playerData = {
       "player": {
-          "prolificID": prolificID,
+          "prolificID": pid,
       }
     };
     sessionStorage.setItem('playerData', JSON.stringify(playerData));
@@ -1344,7 +1355,8 @@ function loadThanks() {
     }
 
     let maximumPossible = sumHighestValues(settings.chanceToWin) * 100;
-    let bonus = 5 * (scoresSum / maximumPossible);
+    const MAX_BONUS = 3;
+    let bonus = MAX_BONUS * (scoresSum / maximumPossible);
     document.getElementById('bonus-calculation').innerHTML = '€' + bonus.toFixed(2);
 
     var genderSelect = document.getElementById('gender');
@@ -1365,7 +1377,8 @@ function loadThanks() {
       var additionalUserData = {
           "player": {
               "gender": genderSelect.value,
-              "age": ageSelect.value
+              "age": ageSelect.value,
+              "bonus": bonus.toFixed(2)
           }
       };
 
@@ -1405,6 +1418,9 @@ function loadFinal() {
       data[key] = JSON.parse(sessionStorage.getItem(key));
     });
     send_complete(prolificID, JSON.stringify(data, null, 2));
+    setTimeout(() => {
+        window.location = "https://app.prolific.co/submissions/complete?cc=XXXXXXX";
+    }, 6000);
 }
 
 
