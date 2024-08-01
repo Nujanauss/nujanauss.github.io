@@ -154,29 +154,23 @@ function loadDataProtection() {
 }
 
 function loadInstructions1() {
-    const TARGET = "PROLIFIC_PID";
-    let params = new URLSearchParams(window.location.search);
-    let prolificID;
-    if (params.has(TARGET)) {
-      prolificID = params.get(TARGET);
-    } else {
-      window.location.href = 'consent-rescinded';
-      return;
-    }
-    const pid = create_participant(prolificID);
-    if (pid === null || pid === "") {
-      window.location.href = 'consent-rescinded';
-      return;
-    }
-    settings = getGameSettings();
-
-    var playerData = {
-      "player": {
-          "prolificID": pid,
+    let prolificID = get_prolific_id();
+    const pid = create_participant(prolificID).then(id => {
+      if (!id || typeof id !== 'string' || id.trim() === '') {
+        showPage('RESCINDED');
+        return;
       }
-    };
-    sessionStorage.setItem('playerData', JSON.stringify(playerData));
+      var playerData = {
+        "player": {
+            "prolificID": id,
+        }
+      };
+      sessionStorage.setItem('playerData', JSON.stringify(playerData));
+    }).catch(error => {
+      showPage('RESCINDED');
+    });
 
+    settings = getGameSettings();
     if (settings.binary == false) {
         document.getElementById('binary-dependent').innerHTML = 'will';
     }
@@ -1551,12 +1545,17 @@ const COMPLETE_FAILURE_PATH = "complete_failure";
  * @returns A promise of json with the value "id": "SOMERANDOMSTRING" for the
  * new participant, or "id": null if the pid is not unique
  */
-async function create_participant(pid) {
-  const response = await fetch(`${BACKEND_URL}/${CREATE_PATH}/${pid}`, {
+async function create_participant(prolificID) {
+  const response = await fetch(`${BACKEND_URL}/${CREATE_PATH}/${prolificID}`, {
     keepalive: true,
     method: 'POST',
   });
-  return response.json();
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+
+  const data = await response.json();
+  return data.id;
 }
 
 /**
@@ -1617,8 +1616,11 @@ function complete(id, success = true) {
  */
 function get_prolific_id() {
   // parse our prolific user id from URL parameters
-  var queryString = window.location.search;
-  var urlParams = new URLSearchParams(queryString);
-  var prolific_participant_id = urlParams.get('PROLIFIC_PID')
-  return prolific_participant_id
+  const TARGET = "PROLIFIC_PID";
+  let params = new URLSearchParams(window.location.search);
+  if (params.has(TARGET)) {
+    return params.get(TARGET);
+  } else {
+    showPage('RESCINDED');
+  }
 }
