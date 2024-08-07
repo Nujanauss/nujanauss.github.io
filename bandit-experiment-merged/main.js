@@ -65,6 +65,12 @@ function showPage(pageId) {
         case 'RESCINDED':
             loadRescinded();
             break;
+        case 'BEFORE':
+            loadBefore();
+            break;
+        case 'NOPID':
+            loadNoPid();
+            break;
     }
 }
 
@@ -112,7 +118,37 @@ async function loadIndex() {
 }
 
 function loadPreconsent() {
-    buttonToNewPage('second-next', 'CONSENT');
+    document.getElementById('second-next').addEventListener('click', function() {
+      // Try to enter fullscreen mode
+      const enterFullscreen = () => {
+        const element = document.documentElement; // Make the whole document go fullscreen
+        if (element.requestFullscreen) {
+          element.requestFullscreen().catch(err => {
+            console.error(`Fullscreen request failed: ${err}`);
+          });
+        } else if (element.mozRequestFullScreen) { // Firefox
+          element.mozRequestFullScreen().catch(err => {
+            console.error(`Fullscreen request failed: ${err}`);
+          });
+        } else if (element.webkitRequestFullscreen) { // Chrome, Safari and Opera
+          element.webkitRequestFullscreen().catch(err => {
+            console.error(`Fullscreen request failed: ${err}`);
+          });
+        } else if (element.msRequestFullscreen) { // IE/Edge
+          element.msRequestFullscreen().catch(err => {
+            console.error(`Fullscreen request failed: ${err}`);
+          });
+        } else {
+          console.log('Fullscreen API is not supported.');
+        }
+      };
+
+      enterFullscreen(); // Attempt to enter fullscreen mode
+      
+      // Continue with the rest of the code regardless of fullscreen success
+      addToInstructionTimings('second-next', new Date().toISOString().split('T')[1]);
+      showPage('CONSENT');
+    });
 }
 
 function loadConsent() {
@@ -155,9 +191,9 @@ function loadDataProtection() {
 
 function loadInstructions1() {
     let prolificID = get_prolific_id();
-    const pid = create_participant(prolificID).then(id => {
+    create_participant(prolificID).then(id => {
       if (!id || typeof id !== 'string' || id.trim() === '') {
-        showPage('RESCINDED');
+        showPage('BEFORE');
         return;
       }
       var playerData = {
@@ -167,7 +203,7 @@ function loadInstructions1() {
       };
       sessionStorage.setItem('playerData', JSON.stringify(playerData));
     }).catch(error => {
-      showPage('RESCINDED');
+      showPage('BEFORE');
     });
 
     settings = getGameSettings();
@@ -1349,7 +1385,7 @@ function loadThanks() {
     }
 
     let maximumPossible = sumHighestValues(settings.chanceToWin) * 100;
-    const MAX_BONUS = 3;
+    const MAX_BONUS = 2;
     let bonus = MAX_BONUS * (scoresSum / maximumPossible);
     document.getElementById('bonus-calculation').innerHTML = '€' + bonus.toFixed(2);
 
@@ -1404,6 +1440,14 @@ function loadRescinded() {
     
 }
 
+function loadBefore() {
+    
+}
+
+function loadNoPid() {
+    
+}
+
 
 function loadFinal() {
     const prolificID = JSON.parse(sessionStorage.getItem('playerData')).player.prolificID;
@@ -1413,7 +1457,7 @@ function loadFinal() {
     });
     send_complete(prolificID, JSON.stringify(data, null, 2));
     setTimeout(() => {
-        window.location = "https://app.prolific.co/submissions/complete?cc=XXXXXXX";
+        window.location = "https://app.prolific.com/submissions/complete?cc=C10ZGJNX";
     }, 6000);
 }
 
@@ -1515,7 +1559,7 @@ function checkRefresh() {
         .includes('reload')
   );
   if (pageAccessedByReload || hasConsentRescinded) {
-    showPage('RESCINDED');
+    showPage('BEFORE');
   }
 }
 
@@ -1551,7 +1595,7 @@ async function create_participant(prolificID) {
     method: 'POST',
   });
   if (!response.ok) {
-    throw new Error('Network response was not ok');
+    showPage('NOPID');
   }
 
   const data = await response.json();
@@ -1621,6 +1665,6 @@ function get_prolific_id() {
   if (params.has(TARGET)) {
     return params.get(TARGET);
   } else {
-    showPage('RESCINDED');
+    showPage('NOPID');
   }
 }
