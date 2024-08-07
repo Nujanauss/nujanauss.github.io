@@ -1387,7 +1387,7 @@ function loadThanks() {
     let maximumPossible = sumHighestValues(settings.chanceToWin) * 100;
     const MAX_BONUS = 2;
     let bonus = MAX_BONUS * (scoresSum / maximumPossible);
-    document.getElementById('bonus-calculation').innerHTML = '€' + bonus.toFixed(2);
+    document.getElementById('bonus-calculation').innerHTML = '£' + bonus.toFixed(2);
 
     var genderSelect = document.getElementById('gender');
     var ageSelect = document.getElementById('age');
