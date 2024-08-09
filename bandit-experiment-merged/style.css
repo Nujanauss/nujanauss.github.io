@@ -113,13 +113,40 @@ ul {
   justify-content: center;
   position: relative;
   width: 100%;
+  flex-flow: row wrap;
+}
+
+#grid-container {
+  display: grid;
+  margin: 0 20px; /* Center horizontally */
+  order: 2;
+  justify-content: center;
+}
+
+#grid-container-training {
+  display: grid;
+  margin: 0 20px; /* Center horizontally */
+  order: 2;
+  justify-content: center;
+}
+
+.info, .filler {
+  flex: 0 0 auto; /* Prevents flex items from growing or shrinking */
+  width: 190px; /* Initial width, will be overridden */
+}
+
+.filler {
+  display: flex;
+  order: 1;
 }
 
 .info {
-  width: 200px;
-  position: absolute;
-  right: 5%;
+  order: 3;
   text-align: center;
+  height: 100%;
+  min-height: 250px;
+  display: grid;
+  place-items: center;
 }
 
 .box {
@@ -128,25 +155,54 @@ ul {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   padding: 10px;
   text-align: left;
+  grid-row: 1;
+  width: 180px;
 }
 
-#trialOver {
-  text-align: center;
+.box-placed {
+  place-self: end;
+  margin-bottom: 10px;
 }
 
-#trialOverBut {
-  text-align: center;
-  margin-top: 20px;
+@media (min-width: 600px) {
+  .box {
+    font-size: 14px;
+  }
+  #comparison-information {
+    font-size: 14px;
+  }
 }
 
-
-#trainingOverBut {
-  text-align: center;
-  margin-top: 20px;
+/* For screens wider than 900px */
+@media (min-width: 900px) {
+  .box {
+    font-size: 24px;
+  }
+  #comparison-information {
+    font-size: 25px;
+  }
 }
 
-#trainingOver {
+/* For screens wider than 1800px */
+@media (min-width: 1800px) {
+  .box {
+    font-size: 28px;
+  }
+  #comparison-information {
+    font-size: 30px;
+  }
+}
+
+#trialOver, #trainingOver {
   text-align: center;
+  grid-row: 2;
+  place-self: start;
+  margin-top: 10px;
+}
+
+#trialOverBut, #trainingOverBut {
+  text-align: center;
+  grid-row: 3;
 }
 
 .inter {
@@ -156,16 +212,6 @@ ul {
   flex-flow: column wrap;
   align-items: center;
   justify-content: center
-}
-
-#grid-container {
-  display: grid;
-  margin: 0 auto; /* Center horizontally */
-}
-
-#grid-container-training {
-  display: grid;
-  margin: 0 auto; /* Center horizontally */
 }
 
 .padding-10 {
@@ -529,7 +575,7 @@ h3 {
   border-color: grey;
   border-width: 2px;
   opacity: 90%;
-  top: -120%;
+  top: -60%;
 }
 
 #comparison-box-first-line {

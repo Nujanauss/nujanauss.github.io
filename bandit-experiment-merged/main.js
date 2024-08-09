@@ -191,6 +191,9 @@ function loadDataProtection() {
 
 function loadInstructions1() {
     let prolificID = get_prolific_id();
+    if (prolificID === 0) {
+      return;
+    }
     create_participant(prolificID).then(id => {
       if (!id || typeof id !== 'string' || id.trim() === '') {
         showPage('BEFORE');
@@ -203,7 +206,7 @@ function loadInstructions1() {
       };
       sessionStorage.setItem('playerData', JSON.stringify(playerData));
     }).catch(error => {
-      showPage('BEFORE');
+      showPage('NOPID');
     });
 
     settings = getGameSettings();
@@ -820,6 +823,7 @@ async function loadGame() {
     initialise();
 
     function initialise() {
+        document.getElementById('box').classList.remove('box-placed');
         document.getElementById("trialOver").classList.add("gone");
         document.getElementById("trialOverBut").classList.add("gone");
         scoreText.innerHTML = 'Score: ' + score;
@@ -897,6 +901,7 @@ async function loadGame() {
 
     function endTrialLogic(scoresSoFar, comparersScoreSoFar) {
       saveTrainingData(decision, comparison, rewardReceived, timeStamps);
+      document.getElementById('box').classList.add('box-placed');
       document.getElementById("trialOver").classList.remove("gone");
       document.getElementById("trialOverBut").classList.remove("gone");
       scoresSoFar.push(score);
@@ -1666,5 +1671,6 @@ function get_prolific_id() {
     return params.get(TARGET);
   } else {
     showPage('NOPID');
+    return 0;
   }
 }

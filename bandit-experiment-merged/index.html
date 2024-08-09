@@ -48,7 +48,7 @@
                 <li>Have not previously participated in this experiment.</li>
               </ul>
             </div>
-            <div class="consent">This study is designed to look at how people learn how to make decisions to accomplish their goals. In this task, you will be asked to make choices, play games, and answer questions related to those games.  The study will take about 20 minutes and will pay $3 plus a performance-dependent bonus of up to a maximum of $10. The performance bonus is explained in more detail in the instructions that follow.</div>
+            <div class="consent">This study is designed to look at how people learn how to make decisions to accomplish their goals. In this task, you will be asked to make choices, play games, and answer questions related to those games. The study will take about 10 minutes and will pay £1.75 plus a performance-dependent bonus of up to a maximum of £2. The performance bonus is explained in more detail in the instructions that follow.</div>
             <div class="consent">Your participation in this research is voluntary. You may refrain from answering any questions that make you uncomfortable and may withdraw your participation at any time without penalty by exiting this task and alerting the experimenter. You may choose not to complete certain parts of the task or answer certain questions. You may contact us at the address provided below if you have additional questions or concerns.</div>
             <div class="consent">Other than monetary compensation, participating in this study will provide no direct benefits to you. But we hope that this research will benefit society at large by contributing towards establishing a scientific foundation for improving people’s learning and cognitive control abilities.</div>
             <div class="consent">Your online username may be connected to your individual responses, but we will not be asking for any additional personally identifying information, and we will handle responses as confidentially as possible. We cannot however guarantee the confidentiality of information transmitted over the Internet. We will be keeping deidentified data collected as part of this experiment indefinitely. Data used in scientific publications will remain completely anonymous.</div>
@@ -152,7 +152,7 @@
             <div class="progress-bar-container">
               <div class="progress-bar" id="page3"></div>
             </div>
-            <div class="index-instructions">You will begin the task with a bonus of €0.</div>
+            <div class="index-instructions">You will begin the task with a bonus of £0.</div>
             <div class="index-instructions">The more points you score, the higher your bonus will become.</div>
             <div class="index-instructions"><span class="blue-coloured">We will add up all the points you get in all the rounds to calculate your final bonus.</span></div>
             <div class="button-group">
@@ -185,14 +185,15 @@
     <div id="TRAIN" class="w">
         <div class="wrapper">
             <div class="grid-info-wrapper">
+              <aside class="filler"></aside>
               <div id="grid-container-training"></div>
               <aside class="info">
-                <div class="box">
+                <div class="box box-placed">
                   <div id="score-training">Score: 0</div>
                   <div id="moves-training">Trials left: 8</div>
                 </div>
-                <div id="trainingOver" class="padding-top-20 dark-grey-coloured">
-                  Press on any of the cards 8 times.
+                <div id="trainingOver" class="dark-grey-coloured">
+                  Click on any of the cards 8 times.
                 </div>
                 <button id="trainingOverBut" class="button enabled gone">Next</button>
               </aside>
@@ -301,15 +302,14 @@
                   </div>
                   <div id="read-comparison" class="hidden font-15">Press anywhere in the box to continue.</div>
               </div>
+              <aside class="filler"></aside>
               <div id="grid-container"></div>
               <aside class="info">
-                <div class="box">
+                <div id="box" class="box">
                   <div id="score">Score: 0</div>
                   <div id="moves">Trials left: 50</div>
                 </div>
-                <div id="trialOver" class="padding-top-20 dark-grey-coloured gone">
-                  Round over. Click Next to continue.
-                </div>
+                <div class="gone dark-grey-coloured" id="trialOver">Round over. Click Next to continue.</div>
                 <button id="trialOverBut" class="button enabled gone">Next</button>
               </aside>
             </div>
@@ -400,7 +400,7 @@
         <div class="wrapper">
           <aside class="inter">
               <div class="padding-50 font-30">Sorry, you've been here before!</div>
-              <div class="index-instructions">I'm afraid you can only access the experiment once, even you didn't complete it.</div>
+              <div class="index-instructions">I'm afraid you can only access the experiment once, even if you didn't complete it.</div>
               <div class="index-instructions">We hope you have a lovely rest of the day. Feel free to close this window at any time.</div>
           </aside>
         </div>
