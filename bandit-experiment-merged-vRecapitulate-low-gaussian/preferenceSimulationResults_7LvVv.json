@@ -1,0 +1,974 @@
+[
+  {
+    "round_0": [
+      {
+        "trial": 0,
+        "decision": 1,
+        "reward": 9
+      },
+      {
+        "trial": 1,
+        "decision": 0,
+        "reward": 7
+      },
+      {
+        "trial": 2,
+        "decision": 0,
+        "reward": 7
+      },
+      {
+        "trial": 3,
+        "decision": 1,
+        "reward": 8
+      },
+      {
+        "trial": 4,
+        "decision": 1,
+        "reward": 7
+      },
+      {
+        "trial": 5,
+        "decision": 1,
+        "reward": 7
+      },
+      {
+        "trial": 6,
+        "decision": 1,
+        "reward": 8
+      },
+      {
+        "trial": 7,
+        "decision": 1,
+        "reward": 7
+      },
+      {
+        "trial": 8,
+        "decision": 1,
+        "reward": 7
+      },
+      {
+        "trial": 9,
+        "decision": 1,
+        "reward": 9
+      }
+    ]
+  },
+  {
+    "round_1": [
+      {
+        "trial": 0,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 1,
+        "decision": 0,
+        "reward": 6
+      },
+      {
+        "trial": 2,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 3,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 4,
+        "decision": 1,
+        "reward": 7
+      },
+      {
+        "trial": 5,
+        "decision": 0,
+        "reward": 3
+      },
+      {
+        "trial": 6,
+        "decision": 0,
+        "reward": 2
+      },
+      {
+        "trial": 7,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 8,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 9,
+        "decision": 1,
+        "reward": 6
+      }
+    ]
+  },
+  {
+    "round_2": [
+      {
+        "trial": 0,
+        "decision": 1,
+        "reward": 6
+      },
+      {
+        "trial": 1,
+        "decision": 0,
+        "reward": 6
+      },
+      {
+        "trial": 2,
+        "decision": 1,
+        "reward": 4
+      },
+      {
+        "trial": 3,
+        "decision": 1,
+        "reward": 6
+      },
+      {
+        "trial": 4,
+        "decision": 1,
+        "reward": 7
+      },
+      {
+        "trial": 5,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 6,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 7,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 8,
+        "decision": 1,
+        "reward": 4
+      },
+      {
+        "trial": 9,
+        "decision": 0,
+        "reward": 8
+      }
+    ]
+  },
+  {
+    "round_3": [
+      {
+        "trial": 0,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 1,
+        "decision": 0,
+        "reward": 4
+      },
+      {
+        "trial": 2,
+        "decision": 0,
+        "reward": 3
+      },
+      {
+        "trial": 3,
+        "decision": 0,
+        "reward": 4
+      },
+      {
+        "trial": 4,
+        "decision": 0,
+        "reward": 4
+      },
+      {
+        "trial": 5,
+        "decision": 1,
+        "reward": 2
+      },
+      {
+        "trial": 6,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 7,
+        "decision": 0,
+        "reward": 4
+      },
+      {
+        "trial": 8,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 9,
+        "decision": 0,
+        "reward": 5
+      }
+    ]
+  },
+  {
+    "round_4": [
+      {
+        "trial": 0,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 1,
+        "decision": 1,
+        "reward": 4
+      },
+      {
+        "trial": 2,
+        "decision": 1,
+        "reward": 4
+      },
+      {
+        "trial": 3,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 4,
+        "decision": 1,
+        "reward": 4
+      },
+      {
+        "trial": 5,
+        "decision": 0,
+        "reward": 2
+      },
+      {
+        "trial": 6,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 7,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 8,
+        "decision": 0,
+        "reward": 4
+      },
+      {
+        "trial": 9,
+        "decision": 0,
+        "reward": 3
+      }
+    ]
+  },
+  {
+    "round_5": [
+      {
+        "trial": 0,
+        "decision": 0,
+        "reward": 4
+      },
+      {
+        "trial": 1,
+        "decision": 1,
+        "reward": 6
+      },
+      {
+        "trial": 2,
+        "decision": 0,
+        "reward": 3
+      },
+      {
+        "trial": 3,
+        "decision": 0,
+        "reward": 3
+      },
+      {
+        "trial": 4,
+        "decision": 1,
+        "reward": 6
+      },
+      {
+        "trial": 5,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 6,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 7,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 8,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 9,
+        "decision": 1,
+        "reward": 6
+      }
+    ]
+  },
+  {
+    "round_6": [
+      {
+        "trial": 0,
+        "decision": 1,
+        "reward": 4
+      },
+      {
+        "trial": 1,
+        "decision": 1,
+        "reward": 4
+      },
+      {
+        "trial": 2,
+        "decision": 1,
+        "reward": 4
+      },
+      {
+        "trial": 3,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 4,
+        "decision": 1,
+        "reward": 4
+      },
+      {
+        "trial": 5,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 6,
+        "decision": 0,
+        "reward": 2
+      },
+      {
+        "trial": 7,
+        "decision": 0,
+        "reward": 4
+      },
+      {
+        "trial": 8,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 9,
+        "decision": 1,
+        "reward": 3
+      }
+    ]
+  },
+  {
+    "round_7": [
+      {
+        "trial": 0,
+        "decision": 1,
+        "reward": 2
+      },
+      {
+        "trial": 1,
+        "decision": 0,
+        "reward": 7
+      },
+      {
+        "trial": 2,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 3,
+        "decision": 1,
+        "reward": 4
+      },
+      {
+        "trial": 4,
+        "decision": 0,
+        "reward": 7
+      },
+      {
+        "trial": 5,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 6,
+        "decision": 0,
+        "reward": 7
+      },
+      {
+        "trial": 7,
+        "decision": 0,
+        "reward": 6
+      },
+      {
+        "trial": 8,
+        "decision": 0,
+        "reward": 8
+      },
+      {
+        "trial": 9,
+        "decision": 0,
+        "reward": 7
+      }
+    ]
+  },
+  {
+    "round_8": [
+      {
+        "trial": 0,
+        "decision": 1,
+        "reward": 7
+      },
+      {
+        "trial": 1,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 2,
+        "decision": 0,
+        "reward": 9
+      },
+      {
+        "trial": 3,
+        "decision": 1,
+        "reward": 6
+      },
+      {
+        "trial": 4,
+        "decision": 1,
+        "reward": 7
+      },
+      {
+        "trial": 5,
+        "decision": 1,
+        "reward": 7
+      },
+      {
+        "trial": 6,
+        "decision": 1,
+        "reward": 7
+      },
+      {
+        "trial": 7,
+        "decision": 1,
+        "reward": 7
+      },
+      {
+        "trial": 8,
+        "decision": 1,
+        "reward": 7
+      },
+      {
+        "trial": 9,
+        "decision": 0,
+        "reward": 7
+      }
+    ]
+  },
+  {
+    "round_9": [
+      {
+        "trial": 0,
+        "decision": 0,
+        "reward": 6
+      },
+      {
+        "trial": 1,
+        "decision": 1,
+        "reward": 2
+      },
+      {
+        "trial": 2,
+        "decision": 1,
+        "reward": 2
+      },
+      {
+        "trial": 3,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 4,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 5,
+        "decision": 0,
+        "reward": 3
+      },
+      {
+        "trial": 6,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 7,
+        "decision": 0,
+        "reward": 4
+      },
+      {
+        "trial": 8,
+        "decision": 1,
+        "reward": 4
+      },
+      {
+        "trial": 9,
+        "decision": 0,
+        "reward": 3
+      }
+    ]
+  },
+  {
+    "round_10": [
+      {
+        "trial": 0,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 1,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 2,
+        "decision": 0,
+        "reward": 8
+      },
+      {
+        "trial": 3,
+        "decision": 0,
+        "reward": 7
+      },
+      {
+        "trial": 4,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 5,
+        "decision": 0,
+        "reward": 8
+      },
+      {
+        "trial": 6,
+        "decision": 0,
+        "reward": 6
+      },
+      {
+        "trial": 7,
+        "decision": 0,
+        "reward": 8
+      },
+      {
+        "trial": 8,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 9,
+        "decision": 0,
+        "reward": 7
+      }
+    ]
+  },
+  {
+    "round_11": [
+      {
+        "trial": 0,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 1,
+        "decision": 0,
+        "reward": 4
+      },
+      {
+        "trial": 2,
+        "decision": 0,
+        "reward": 4
+      },
+      {
+        "trial": 3,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 4,
+        "decision": 1,
+        "reward": 4
+      },
+      {
+        "trial": 5,
+        "decision": 0,
+        "reward": 4
+      },
+      {
+        "trial": 6,
+        "decision": 0,
+        "reward": 2
+      },
+      {
+        "trial": 7,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 8,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 9,
+        "decision": 1,
+        "reward": 2
+      }
+    ]
+  },
+  {
+    "round_12": [
+      {
+        "trial": 0,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 1,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 2,
+        "decision": 0,
+        "reward": 4
+      },
+      {
+        "trial": 3,
+        "decision": 0,
+        "reward": 6
+      },
+      {
+        "trial": 4,
+        "decision": 1,
+        "reward": 2
+      },
+      {
+        "trial": 5,
+        "decision": 0,
+        "reward": 6
+      },
+      {
+        "trial": 6,
+        "decision": 0,
+        "reward": 3
+      },
+      {
+        "trial": 7,
+        "decision": 1,
+        "reward": 2
+      },
+      {
+        "trial": 8,
+        "decision": 1,
+        "reward": 2
+      },
+      {
+        "trial": 9,
+        "decision": 1,
+        "reward": 3
+      }
+    ]
+  },
+  {
+    "round_13": [
+      {
+        "trial": 0,
+        "decision": 0,
+        "reward": 7
+      },
+      {
+        "trial": 1,
+        "decision": 0,
+        "reward": 6
+      },
+      {
+        "trial": 2,
+        "decision": 1,
+        "reward": 4
+      },
+      {
+        "trial": 3,
+        "decision": 1,
+        "reward": 6
+      },
+      {
+        "trial": 4,
+        "decision": 0,
+        "reward": 6
+      },
+      {
+        "trial": 5,
+        "decision": 1,
+        "reward": 6
+      },
+      {
+        "trial": 6,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 7,
+        "decision": 0,
+        "reward": 8
+      },
+      {
+        "trial": 8,
+        "decision": 1,
+        "reward": 7
+      },
+      {
+        "trial": 9,
+        "decision": 1,
+        "reward": 4
+      }
+    ]
+  },
+  {
+    "round_14": [
+      {
+        "trial": 0,
+        "decision": 1,
+        "reward": 4
+      },
+      {
+        "trial": 1,
+        "decision": 1,
+        "reward": 4
+      },
+      {
+        "trial": 2,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 3,
+        "decision": 1,
+        "reward": 6
+      },
+      {
+        "trial": 4,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 5,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 6,
+        "decision": 0,
+        "reward": 7
+      },
+      {
+        "trial": 7,
+        "decision": 0,
+        "reward": 7
+      },
+      {
+        "trial": 8,
+        "decision": 1,
+        "reward": 3
+      },
+      {
+        "trial": 9,
+        "decision": 0,
+        "reward": 5
+      }
+    ]
+  },
+  {
+    "round_15": [
+      {
+        "trial": 0,
+        "decision": 0,
+        "reward": 8
+      },
+      {
+        "trial": 1,
+        "decision": 0,
+        "reward": 9
+      },
+      {
+        "trial": 2,
+        "decision": 0,
+        "reward": 9
+      },
+      {
+        "trial": 3,
+        "decision": 0,
+        "reward": 7
+      },
+      {
+        "trial": 4,
+        "decision": 0,
+        "reward": 10
+      },
+      {
+        "trial": 5,
+        "decision": 0,
+        "reward": 7
+      },
+      {
+        "trial": 6,
+        "decision": 0,
+        "reward": 9
+      },
+      {
+        "trial": 7,
+        "decision": 0,
+        "reward": 10
+      },
+      {
+        "trial": 8,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 9,
+        "decision": 0,
+        "reward": 9
+      }
+    ]
+  },
+  {
+    "round_16": [
+      {
+        "trial": 0,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 1,
+        "decision": 1,
+        "reward": 6
+      },
+      {
+        "trial": 2,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 3,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 4,
+        "decision": 0,
+        "reward": 7
+      },
+      {
+        "trial": 5,
+        "decision": 0,
+        "reward": 6
+      },
+      {
+        "trial": 6,
+        "decision": 1,
+        "reward": 6
+      },
+      {
+        "trial": 7,
+        "decision": 1,
+        "reward": 5
+      },
+      {
+        "trial": 8,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 9,
+        "decision": 0,
+        "reward": 7
+      }
+    ]
+  },
+  {
+    "round_17": [
+      {
+        "trial": 0,
+        "decision": 0,
+        "reward": 7
+      },
+      {
+        "trial": 1,
+        "decision": 0,
+        "reward": 6
+      },
+      {
+        "trial": 2,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 3,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 4,
+        "decision": 0,
+        "reward": 6
+      },
+      {
+        "trial": 5,
+        "decision": 0,
+        "reward": 5
+      },
+      {
+        "trial": 6,
+        "decision": 0,
+        "reward": 7
+      },
+      {
+        "trial": 7,
+        "decision": 0,
+        "reward": 7
+      },
+      {
+        "trial": 8,
+        "decision": 0,
+        "reward": 6
+      },
+      {
+        "trial": 9,
+        "decision": 0,
+        "reward": 6
+      }
+    ]
+  }
+]

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Two Thumb Slider</title>
+  <style>
+    input[type="range"] {
+      position: absolute;
+      pointer-events: none;
+      width: 300px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      pointer-events: all;
+    }
+    #thumb2 {
+      position: absolute;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <input type="range" id="thumb1" min="0" max="100" value="25">
+  <input type="range" id="thumb2" min="0" max="100" value="75">
+</body>
+</html>
