@@ -27,7 +27,7 @@ let scoresSoFar = [];
 let scoresSoFar_P2 = [];
 let scoresSoFar_P3 = [];
 let scoresSoFar_P4 = [];
-let vectorOfFirstMoves = [];
+let selfRating = 0;
 let settings;
 let preferenceAgent;
 let randomAgent;
@@ -37,7 +37,7 @@ let training3Over = false;
 let trainingP21Over = false;
 
 let targetTable;
-var targetName = '';
+var targetName = 'Player A';
 
 
 // Function to switch between pages and run specific scripts
@@ -176,6 +176,9 @@ function showPage(pageId) {
         case 'INSTRUCTIONS7_P4':
           loadInstructions7_P4();
           break;
+        case 'INSTRUCTIONS8_P4':
+          loadInstructions8_P4();
+          break;
         case 'TRAIN':
             loadPhase1(
               1,
@@ -268,10 +271,10 @@ function showPage(pageId) {
               1,
               true,
               {
-                buttn:     'roundOverButton_P2-t1',
-                nextPage:  'INSTRUCTIONS5_P2',
-                rowWrapper:   'rowWrapper_P2-t1',
-                stop:      'stop_P2-t1'
+                buttn:      'roundOverButton_P2-t1',
+                nextPage:   'INSTRUCTIONS5_P2',
+                rowWrapper: 'rowWrapper_P2-t1',
+                stop:       'stop_P2-t1'
               }
             );
         break;
@@ -284,30 +287,32 @@ function showPage(pageId) {
               Math.floor(settings.numberOfRounds / 6),
               false,
               {
-                buttn:     'roundOverButton_P2',
-                nextPage:  'INSTRUCTIONS1_P3',
-                rowWrapper:   'rowWrapper_P2',
-                stop:      'stop_P2'
+                buttn:      'roundOverButton_P2',
+                nextPage:   'INSTRUCTIONS1_P3',
+                rowWrapper: 'rowWrapper_P2',
+                stop:       'stop_P2'
               }
             );
             break;
         case 'TRAIN_P3':
             loadPhase3(
-              6,
+              2,
               1,
+              settings.comparisonFrequency,
               true,
               {
                 buttn:               'roundOverButton_P3-t1',
+                submitBttn:          'submitButton_P3-t1',
+                submitBttnWrap:      'submitButtonWrap_P3-t1',
                 nextPage:            'INSTRUCTIONS7_P3',
                 rowWrapper:          'rowWrapper_P3-t1',
                 sliderRowWrapper:    'rowWrapper_P3_2-t1',
-                outFocus:            'outOfFocusWrapper_P3-t1',
                 overlay:             'overlay_P3-t1',
-                overlayBox:          'soo-information_P3-t1',
-                subheading:          'training-subheading-P3-t1',
-                readTxt:             'read-comparison_P3-t1',
-                numTurnsOther:       'numberTurnsOtherP3-t1',
-                scoreOther:          'soo-score_P3-t1'
+                compareInfoBox:      'soo-information_P3-t1',
+                lastXTrials:         'comparisonFreq_P3-t1',
+                scorePlayer:         'player-score_P3-t1',
+                otherName:           'targetName_P3-t1',
+                scoreOther:          'soo-score_P3-t1',
               }
             );
         break;
@@ -315,24 +320,27 @@ function showPage(pageId) {
             loadPhase3(
               settings.moves,
               Math.floor(settings.numberOfRounds / 6),
+              settings.comparisonFrequency,
               false,
               {
                 buttn:               'roundOverButton_P3',
+                submitBttn:          'submitButton_P3',
+                submitBttnWrap:      'submitButtonWrap_P3',
                 nextPage:            'INSTRUCTIONS1_P4',
                 rowWrapper:          'rowWrapper_P3',
                 sliderRowWrapper:    'rowWrapper_P3_2',
                 overlay:             'overlay_P3',
-                overlayBox:          'soo-information_P3',
-                subheading:          'training-subheading-P3',
-                readTxt:             'read-comparison_P3',
-                numTurnsOther:       'numberTurnsOtherP3',
-                scoreOther:          'soo-score_P3'
+                compareInfoBox:      'soo-information_P3',
+                lastXTrials:         'comparisonFreq_P3',
+                scorePlayer:         'player-score_P3',
+                otherName:           'targetName_P3',
+                scoreOther:          'soo-score_P3',
               }
             );
         break;
         case 'TRAIN_P4':
             loadPhase4(
-              settings.moves,
+              5,
               1,
               settings.comparisonFrequency,
               true,
@@ -341,10 +349,13 @@ function showPage(pageId) {
                 nextPage:            'INSTRUCTIONS5_P4',
                 rowWrapper:          'rowWrapper_P4-t1',
                 overlay:             'overlay_P4-t1',
-                overlayBox:          'soo-information_P4-t1',
-                readTxt:             'read-comparison_P4-t1',
+                compareInfoBox:      'soo-information_P4-t1',
+                lastXTrials:         'comparisonFreq_P4-t1',
+                scorePlayer:         'player-score_P4-t1',
+                otherName:           'targetName_P4-t1',
                 scoreOther:          'soo-score_P4-t1',
-                infoBox:             'infoBox_P4-t1',
+                readTxt:             'read-comparison_P4-t1',
+                scoreInfoBox:        'infoBox_P4-t1',
                 scoreText:           'score_P4-t1'
               }
             );
@@ -366,7 +377,7 @@ function showPage(pageId) {
                 otherName:           'targetName_P4',
                 scoreOther:          'soo-score_P4',
                 readTxt:             'read-comparison_P4',
-                scoreInfoBox:             'infoBox_P4',
+                scoreInfoBox:        'infoBox_P4',
                 scoreText:           'score_P4'
               }
             );
@@ -391,8 +402,27 @@ function showPage(pageId) {
             break;
         case 'INTERMEDIARYCOMP':
             loadIntermediaryComp();
-        case 'RATE':
-            loadRate();
+        case 'RATESELF':
+            loadRate(false,
+              {
+              buttn:        'nextButtonRateSelf',
+              nextPage:     'INSTRUCTIONS2_P2',
+              movableThumb: 'thumb-you',
+              slider:       'track-self',
+              rateLabel:    'rate-label-self'
+              }
+            );
+            break;
+        case 'RATEOTHER':
+            loadRate(true,
+              {
+              buttn:        'nextButtonRateOther',
+              nextPage:     'INSTRUCTIONS2_P3',
+              movableThumb: 'thumb-other',
+              slider:       'track-other',
+              rateLabel:    'rate-label-other'
+              }
+            );
             break;
         case 'THANKS':
             loadThanks();
@@ -536,22 +566,16 @@ function loadConsent() {
 
 function loadDataProtection() {
     const submitButton = document.getElementById('submit-button');
-    submitButton.style.cursor = 'not-allowed';
+    disableButton(submitButton);
     const checkboxes = document.querySelectorAll('.consent-checkboxes input[type="checkbox"]');
 
     checkboxes.forEach(checkbox => {
         checkbox.style.cursor = 'pointer';
         checkbox.addEventListener('change', () => {
             if (Array.from(checkboxes).every(cb => cb.checked)) {
-                submitButton.classList.remove('disabled');
-                submitButton.classList.add('enabled');
-                submitButton.disabled = false;
-                submitButton.style.cursor = 'pointer';
+                enableButton(submitButton);
             } else {
-                submitButton.classList.remove('enabled');
-                submitButton.classList.add('disabled');
-                submitButton.disabled = true;
-                submitButton.style.cursor = 'not-allowed';
+                disableButton(submitButton);
             }
         });
     });
@@ -600,7 +624,7 @@ function loadInstructions1() {
 
 function loadInstructions2() {
     buttonToNewPage('backButton2', 'INSTRUCTIONS1');
-    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'GAME4');//
+    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'TRAIN_P3');//
 }
 
 function loadInstructions3() {
@@ -659,11 +683,10 @@ function loadInstructions1_P2() {
       totalScore += score;
     })
     document.getElementById('phase-1-score').innerHTML = totalScore;
-    buttonToNewPage('nextButton21', 'INSTRUCTIONS2_P2');
+    buttonToNewPage('nextButton21', 'RATESELF');
 }
 
 function loadInstructions2_P2() {
-    buttonToNewPage('backButton22', 'INSTRUCTIONS1_P2');
     buttonToNewPage('nextButton22', 'INSTRUCTIONS3_P2');
 }
 
@@ -682,7 +705,7 @@ function loadInstructions5_P2() {
 }
 
 function loadInstructions6_P2() {
-    buttonToNewPage('backButton25', 'INSTRUCTIONS5_P2');
+    buttonToNewPage('backButton26', 'INSTRUCTIONS5_P2');
     buttonToNewPage('nextButton26', 'INSTRUCTIONS7_P2');
 }
 
@@ -709,22 +732,25 @@ function loadInstructions10_P2() {
 
 function loadInstructions1_P3() {
     document.getElementById('target1_P3').innerHTML = targetName;
-    document.getElementById('final-round-score_P2').innerHTML = scoresSoFar_P2.at(-1) === 1 ? "were correct" : "were incorrect";;
+    document.getElementById('final-round-score_P2').innerHTML = scoresSoFar_P2.at(-1) ? "were correct" : "were incorrect";;
     totalScore = 0;
-    scoresSoFar_P2.forEach( score => {
-      totalScore += score;
+    scoresSoFar_P2.forEach(score => {
+      if (score) {
+        totalScore += score;
+      }
     })
+    document.getElementById('target1_P3_2').innerHTML = targetName;
     document.getElementById('phase-2-score').innerHTML = totalScore;
-    buttonToNewPage('nextButton31', 'INSTRUCTIONS2_P3');
+        buttonToNewPage('nextButton31', 'RATEOTHER');
 }
 
 function loadInstructions2_P3() {
-    buttonToNewPage('backButton32','INSTRUCTIONS1_P3');
     buttonToNewPage('nextButton32','INSTRUCTIONS3_P3');
 }
 
 function loadInstructions3_P3() {
     document.getElementById('target3_P3').innerHTML = targetName;
+    document.getElementById('comparisonFreqINSTR3_P3').innerHTML = settings.comparisonFrequency;
     document.getElementById('target3_P3_2').innerHTML = targetName;
     buttonToNewPage('backButton33','INSTRUCTIONS2_P3');
     buttonToNewPage('nextButton33','INSTRUCTIONS4_P3');
@@ -737,12 +763,13 @@ function loadInstructions4_P3() {
 }
 
 function loadInstructions5_P3() {
-    document.getElementById('numberTurnsP2T5').innerHTML = settings.moves;
     buttonToNewPage('backButton35','INSTRUCTIONS4_P3');
     buttonToNewPage('nextButton35','INSTRUCTIONS6_P3');
 }
 
 function loadInstructions6_P3() {
+    document.getElementById('comparisonFreqINSTR6_P3').innerHTML = settings.comparisonFrequency;
+    document.getElementById('comparisonFreqINSTR6_P3_2').innerHTML = settings.comparisonFrequency;
     buttonToNewPage('backButton36','INSTRUCTIONS5_P3');
     buttonToNewPage('nextButton36','TRAIN_P3');
 }
@@ -785,19 +812,20 @@ function loadInstructions2_P4() {
 
 function loadInstructions3_P4() {
     document.getElementById('target3_P4').innerHTML = targetName;
+    document.getElementById('comparisonFreqINSTR3_P4').innerHTML = settings.comparisonFrequency;
     document.getElementById('target3_P4_2').innerHTML = targetName;
     buttonToNewPage('backButton43','INSTRUCTIONS2_P4');
     buttonToNewPage('nextButton43','INSTRUCTIONS4_P4');
 }
 
 function loadInstructions4_P4() {
+    document.getElementById('comparisonFreqINSTR4_P4').innerHTML = settings.comparisonFrequency;
     buttonToNewPage('backButton44','INSTRUCTIONS3_P4');
     buttonToNewPage('nextButton44','TRAIN_P4');
 }
 
 function loadInstructions5_P4() {
     document.getElementById('target5_P4').innerHTML = targetName;
-    document.getElementById('numberTurnsP2T5').innerHTML = settings.moves;
     buttonToNewPage('nextButton45','INSTRUCTIONS6_P4');
 }
 
@@ -808,11 +836,11 @@ function loadInstructions6_P4() {
 
 function loadInstructions7_P4() {
     buttonToNewPage('backButton46','INSTRUCTIONS6_P4');
-    buttonToNewPage('nextButton47','TRAIN_P4');
+    buttonToNewPage('nextButton47','CHECK_P4');
 }
 
 function loadInstructions8_P4() {
-    buttonToNewPage('nextButton46','GAME4');
+    buttonToNewPage('nextButton48','GAME4');
 }
 
 
@@ -951,6 +979,9 @@ async function loadPhase1(numberOfMoves, numberOfRounds, comparisonFrequency, tr
         square.classList.add(`reward${x}-clicked`);
         if (training) {
           reward = numberOfMoves - currentTrial;
+          if (compareInfoBox && numberOfMoves - currentTrial == 1) {
+            reward = numberOfMoves;
+          }
         } else {
           reward = Math.round(settings.chanceToWin[((phase1Round - 1) * numberOfMoves + currentTrial)][0][x] * 100);
         }
@@ -1158,7 +1189,7 @@ async function loadPhase2(numberOfMoves, numberOfRounds, training, ids) {
       square.classList.remove(`reward${x}`);
       if (isLast) {
         if (!training) {
-          scoresSoFar_P2.push(1);
+          scoresSoFar_P2.push(correct);
         }
         if (correct) {
           square.classList.add('greenish');
@@ -1230,62 +1261,64 @@ async function loadPhase2(numberOfMoves, numberOfRounds, training, ids) {
     makeDecisions();
 }
 
-function loadPhase3(numberOfMoves, numberOfRounds, training, ids) {
+function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training, ids) {
     // — Get DOM ids —
     const {
       buttn:              buttonId,
+      submitBttn:         submitButtonId,
+      submitBttnWrap:     submitButtonWrapId,
       nextPage:           nextPageId,
       rowWrapper:         rowWrapperId,
       sliderRowWrapper:   sliderRowWrapperId,
       overlay:            overlayId,
-      overlayRight:       overlayRightID,
-      overlayBox:         overlayBoxId,
-      subheading:         subheadingId,
-      readTxt:            readTxtId,
-      numTurnsOther:      numTurnsOtherId,
-      scoreOther:         scoreOtherId
+      compareInfoBox:     compareInfoBoxId,
+      lastXTrials:        lastXTrialsId,
+      scorePlayer:        scorePlayerId,
+      otherName:          otherNameId,
+      scoreOther:         scoreOtherId,
     } = ids;
 
     // — DOM refs —
+    const nextBtn            = document.getElementById(buttonId);
+    const submitBtn          = document.getElementById(submitButtonId);
+    const submitBttnWrap     = document.getElementById(submitButtonWrapId);
     const rowWrapper         = document.getElementById(rowWrapperId);
     const sliderRowWrapper   = document.getElementById(sliderRowWrapperId);
     const overlay            = document.getElementById(overlayId);
-    const overlayBox         = document.getElementById(overlayBoxId);
-    const subheading         = document.getElementById(subheadingId);
-    const readTxt            = document.getElementById(readTxtId);
-    const numTurnsOther      = document.getElementById(numTurnsOtherId);
+    const compareInfoBox     = document.getElementById(compareInfoBoxId);
+    const lastXTrials        = document.getElementById(lastXTrialsId);
+    const scorePlayer        = document.getElementById(scorePlayerId);
+    const otherName          = document.getElementById(otherNameId);
     const scoreOther         = document.getElementById(scoreOtherId);
-    const nextBtn            = document.getElementById(buttonId);
 
     // — Settings & state —
-    const bigSizeScale    = 1.2;
-    const rows               = numberOfMoves;
     const cols               = settings.cols;
-    const chanceToWin        = settings.chanceToWin;
-    let   currentRow         = 0;
-    let   comparisonNumMoves = 2;
+    let   currentTrial       = 0;
+    let   score              = 0;
+    let   scoreSinceLastComp = 0;
+    let   belowSubrows       = [];
     let   decision           = Array(numberOfMoves);
     let   rewardReceived     = Array(numberOfMoves);
     let   timeStamps         = Array(numberOfMoves);
-    let   linkedSliders      = [];
 
+    let   linkedSliders      = [];
     let   slidersClicked = false;
-    let   trialEnded = false;
+    let   isSyncing = false;
 
     // — Compute sizes and reset —
-    const smallSize = Math.min(computeSmallSize(rows, rowWrapper), 150);
-    const bigSize   = bigSizeScale * smallSize;
+    const size   = Math.min(computeSmallSize(1, rowWrapper), 150);
 
-    readTxt.classList.remove('gone');
-    readTxt.classList.add('hidden');
-    overlayBox.style.cursor = 'pointer';
-    overlayBox.style.pointerEvents = '';
+    compareInfoBox.classList.add('gone');
+    lastXTrials.innerHTML = (comparisonFrequency > 1) ? `${comparisonFrequency} trials` : `${comparisonFrequency} trial`;
+    sliderRowWrapper.classList.add('gone');
+    submitBtn.addEventListener('click', () => submitGuess());
+    if (!training) {
+      otherName.innerHTML   = targetName;
+    }
 
-
-    function createSquare(x, y, size) {
+    function createSquare(x) {
         const square = document.createElement('div');
         square.dataset.x = x;
-        square.dataset.y = y;
         square.classList.add('square-finder', 'reward', 'hover-enabled', `reward${x}`);
         square.style.width  = square.style.height = `${size}px`;
 
@@ -1303,7 +1336,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, training, ids) {
         return square;
     }
     
-    function createSliderSquare(x, y, size) {
+    function createSliderSquare(x) {
         const wrapper = document.createElement('div');
         wrapper.style.display = 'flex';
         wrapper.style.flexDirection = 'column';
@@ -1313,9 +1346,9 @@ function loadPhase3(numberOfMoves, numberOfRounds, training, ids) {
 
         const square = document.createElement('div');
         square.dataset.x = x;
-        square.dataset.y = y;
         square.classList.add('square-finder', 'reward', 'normal-cursor', `reward${x}`);
-        square.style.width  = square.style.height = `${size}px`;
+        const smallerSize = 0.6 * size;
+        square.style.width  = square.style.height = `${smallerSize}px`;
 
         wrapper.appendChild(square);
         wrapper.appendChild(sliderContainer);
@@ -1325,14 +1358,14 @@ function loadPhase3(numberOfMoves, numberOfRounds, training, ids) {
     function createSliderContainer() {
         const sliderContainer = document.createElement('div');
         sliderContainer.classList.add('slider-container');
-        sliderContainer.style.width = bigSize + 'px';
+        sliderContainer.style.width = size + 'px';
         sliderContainer.classList.add('number-pulls-slider-container');
 
         // Create slider element
         const slider = document.createElement('input');
         slider.type = 'range';
         slider.min = '0';
-        slider.max = comparisonNumMoves;
+        slider.max = comparisonFrequency;
         slider.step = '1';
         slider.value = '0';
         slider.style.cursor = 'pointer';
@@ -1341,25 +1374,17 @@ function loadPhase3(numberOfMoves, numberOfRounds, training, ids) {
 
         // Create tick labels
         const labels = document.createElement('div');
-        labels.style.display = 'flex';
-        labels.style.justifyContent = 'space-between';
-        labels.style.width = '100%';
-        labels.style.fontSize = '12px';
-        labels.style.marginTop = '4px';
-        
-        // below the tick labels, this <div style="font-size:12px;color:grey"># times this card selected by John Doe</div>
+        labels.classList.add('tick-labels');
 
-        for (let i = 0; i <= comparisonNumMoves; i++) {
+        for (let i = 0; i <= comparisonFrequency; i++) {
           const label = document.createElement('span');
           label.textContent = i.toString();
           labels.appendChild(label);
         }
 
         const explanation = document.createElement('div');
-        explanation.textContent = '# times this card selected by John Doe';
-        explanation.style.fontSize = '12px';
-        explanation.style.color = 'grey';
-        explanation.style.marginTop = '4px';
+        explanation.textContent = '# times this card selected by Player X';
+        explanation.classList.add("little-slider-label");
 
         sliderContainer.appendChild(slider);
         sliderContainer.appendChild(labels);
@@ -1370,58 +1395,53 @@ function loadPhase3(numberOfMoves, numberOfRounds, training, ids) {
     // Build the three zones
     function setupGrid() {
       // clear old
-      rowWrapper.innerHTML       = '';
+      nextBtn.classList.add('gone');
+      rowWrapper.innerHTML = '';
+      score = 0;
       sliderRowWrapper.innerHTML = '';
-      currentRow                 = 0;
 
-      // rows as subrows of two
-      for (let y = 0; y < rows - 1; y++) {
-        const sub = document.createElement('div');
-        sub.classList.add('subrow');
-        sub.dataset.row = y;
-        for (let x = 0; x < cols; x++) {
-          const sq = createSquare(x, y, smallSize);
-          sq.classList.add('grey');
-          sq.style.pointerEvents = 'none';
-          sub.appendChild(sq);
-        }
-        rowWrapper.appendChild(sub);
+      // rows as subrows
+      const sub = document.createElement('div');
+      sub.classList.add('subrow');
+      for (let x = 0; x < cols; x++) {
+        const sq = createSquare(x);
+        sub.appendChild(sq);
       }
+      rowWrapper.appendChild(sub);
 
       const sliderSub = document.createElement('div');
       sliderSub.classList.add('subrow');
-      sliderSub.dataset.row = rows + 1;
       for (let x = 0; x < cols; x++) {
-        const sq = createSliderSquare(x, 0, bigSize);
-        sq.classList.add('square-slider-finder', 'gone');
+        const sq = createSliderSquare(x);
+        sq.classList.add('square-slider-finder');
         sliderSub.appendChild(sq);
       }
       sliderRowWrapper.appendChild(sliderSub);
-
-      inFocusRow = rowWrapper.querySelector(`.subrow[data-row="${currentRow}"]`);
-      setInFocus(inFocusRow, bigSize);
     }
 
-    function blockScreenForComparison() {
-      numTurnsOther.innerHTML = comparisonNumMoves;
-      scoreOther.innerHTML = preferenceAgent[`round_${phase1Round + phase2Round + phase3Round - 1}`].slice(-comparisonNumMoves).reduce((sum, trial) => sum + trial.reward, 0);
-      if (training) {
-        scoreOther.innerHTML = comparisonNumMoves;
+    function blockScreenForComparison(trial) {
+      compareInfoBox.classList.remove('gone');
+      let otherScoreSinceLastComp = 0;
+
+      const round = phase1Round + phase2Round + phase3Round - 1;
+      for (let i = 0; i < comparisonFrequency; i++) {
+        const t = trial - i;
+        const reward = preferenceAgent[`round_${round}`]?.[t]?.reward || 0;
+        otherScoreSinceLastComp += reward;
       }
+
+      // If in training, override rewardSum with training logic
+      if (training) {
+        otherScoreSinceLastComp = scoreSinceLastComp;
+      }
+
+      scorePlayer.innerHTML = scoreSinceLastComp;
+      scoreOther.innerHTML = otherScoreSinceLastComp;
 
       overlay.classList.remove("gone");
       document.body.style.cursor = 'none !important';
       overlay.style.display = 'block';
-
-      setTimeout(() => {
-        readTxt.classList.remove('hidden');
-        overlayBox.addEventListener('click', function() {
-          overlay.classList.add('gone');
-          readTxt.classList.add('gone');
-          overlayBox.style.cursor = 'auto';
-          overlayBox.style.pointerEvents = 'none';
-        });
-      }, 1000);
+      scoreSinceLastComp = 0;
     }
 
     function handleClick(square) {
@@ -1429,53 +1449,114 @@ function loadPhase3(numberOfMoves, numberOfRounds, training, ids) {
 
       const x = +square.dataset.x;
       const y = +square.dataset.y;
-      decision[currentRow] = { x, y };
-      timeStamps[currentRow] = new Date().toISOString();
+      decision[currentTrial] = { x, y };
+      timeStamps[currentTrial] = new Date().toISOString();
 
       const pseudo = square.firstElementChild;
       const scoreDisp = pseudo.querySelector('[data-type="score"]');
 
       square.classList.remove(`reward${x}`);
       square.classList.add(`reward${x}-clicked`);
+      reward = Math.round(settings.chanceToWin[((phase1Round + phase2Round + phase3Round + phase4Round - 1) * numberOfMoves + currentTrial)][0][x] * 100);
       scoreDisp.classList.remove('gone');
-      if (training) {
-        reward = 1;
-      } else {
-        reward = chanceToWin[((phase1Round + phase2Round + phase3Round - 1) * numberOfMoves + currentRow)][x];
-      }
+      scoreDisp.classList.remove('animate');
+      void scoreDisp.offsetWidth; // force reflow
+      scoreDisp.classList.add('animate');
       scoreDisp.innerHTML = reward;
+      score += reward;
+      scoreSinceLastComp += reward;
+      rewardReceived[currentTrial] = reward;
 
       // Disable all tiles immediately to prevent further clicks
-      Array.from(inFocusRow.children).forEach(sq => {
+      Array.from(rowWrapper.querySelector(`.subrow`).children)
+        .forEach(sq => {
         sq.style.pointerEvents = 'none';
       });
 
       // Wait 700ms before animating
       setTimeout(() => {
-        setOutOfFocus(inFocusRow, smallSize);
-        square.classList.remove('grey');
-        currentRow++;
-        if (currentRow < rows - 1) {
-          inFocusRow = rowWrapper.querySelector(`.subrow[data-row="${currentRow}"]`);
-          setInFocus(inFocusRow, bigSize);
-        } else {
+        square.classList.add(`reward${x}`);
+        square.classList.remove(`reward${x}-clicked`);
+        square.classList.remove('white');
+
+        if ((currentTrial+1) % comparisonFrequency == 0) {
+          sliderRowWrapper.classList.remove('gone');
           const sliderSquares = sliderRowWrapper.querySelectorAll('.square-slider-finder');
-          sliderSquares.forEach(ssq => {
-            ssq.classList.remove('gone');
-          });
           linkedSliders.forEach((slider, i) => {
               slider.addEventListener('input', () => sync(i));
-              slider.addEventListener('input', finalLogic);
+              slider.addEventListener('input', () => submitBttnWrap.classList.remove('gone'));
           });
-
           // Initialize the default sum
           linkedSliders[0].value = '0';
           linkedSliders[1].value = '0';
+
+          blockScreenForComparison(currentTrial);
         }
-      }, 700);
+        currentTrial++;
+        Array.from(rowWrapper.querySelector(`.subrow`).children)
+          .forEach(sq => {
+            sq.style.pointerEvents = 'auto';
+        });
+      }, 900);
     }
 
-    function finalLogic() {
+    function sync(i) {
+      if (isSyncing) return;
+      isSyncing = true;
+
+      const total = comparisonFrequency,
+            s     = linkedSliders,
+            N     = s.length,
+            v     = Math.max(0, Math.min(+s[i].value, total));
+      s[i].value = v;
+
+      const rem  = total - v,
+            // build “other” indices, rotated to start at i+1
+            idxs = [...Array(N).keys()]
+                     .filter(j => j !== i)
+                     .sort((a, b) => ((a-i-1+N)%N) - ((b-i-1+N)%N)),
+            olds   = idxs.map(j => +s[j].value),
+            sumOld = olds.reduce((a, b) => a + b, 0),
+            newVal = Array(N).fill(0);
+      newVal[i] = v;
+
+      if (sumOld) {
+        // proportional via largest-remainder, with tie-break by our rotated order
+        let floorSum = 0;
+        const parts = olds.map((o, k) => {
+          const exact = o / sumOld * rem,
+                f     = Math.floor(exact);
+          floorSum += f;
+          return { idx: idxs[k], f, r: exact - f, pos: k };
+        })
+        .sort((a, b) => b.r - a.r || a.pos - b.pos)
+        .forEach((p, k) => newVal[p.idx] = p.f + (k < rem - floorSum ? 1 : 0));
+
+      } else {
+        // even split, in our rotated order
+        const base  = Math.floor(rem / idxs.length),
+              extra = rem % idxs.length;
+        idxs.forEach((j, k) => newVal[j] = base + (k < extra ? 1 : 0));
+      }
+
+      idxs.forEach(j => s[j].value = newVal[j]);
+      isSyncing = false;
+    }
+
+    function submitGuess() {
+      compareInfoBox.classList.add('gone');
+      overlay.classList.add('gone');
+      sliderRowWrapper.classList.add('gone');
+      submitBttnWrap.classList.add('gone');
+      if (currentTrial >= numberOfMoves - 1) {
+        Array.from(rowWrapper.querySelector(`.subrow`).children)
+          .forEach(sq => {
+            sq.style.pointerEvents = 'none';
+        });
+        if (!training) {
+          scoresSoFar_P3.push(score);
+        }
+        nextBtn.classList.remove('gone');
         nextBtn.classList.remove('hidden');
         saveData(decision, rewardReceived, timeStamps);
         if (phase3Round == numberOfRounds) {
@@ -1483,16 +1564,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, training, ids) {
         } else {
           buttonToNewPage(buttonId, 'DISP_P3');
         }
-    }
-
-    function sync(indexChanged) {
-        slidersClicked = true;
-        const otherIndex = 1 - indexChanged;
-        const changedSlider = linkedSliders[indexChanged];
-        const otherSlider = linkedSliders[otherIndex];
-
-        const newValue = parseInt(changedSlider.value, 10);
-        otherSlider.value = (comparisonNumMoves - newValue).toString();
+      } 
     }
 
     function saveData(decisionArr, timeArr) {
@@ -1507,7 +1579,6 @@ function loadPhase3(numberOfMoves, numberOfRounds, training, ids) {
       sessionStorage.setItem(phase3Round, JSON.stringify(data));
     }
 
-    blockScreenForComparison();
     setupGrid();
 }
 
@@ -1602,7 +1673,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
     function blockScreenForComparison(trial) {
       // Block every comparisonFrequency trials
-      if (trial == 0 || trial % comparisonFrequency !== 0) return; // Only run on trials 1, 3, 5, ...
+      if (trial == 0 || trial % comparisonFrequency !== 0) return; // Only run on trials 2, 4, 6, ...
 
       compareInfoBox.classList.remove("gone");
       let otherScoreSinceLastComp = 0;
@@ -1616,7 +1687,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
       // If in training, override rewardSum with training logic
       if (training) {
-        otherScoreSinceLastComp = Math.ceil(numberOfMoves / 2);
+        otherScoreSinceLastComp = scoreSinceLastComp;
       }
 
       scorePlayer.innerHTML = scoreSinceLastComp;
@@ -1651,7 +1722,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
       square.classList.remove(`reward${x}`);
       square.classList.add(`reward${x}-clicked`);
-      reward = Math.round(settings.chanceToWin[((phase1Round - 1) * numberOfMoves + currentTrial)][0][x] * 100);
+      reward = Math.round(settings.chanceToWin[((phase1Round + phase2Round + phase3Round + phase4Round - 1) * numberOfMoves + currentTrial)][0][x] * 100);
       scoreDisp.classList.remove('gone');
       scoreDisp.classList.remove('animate');
       void scoreDisp.offsetWidth; // force reflow
@@ -1960,7 +2031,6 @@ function loadCheck_P3() {
 
 function loadCheck_P4() {
     const submitButton = document.getElementById('checkNext_P4');
-    document.getElementById('checkTurns_P4').innerHTML = settings.moves;
     let correctAnswers = [
         { question: "1_P4", answer: true },
         { question: "2_P4", answer: false },
@@ -2099,10 +2169,7 @@ function loadSelectObservationTarget() {
             }
             row.classList.add('selected');
             selectedRow = row;
-            nextButton.disabled = false;
-            nextButton.classList.add('enabled');
-            nextButton.style.color = 'black';
-            nextButton.style.cursor = 'pointer';
+            enableButton(nextButton);
 
             targetName = selectedRow.querySelector('td').innerText.trim();
         }
@@ -2117,10 +2184,7 @@ function loadSelectObservationTarget() {
         loaderWheel.style.display = 'block';
 
         pressedOnce = true;
-        nextButton.disabled = true;
-        nextButton.classList.remove('enabled');
-        nextButton.style.cursor = 'not-allowed';
-        nextButton.style.color = 'grey';
+        disableButton(nextButton);
         setTimeout(() => {
           table.style.display = 'block';
           table.classList.remove('gone');
@@ -2212,156 +2276,92 @@ function loadIntermediary() {
     }
 }
 
-function loadRate() {
-    const nextButtonRate = document.getElementById('nextButtonRate');
-    const slider = document.getElementById('track');
-    const thumb = document.getElementById('thumb');
-    const vertical = document.getElementById('vertical-line');
+function loadRate(otherRating, ids) {
+        // — Get DOM ids —
+    const {
+      buttn:          buttonId,
+      nextPage:       nextPageId,
+      movableThumb:   movableThumbId,
+      slider:         sliderId,
+      rateLabel:      rateLabelId
+    } = ids;
 
-    const rateWhat = document.getElementById('rate-what');
+    // — DOM refs —
+    const nextButton     = document.getElementById(buttonId);
+    const movableThumb   = document.getElementById(movableThumbId);
+    const slider         = document.getElementById(sliderId);
+    const movingLabel    = document.getElementById(rateLabelId);
 
-    const leftLabel = document.getElementById('left-label');
-    const rightLabel = document.getElementById('right-label');
-
-    const thumbLabel = document.getElementById('rate-label');
-    const youThumbLabel = document.getElementById('rate-label-you');
-
-    // Text
-    const newRateWhat = rateWhat.cloneNode(true);
-    rateWhat.parentNode.replaceChild(newRateWhat, rateWhat);
-    const updatedRateWhat = document.getElementById('rate-what');
-    updatedRateWhat.innerHTML = 'How do you rate the skill of <span id="rate-participant-id" class="font-30 blue-coloured">Player B</span>';
-
-    const participantLetter = document.getElementById('rate-participant-id');
-    const newParticipantLetter = participantLetter.cloneNode(true);
-    participantLetter.parentNode.replaceChild(newParticipantLetter, participantLetter);
-    const updatedParticipantLetter = document.getElementById('rate-participant-id');
-    updatedParticipantLetter.innerHTML = targetName;
-
-    const newLeftLabel = leftLabel.cloneNode(true);
-    leftLabel.parentNode.replaceChild(newLeftLabel, leftLabel);
-    const updatedLeftLabel = document.getElementById('left-label');
-    updatedLeftLabel.innerHTML = 'Every selection  <span class="blue-coloured">they</span> made was the worst possible';
-
-    const newRightLabel = rightLabel.cloneNode(true);
-    rightLabel.parentNode.replaceChild(newRightLabel, rightLabel);
-    const updatedRightLabel = document.getElementById('right-label');
-    updatedRightLabel.innerHTML = 'Every selection <span class="blue-coloured">they</span> made was the best possible';
-
-    const newThumbLabel = thumbLabel.cloneNode(true);
-    thumbLabel.parentNode.replaceChild(newThumbLabel, thumbLabel);
-    const updatedThumbLabel = document.getElementById('rate-label');
-    updatedThumbLabel.innerHTML = targetName;
-    updatedThumbLabel.classList.add("hidden");
-    
-    const newYouThumbLabel = youThumbLabel.cloneNode(true);
-    youThumbLabel.parentNode.replaceChild(newYouThumbLabel, youThumbLabel);
-    const updatedYouThumbLabel = document.getElementById('rate-label-you');
-    updatedYouThumbLabel.classList.add("hidden");
+    // Button
+    disableButton(nextButton);
+    nextButton.addEventListener('click', (e) => {
+      selfRating = val;
+      addToInstructionTimings(buttonId, new Date().toISOString().split('T')[1]);
+      showPage(nextPageId);
+    });
 
     // Thumb
-    const min = 0;
-    const max = 100;
-    const step = 1;
     let isDragging = false;
-
-    const newThumb = thumb.cloneNode(true);
-    thumb.parentNode.replaceChild(newThumb, thumb);
-    const updatedThumb = document.getElementById('thumb');
-    updatedThumb.classList.add("hidden");
-
     let val;
-    updatedThumb.addEventListener('mousedown', () => {
+    movableThumb.addEventListener('mousedown', () => {
       isDragging = true;
-      updatedNextButtonRate.disabled = false;
-      updatedNextButtonRate.classList.add('enabled');
-      updatedNextButtonRate.style.color = 'black';
-      updatedNextButtonRate.style.cursor = 'pointer';
+      enableButton(nextButton);
     });
     document.addEventListener('mousemove', (e) => {
       if (!isDragging) {
         return;
       }
       val = getValueFromPosition(e.clientX);
-      updatedYouThumbLabel.style.left = `${val}%`;
+      movableThumb.style.left = `${val}%`;
+      movingLabel.style.left = `${val}%`;
     });
     document.addEventListener('mouseup', () => isDragging = false);
 
     // Slider
-    const newRateSlider = slider.cloneNode(true);
-    slider.parentNode.replaceChild(newRateSlider, slider);
-    const updatedRateSlider = document.getElementById('track');
-    updatedRateSlider.style.background = `#ddd`;
-    updatedRateSlider.classList.add("track-clickable");
-    let isSliderClickable = true;
-    updatedRateSlider.addEventListener('click', (e) => {
-      if (isSliderClickable) {
-        updatedThumb.classList.remove("hidden");
-        updatedRateSlider.classList.remove("track-clickable")
-        val = getValueFromPosition(e.clientX);
-        updatedYouThumbLabel.style.left = `${val}%`;
-        isSliderClickable = false;
-        updatedNextButtonRate.disabled = false;
-        updatedNextButtonRate.classList.add('enabled');
-        updatedNextButtonRate.style.color = 'black';
-        updatedNextButtonRate.style.cursor = 'pointer';
-      }
+    slider.addEventListener('mousedown', (e) => {
+      movableThumb.classList.remove('hidden');
+      movingLabel.classList.remove('hidden');
+      val = getValueFromPosition(e.clientX);
+      movableThumb.style.left = `${val}%`;
+      movingLabel.style.left = `${val}%`;
+      enableButton(nextButton);
     });
 
     // Vertical Line
-    const newVertical = vertical.cloneNode(true);
-    vertical.parentNode.replaceChild(newVertical, vertical);
-    const updatedVertical = document.getElementById('vertical-line');
-    updatedVertical.classList.add("hidden");
+    if (otherRating) {
+      const vertical   = document.getElementById('vertical-line');
+      const fixedLabel = document.getElementById('rate-label-fixed');
+      const participantLetter = document.getElementById('rate-participant-id');
 
-    // Button
-    const newNextButtonRate = nextButtonRate.cloneNode(true);
-    nextButtonRate.parentNode.replaceChild(newNextButtonRate, nextButtonRate);
-    const updatedNextButtonRate = document.getElementById('nextButtonRate');
+      vertical.classList.remove('hidden');
+      vertical.style.left     = `${selfRating}%`;
+      movableThumb.style.left = `${selfRating}%`;
+      fixedLabel.style.left   = `${selfRating}%`;
+      movingLabel.style.left  = `${selfRating}%`;
 
-    updatedNextButtonRate.disabled = true;
-    updatedNextButtonRate.classList.remove('enabled');
-    updatedNextButtonRate.style.color = '';
-    updatedNextButtonRate.style.cursor = '';
+      participantLetter.innerHTML = targetName;
+      movingLabel.innerHTML       = targetName;
 
-    updatedNextButtonRate.addEventListener('click', function() {
-        if (settings.includeComparison && settings.comparisonRounds.includes(phase1Round)) {
-          buttonToNewPage('nextButtonRate', 'INTERMEDIARYCOMP');
-        } else {
-          buttonToNewPage('nextButtonRate', 'INTERMEDIARY');
-        }
-        updatedRateWhat.innerHTML = 'How do you rate your <span class="font-30 blue-coloured">own</span> skill';
-        updatedLeftLabel.innerHTML = 'Every selection <span class="blue-coloured">I</span> made was the worst available';
-        updatedRightLabel.innerHTML = 'Every selection <span class="blue-coloured">I</span> made was the best available';
-        updatedThumbLabel.classList.remove("hidden");
-        updatedYouThumbLabel.classList.remove("hidden");
-        updatedVertical.classList.remove("hidden");
-        addToInstructionTimings('nextButtonRate', new Date().toISOString().split('T')[1]);
-
-        updatedNextButtonRate.disabled = true;
-        updatedNextButtonRate.classList.remove('enabled');
-        updatedNextButtonRate.style.color = '';
-        updatedNextButtonRate.style.cursor = '';
-
-        const otherRating = val;
-        updatedThumbLabel.style.left = `${val}%`;
-        updatedVertical.style.left = `${val}%`;
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging) {
-              return;
-            }
-            let background;
-            if (val > otherRating) {
-                background = `linear-gradient(to right, #ddd, #ddd ${otherRating}%, darkgray ${otherRating}%, darkgray ${val}%, #ddd ${val}%, #ddd)`;
-            } else {
-                background = `linear-gradient(to right, #ddd, #ddd ${val}%, darkgray ${val}%, darkgray ${otherRating}%, #ddd ${otherRating}%, #ddd)`;
-            }
-            updatedRateSlider.style.background = background;
-        });
-    });
+      document.addEventListener('mousemove', (e) => {
+          if (!isDragging) {
+            return;
+          }
+          let background;
+          if (val > selfRating) {
+              background = `linear-gradient(to right, #ddd, #ddd ${selfRating}%, darkgray ${selfRating}%, darkgray ${val}%, #ddd ${val}%, #ddd)`;
+          } else {
+              background = `linear-gradient(to right, #ddd, #ddd ${val}%, darkgray ${val}%, darkgray ${selfRating}%, #ddd ${selfRating}%, #ddd)`;
+          }
+          slider.style.background = background;
+      });
+    }
 
     function getValueFromPosition(clientX) {
-      const rect = updatedRateSlider.getBoundingClientRect();
+      const min = 0;
+      const max = 100;
+      const step = 1;
+
+      const rect = slider.getBoundingClientRect();
       let x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
 
       // Map position to value based on min, max, and step
@@ -2371,25 +2371,10 @@ function loadRate() {
 
       // Move the thumb using percentage (instead of pixels)
       const newPercentage = ((steppedValue - min) / (max - min)) * 100;
-      updatedThumb.style.left = `${newPercentage}%`;  // Set the position in percentage
+      movableThumb.style.left = `${newPercentage}%`;  // Set the position in percentage
 
       return steppedValue;
     }
-
-    /* SOME TABLE LOGIC */
-    const unavailableRows = document.querySelectorAll('tr.unavailable');
-    unavailableRows.forEach(row => {
-      row.addEventListener('mouseover', (event) => {
-        event.stopPropagation();
-        row.style.cursor = 'not-allowed';
-        row.style.background = '#f0f0f0';
-      });
-
-      row.addEventListener('click', (event) => {
-        event.stopPropagation(); 
-        row.style.cursor = 'not-allowed';
-      });
-    });
 }
 
 function loadThanks() {
@@ -2708,6 +2693,20 @@ function generateCompareName() {
       counter += 1;
     }
     return result;
+}
+
+function disableButton(btn) {
+  btn.disabled = true;
+  btn.classList.remove('enabled');
+  btn.style.cursor = 'not-allowed';
+  btn.style.color = 'grey';
+}
+
+function enableButton(btn) {
+  btn.disabled = false;
+  btn.classList.add('enabled');
+  btn.style.cursor = 'pointer';
+  btn.style.color = 'black';
 }
 
 // The backend URL is composed of a hostname (localhost for testing, kyblab2.etc

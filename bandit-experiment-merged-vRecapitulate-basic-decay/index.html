@@ -106,7 +106,7 @@
                 <label for="checkbox-x" class="checkbox-label">I consent to data transfer from the MPI for Biological Cybernetics encrypted database to the project-related collaborators: inside of the Max Planck Society and affiliated research institutes, or at partnering institutions like the University of Tuebingen and New York University.</label>
             </div>
             <div id="consent-buttons-wrapper" class="consent button-group">
-                <button id="submit-button" class="button small-button disabled" disabled>Submit</button>
+                <button id="submit-button" class="button small-button">Submit</button>
                 <button id="data-consent-rescinded" class="button small-button enabled">I do not consent to all of the above</button>
             </div>
         </div>
@@ -134,7 +134,7 @@
             <div class="progress-bar-container">
               <div class="progress-bar" id="page2"></div>
             </div>
-            <div class="index-instructions">In phase 1, you will learn about the cards by clicking on them.</div>
+            <div class="index-instructions">In phase one, you will learn about the cards by clicking on them.</div>
             <div class="index-instructions blue-coloured">We call clicking on a card a turn.</div>
             <div class="index-instructions width-60"> There are a fixed number of turns per round. Once you run out of turns, the round is over.</div>
             <div class="button-group">
@@ -242,7 +242,7 @@
               <div class="progress-bar" id="page6"></div>
             </div>
             <div class="index-instructions">Perfect! Each round has <span id="numberTurnsINSTR6">1</span> turns.</div>
-            <div class="index-instructions">We will display your score in the right-most box.</div>
+            <div class="index-instructions">We will display your total score in the right-most box.</div>
             <div class="index-instructions width-70">Every <span id="comparisonFreqINSTR6">2</span> turns, we will also show you how many points you scored in the last <span id="comparisonFreqINSTR6_2">2</span> turns.</div>
             <div class="button-group">
                 <button id="nextButton6" class="move-screen-button button enabled">Next</button>
@@ -259,8 +259,8 @@
               <div class="progress-bar" id="page7"></div>
             </div>
             <div class="index-instructions">Let's have another training round to see what that looks like.</div>
-            <div class="index-instructions width-100">Click on any of the cards. You will have four turns in total.</div>
-            <div class="index-instructions">We will display your score every <span id="comparisonFreqINSTR7">2</span> turns in a central box. Click on the box to make it go away.</div>
+            <div class="index-instructions width-100">Click on the central card five times.</div>
+            <div class="index-instructions width-60">We will display your score every <span id="comparisonFreqINSTR7">2</span> turns in a central box. Click on the box to make it go away.</div>
             <div class="index-instructions">Click Train to continue.</div>
             <div class="button-group">
                 <button id="backButton7" class="move-screen-button button enabled">Back</button>
@@ -274,9 +274,9 @@
     <div id="TRAIN3" class="w">
         <div class="wrapper">
             <div class="watermark top-10">Training</div>
-            <div class="watermark top-10">Find as many points as possible</div>
+            <div class="watermark top-10">Click on the central card five times</div>
             <div id="overlay-t3" class="gone overlay"></div>
-            <div id="soo-information-t3" class="soo-information">
+            <div id="soo-information-t3" class="soo-information top-20">
               <div class="soo-box-text">
                 <p>In the last <span id="comparisonFreq-t3">2 trials</span>,</p>
                 <p class="score-container">
@@ -387,7 +387,7 @@
                   </div>
               </div>
               <div class="check">
-                  <div id="5" class="question">Each round consists of exactly <span id="checkTurns" class="blue-coloured">12</span> turns in each phase 1 round.</div>
+                  <div id="5" class="question">Each round consists of exactly <span id="checkTurns" class="blue-coloured">12</span> turns in each phase one round.</div>
                   <div class="answers">
                       <label>True <input type="radio" name="question-5" value="true"></label>
                       <label> False <input type="radio" name="question-5" value="false"></label>
@@ -409,7 +409,7 @@
             </div>
             <div class="index-instructions">Great! We are ready to play.</div>
             <div class="index-instructions blue-coloured width-60">Training is over. Everything has been reset. From now on, the rounds matter.</div>
-            <div class="index-instructions">When you are ready, click Play to begin phase 1.</div>
+            <div class="index-instructions width-60">When you are ready, click Play to begin phase one. After completing phase one, we will ask you to rate your performance.</div>
             <div class="button-group">
                 <button id="nextButton11" class="move-screen-button button enabled">Play</button>
             </div>
@@ -421,7 +421,7 @@
     <div id="GAME1" class="w">
         <div class="wrapper">
             <div id="overlay" class="gone overlay"></div>
-            <div id="soo-information" class="soo-information">
+            <div id="soo-information" class="soo-information top-20">
               <div class="soo-box-text">
                 <p>In the last <span id="comparisonFreq-G">2 trials</span>,</p>
                 <p class="score-container">
@@ -466,15 +466,38 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page1"></div>
               </div>
-              <div class="index-instructions width-100">Great! Phase 1 is complete.</div>
-              <div class="index-instructions width-100 blue-coloured">In the previous round, you found <span id="phase-1-final-round-score">10</span> points.</div>
-              <div class="index-instructions width-100 blue-coloured">In total, you found <span id="phase-1-score">10</span> points in phase 1.</div>
-              <div class="index-instructions">Now, let's move on to phase 2.</div>
+              <div class="index-instructions width-100">Great! Phase one is complete.</div>
+              <div class="index-instructions width-100">In the previous round, you found <span id="phase-1-final-round-score">10</span> points.</div>
+              <div class="index-instructions width-100 blue-coloured">In total, you found <span id="phase-1-score">10</span> points in phase one.</div>
+              <div class="index-instructions width-60">Before we move on to phase two, please tell us how well you think you performed in phase one.</div>
               <div class="button-group">
                 <button id="nextButton21" class="move-screen-button button enabled">Next</button>
               </div>
             </aside>
           </div>
+    </div>
+
+    <!-- RATESELF -->
+    <div id="RATESELF" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+                <div class="index-instructions padding-10">Given your experiences, how do you rate your own skill</div>
+                <div class="index-instructions font-15">Click and drag the slider to rate</div>
+                <div class="rate-slider-container">
+                    <span class="slider-label left-label">Every selection <span class="blue-coloured">I</span> made was the worst possible</span>
+                    <div class="range-wrap">
+                      <div id="notch-25" class="notch"></div>
+                      <div id="notch-50" class="notch"></div>
+                      <div id="notch-75" class="notch"></div>
+                      <div class="track track-clickable" id="track-self"></div>
+                      <div class="thumb hidden" id="thumb-you"></div>
+                      <output id="rate-label-self" class="rating-label above-label hidden">You</output>
+                    </div>
+                    <span class="slider-label right-label">Every selection <span class="blue-coloured">I</span> made was the best possible</span>
+                </div>
+                <button id="nextButtonRateSelf" class="button">Next</button>
+            </aside>
+        </div>
     </div>
 
     <!-- INSTRUCTIONS2_P2 -->
@@ -484,9 +507,9 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page2"></div>
               </div>
-              <div class="index-instructions">In phase 2, you must guess how other players acted in phase 1.</div>
+              <div class="index-instructions">Perfect! Now, let's move on to phase two.</div>
+              <div class="index-instructions">In phase two, you must guess how other players acted in phase one.</div>
              <div class="button-group">
-                <button id="backButton22" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton22" class="move-screen-button button enabled">Next</button>
               </div>
             </aside>
@@ -553,11 +576,10 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page6"></div>
               </div>
-              <div class="index-instructions">Great! That's exactly how phase 2 will look.</div>
-              <div class="index-instructions width-60 blue-coloured">Your bonus in phase 2 is affected by the accuracy of your guesses.</div>
+              <div class="index-instructions">Great! That's exactly how phase two will look.</div>
+              <div class="index-instructions width-60 blue-coloured">Your bonus in phase two is affected by the accuracy of your guesses.</div>
               <div class="index-instructions width-60">The better you predict the other player, the higher bonus you will receive.</div>
              <div class="button-group">
-                <button id="backButton25" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton25" class="move-screen-button button enabled">Next</button>
               </div>
             </aside>
@@ -572,7 +594,8 @@
                 <div class="progress-bar" id="page4"></div>
               </div>
                <div class="index-instructions width-60">Just like before:</div>
-              <div class="index-instructions width-60">A card's reward decreased every turn, whether it was selected or not, but randomly spiked.</div>
+              <div class="index-instructions width-60">A card's reward decreased every turn, whether it was selected or not.</div>
+              <div class="index-instructions width-60">All cards were as likely to spike to a new high at some random time.</div>
              <div class="button-group">
                 <button id="backButton26" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton26" class="move-screen-button button enabled">Next</button>
@@ -588,8 +611,8 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page7"></div>
               </div>
-              <div class="index-instructions">We will show you a series of decisions made by the other player in a round.</div>
-              <div class="index-instructions blue-coloured">IMPORTANT: The rewards associated with each decision are not related to the rewards you saw in your phase one.</div>
+              <div class="index-instructions">We will now show you a series of decisions made by another player in a round.</div>
+              <div class="index-instructions blue-coloured width-70">IMPORTANT: The rewards associated with each decision are not related to the rewards you saw in phase one.</div>
               <div class="index-instructions">You must guess which decision came next in the sequence.</div>
              <div class="button-group">
                 <button id="backButton27" class="move-screen-button button enabled">Back</button>
@@ -623,7 +646,7 @@
             <aside class="check-inter">
               <div class="padding-50 font-30">Checking test</div>
               <div class="check">
-                  <div id="1_P2" class="question">I will see the decisions another player took in <span class="blue-coloured">their</span> phase 1.</div>
+                  <div id="1_P2" class="question">I will see the decisions <span class="blue-coloured">another</span> player took.</div>
                   <div class="answers">
                       <label>True <input type="radio" name="question-1" value="true"></label>
                       <label> False <input type="radio" name="question-1" value="false"></label>
@@ -651,7 +674,7 @@
                   </div>
               </div>
               <div class="check">
-                  <div id="5_P2" class="question">I will always see every decision they made, <span class="blue-coloured">except</span> the last decision.</div>
+                  <div id="5_P2" class="question">I will always see a sequence of decision made by another player, and my job is to <span class="blue-coloured">guess</span> the next decision.</div>
                   <div class="answers">
                       <label>True <input type="radio" name="question-5" value="true"></label>
                       <label> False <input type="radio" name="question-5" value="false"></label>
@@ -672,10 +695,9 @@
                 <div class="progress-bar" id="page9"></div>
               </div>
               <div class="index-instructions sidth-60">Great! Let's now find a participant whose scores you will see.</div>
-              <div class="index-instructions width-90">We will show you the Prolific ID and a name (e.g. "Player B") for each participant.</div>
+              <div class="index-instructions width-90">We will show you the Prolific ID and a name (e.g. "Player X") for each participant.</div>
               <div class="index-instructions width-90 blue-coloured">Prolific IDs are randomly assigned to names. They have no relevance.</div>
               <div class="button-group">
-                  <button id="backButton29" class="move-screen-button button enabled">Back</button>
                   <button id="nextButton29" class="move-screen-button button enabled">Proceed to select player</button>
               </div>
             </aside>
@@ -713,8 +735,8 @@
           <aside class="inter">
             <div class="index-instructions">Great! We are ready to play.</div>
             <div class="index-instructions width-60">Training is over. Everything has been reset. From now on, the rounds matter.</div>
-            <div class="index-instructions blue-coloured width-60">We will show you the decisions made by <span id="target10_P2">Player A</span>. You will have to predict which card they selected last.</div>
-            <div class="index-instructions">When you are ready, click Play to begin phase 2.</div>
+            <div class="index-instructions blue-coloured width-60">We will show you the decisions made by <span id="target10_P2">Player A</span>. You will have to predict which card they selected next.</div>
+            <div class="index-instructions">When you are ready, click Play to begin phase two.</div>
             <div class="button-group">
                 <button id="nextButton210" class="move-screen-button button enabled">Play</button>
             </div>
@@ -761,15 +783,40 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page1"></div>
               </div>
-              <div class="index-instructions width-100">Great! Phase 2 is complete.</div>
-              <div class="index-instructions width-100 blue-coloured">In the previous round, you <span id="final-round-score_P2">10</span>.</div>
+              <div class="index-instructions width-100">Great! Phase two is complete.</div>
+              <div class="index-instructions width-100">In the previous round, you <span id="final-round-score_P2">10</span>.</div>
               <div class="index-instructions width-100 blue-coloured">In total, you correctly predicted <span id="target1_P3">Player A</span>'s final decisions <span id="phase-2-score">10</span> times.</div>
-              <div class="index-instructions">Now, let's move on to phase 3.</div>
+              <div class="index-instructions">Before we move on to phase three, please tell us how skilled you think <span id="target1_P3_2">Player A</span> was.</div>
               <div class="button-group">
                 <button id="nextButton31" class="move-screen-button button enabled">Next</button>
               </div>
             </aside>
           </div>
+    </div>
+
+    <!-- RATEOTHER -->
+    <div id="RATEOTHER" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+                <div id="rate-what" class="index-instructions padding-10">Given your experiences, how do you rate the skill of <span id="rate-participant-id" class="font-30 blue-coloured">Player B</span></div>
+                <div class="index-instructions font-15">Click and drag the slider to rate</div>
+                <div class="rate-slider-container">
+                    <span id= "left-label" class="slider-label left-label">Every selection  <span class="blue-coloured">they</span> made was the worst possible</span>
+                    <div class="range-wrap">
+                      <div id="notch-25" class="notch"></div>
+                      <div id="notch-50" class="notch"></div>
+                      <div id="notch-75" class="notch"></div>
+                      <div class="track" id="track-other"></div>
+                      <div id="vertical-line" class="vertical-line"></div>
+                      <div class="thumb" id="thumb-other"></div>
+                      <output id="rate-label-other" class="rating-label above-label">Other player</output>
+                      <output id="rate-label-fixed" class="rating-label below-label">You (phase one rating)</output>
+                    </div>
+                    <span id= "right-label" class="slider-label right-label">Every selection <span class="blue-coloured">they</span> made was the best possible</span>
+                </div>
+                <button id="nextButtonRateOther" class="button">Next</button>
+            </aside>
+        </div>
     </div>
 
     <!-- INSTRUCTIONS2_P3 -->
@@ -779,9 +826,9 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page2"></div>
               </div>
-              <div class="index-instructions">In phase 3, you will again guess how other players acted in phase 1.</div>
+              <div class="index-instructions">Perfect! Now, let's move on to phase three.</div>
+              <div class="index-instructions">In phase three, you will again guess how other players acted in phase one.</div>
              <div class="button-group">
-                <button id="backButton32" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton32" class="move-screen-button button enabled">Next</button>
               </div>
             </aside>
@@ -795,7 +842,7 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page3"></div>
               </div>
-              <div class="index-instructions blue-coloured width-60">We will show you how many points <span id="target3_P3">Player A</span> found during a random selection of turns in THEIR phase 1 round.</div>
+              <div class="index-instructions blue-coloured width-60">We will show you how many points <span id="target3_P3">Player A</span> found every <span id="comparisonFreqINSTR3_P3">12</span> turns.</div>
               <div class="index-instructions width-60">Your job is to guess which cards <span id="target3_P3_2">Player A</span> selected to get these points.</div>
              <div class="button-group">
                 <button id="backButton33" class="move-screen-button button enabled">Back</button>
@@ -812,9 +859,8 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page4"></div>
               </div>
-              <div class="index-instructions">To help you make your guess, you will have a learning period.</div>
-              <div class="index-instructions width-60">During the learning period, you can click on the cards to see how many points they give you.</div>
-              <div class="index-instructions width-60 blue-coloured">IMPORTANT: The cards in your learning period are the same as the cards seen by <span id="target4_P3">Player A</span>.</div>
+              <div class="index-instructions width-60">To help you make your guess, you can click on the cards just like in phase one.</div>
+              <div class="index-instructions width-60 blue-coloured">IMPORTANT: The cards that you click on are identical to the cards seen by <span id="target4_P3">Player A</span>.</div>
               <div class="button-group">
                 <button id="backButton34" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton34" class="move-screen-button button enabled">Next</button>
@@ -830,8 +876,8 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page5"></div>
               </div>
-              <div class="index-instructions width-60 blue-coloured">Your bonus in phase 2 is affected by the accuracy of your guesses, not how many points you find.</div>
-              <div class="index-instructions width-60">To reiterate, nothing in the learning period affects your bonus in phase 2.</div>
+              <div class="index-instructions width-60 blue-coloured">We will not show you how accurate your guesses are in phase three.</div>
+              <div class="index-instructions width-60">However, to reiterate: the points you receive from the cards are irrelevant to your bonus. We are concerned with the accuracy of your guesses</div>
               <div class="index-instructions">Let's see how this looks with some training.</div>
              <div class="button-group">
                 <button id="backButton35" class="move-screen-button button enabled">Back</button>
@@ -848,9 +894,9 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page6"></div>
               </div>
-              <div class="index-instructions width-60">First, we will show you how many points a fake player — John Doe — found during <span id="numberTurnsP2T5">3</span> randomly selected turns.</div>
-              <div class="index-instructions width-60">Then, your learning period begins. Click on the cards to figure out how rewarding they are.</div>
-              <div class="index-instructions width-60">Finally, use the sliders to tell us how many times you think John Doe selected each card.</div>
+              <div class="index-instructions width-60">First, click on <span id="comparisonFreqINSTR6_P3">3</span> of the cards.</div>
+              <div class="index-instructions width-60">Then, we will show you how many points a fake player — Player X — found over the same <span id="comparisonFreqINSTR6_P3_2">3</span> turns.</div>
+              <div class="index-instructions width-60">Finally, use the sliders to tell us how many times you think Player X selected each card.</div>
              <div class="button-group">
                 <button id="backButton36" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton36" class="move-screen-button button enabled">Next</button>
@@ -862,40 +908,42 @@
     <!-- TRAIN_P3 -->
     <div id="TRAIN_P3" class="w">
       <div class="wrapper">
+        <div class="watermark top-20">Training</div>
+        <div class="watermark top-20">Guess what decisions Player X made</div>
         <div id="overlay_P3-t1" class="gone overlay"></div>
-        <div class="watermark high-z">Training</div>
+        <div id="soo-information_P3-t1" class="soo-information info-box-disabled width-15">
+          <div class="soo-box-text">
+            <p>In the last <span id="comparisonFreq_P3-t1">2 trials</span>,</p>
+            <p class="score-container">
+              <span class="align-left">You scored: </span>
+              <span class="spacer"></span>
+              <span id="player-score_P3-t1" class="align-right">100</span>
+            </p>
+            <p id="comparer-score-container" class="score-container">
+              <span class="align-left">Player X scored: </span>
+              <span class="spacer"></span>
+              <span id="soo-score_P3-t1" class="align-right">100</span>
+            </p>
+          </div>
+        </div>
+        <div id="submitButtonWrap_P3-t1" class="button-wrapper center-wrapper-width submit-button gone">
+          <button id="submitButton_P3-t1" class="button enabled white-shadow">Submit</button>
+        </div>
+        <div id="rowWrapper_P3_2-t1" class="row-container slider-row-wrapper"></div>
         <div class="thirds-container">
           <!-- Left column: Info box -->
-          <aside class="info-left">
-            <div class="grid-wrapper center-wrapper">
-              <div id="soo-information_P3-t1" class="soo-information">
-                <div class="soo-box-text">
-                  <p class="soo-score-container">
-                    <p><span class="align-left">John Doe found: </span></p>
-                    <p><span id="soo-score_P3-t1" class="align-right">100</span> points across <span id="numberTurnsOtherP3-t1">3</span> randomly selected turns</p>
-                  </p>
-                </div>
-                <div id="read-comparison_P3-t1" class="hidden font-15">Press anywhere in this box to continue.</div>
-              </div>
-            </div>
-          </aside>
+          <aside class="info-left"></aside>
           <!-- Middle column: Grid -->
           <aside id="middle-third" class="grid-info-wrapper">
-            <div id="training-subheading-P3-t1" class="watermark">
-              Learning Period: Click on the cards
-            </div>
             <div id="rowWrapper_P3-t1" class="grid-wrapper row-container"></div>
+          </aside>
+          <!-- Right column: Nothing for now -->
+          <aside class="info-right">
             <div class="button-wrapper center-wrapper-width">
               <button id="roundOverButton_P3-t1" class="button enabled hidden">Next</button>
             </div>
           </aside>
-          <!-- Right column: Nothing for now -->
-          <aside class="info-right">
-            <div id="rowWrapper_P3_2-t1" class="grid-wrapper row-container"></div>
-          </aside>
         </div>
-
-        <div id="overlay_P3-t1"></div>
       </div>
     </div>
 
@@ -906,8 +954,8 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page7"></div>
               </div>
-              <div class="index-instructions">Great! That's exactly how phase 3 will look.</div>
-              <div class="index-instructions width-60 blue-coloured">Your bonus in phase 3 is affected by the accuracy of your guesses.</div>
+              <div class="index-instructions">Great! That's exactly how phase three will look.</div>
+              <div class="index-instructions width-60 blue-coloured">Your bonus in phase three is affected by the accuracy of your guesses.</div>
               <div class="index-instructions width-60">The better you guess how <span id="target7_P3">Player A</span> acted, the higher your bonus.</div>
              <div class="button-group">
                 <button id="nextButton37" class="move-screen-button button enabled">Next</button>
@@ -924,7 +972,7 @@
                 <div class="progress-bar" id="page8"></div>
               </div>
                <div class="index-instructions width-60">As always:</div>
-              <div class="index-instructions width-60">A card's usual score does not change during a round, but may change between rounds.</div>
+              <div class="index-instructions width-60">The number of points each card gives reduces every turn, whether your click on the card or not. However, there is a fixed probability that a card will spike.</div>
              <div class="button-group">
                 <button id="backButton38" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton38" class="move-screen-button button enabled">Next</button>
@@ -940,8 +988,8 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page9"></div>
               </div>
-               <div class="index-instructions width-60 blue-coloured">As in phase 2, you will continue to make guesses about the behaviour of <span id="target9_P3">Player A</span> in THEIR phase 1.</div>
-              <div class="index-instructions width-60">However, you will not have seen these cards in phase 2.</div>
+               <div class="index-instructions width-60 blue-coloured">As in phase two, you will continue to make guesses about the behaviour of <span id="target9_P3">Player A</span> in THEIR phase one.</div>
+              <div class="index-instructions width-60">However, you will not have seen these cards in phase two.</div>
              <div class="button-group">
                 <button id="backButton39" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton39" class="move-screen-button button enabled">Next</button>
@@ -974,7 +1022,7 @@
             <aside class="check-inter">
               <div class="padding-50 font-30">Checking test</div>
               <div class="check">
-                  <div id="1_P3" class="question">I will see the decisions another player took in <span class="blue-coloured">their</span> phase 1.</div>
+                  <div id="1_P3" class="question">I will see the decisions another player took in <span class="blue-coloured">their</span> phase one.</div>
                   <div class="answers">
                       <label>True <input type="radio" name="question-1" value="true"></label>
                       <label> False <input type="radio" name="question-1" value="false"></label>
@@ -1024,7 +1072,7 @@
             </div>
             <div class="index-instructions">Great! We are ready to play.</div>
             <div class="index-instructions blue-coloured width-60">Training is over. Everything has been reset. From now on, the rounds matter.</div>
-            <div class="index-instructions">When you are ready, click Play to begin phase 3.</div>
+            <div class="index-instructions">When you are ready, click Play to begin phase three.</div>
             <div class="button-group">
                 <button id="nextButton311" class="move-screen-button button enabled">Play</button>
             </div>
@@ -1036,37 +1084,39 @@
     <div id="GAME3" class="w">
       <div class="wrapper">
         <div id="overlay_P3" class="gone overlay"></div>
+        <div id="soo-information_P3" class="soo-information info-box-disabled width-15">
+          <div class="soo-box-text">
+            <p>In the last <span id="comparisonFreq_P3">2 trials</span>,</p>
+            <p class="score-container">
+              <span class="align-left">You scored: </span>
+              <span class="spacer"></span>
+              <span id="player-score_P3" class="align-right">100</span>
+            </p>
+            <p id="comparer-score-container" class="score-container">
+              <span id="targetName_P3" class="align-left">Player X scored: </span>
+              <span class="spacer"></span>
+              <span id="soo-score_P3" class="align-right">100</span>
+            </p>
+          </div>
+        </div>
+        <div id="submitButtonWrap_P3" class="button-wrapper center-wrapper-width submit-button gone">
+          <button id="submitButton_P3" class="button enabled white-shadow">Submit</button>
+        </div>
+        <div id="rowWrapper_P3_2" class="row-container slider-row-wrapper"></div>
         <div class="thirds-container">
           <!-- Left column: Info box -->
-          <aside class="info-left">
-            <div class="grid-wrapper center-wrapper">
-              <div id="soo-information_P3" class="soo-information">
-                <div class="soo-box-text">
-                  <p class="soo-score-container">
-                    <p><span class="align-left"><span id="targetName">Player A</span> found: </span></p>
-                    <p><span id="soo-score_P3" class="align-right">100</span> points in <span id="numberTurnsOtherP3">3</span> randomly selected turns</p>
-                  </p>
-                </div>
-                <div id="read-comparison_P3" class="hidden font-15">Press anywhere in this box to continue.</div>
-              </div>
-            </div>
-          </aside>
+          <aside class="info-left"></aside>
           <!-- Middle column: Grid -->
           <aside id="middle-third" class="grid-info-wrapper">
-            <div id="training-subheading-P3" class="watermark">
-              Learning Period: Click on the cards
-            </div>
             <div id="rowWrapper_P3" class="grid-wrapper row-container"></div>
+          </aside>
+          <!-- Right column: Nothing for now -->
+          <aside class="info-right">
             <div class="button-wrapper center-wrapper-width">
               <button id="roundOverButton_P3" class="button enabled hidden">Next</button>
             </div>
           </aside>
-          <!-- Right column: Nothing for now -->
-          <aside class="info-right">
-            <div id="rowWrapper_P3_2" class="grid-wrapper row-container"></div>
-          </aside>
         </div>
-        <div id="overlay_P3"></div>
       </div>
     </div>
 
@@ -1091,7 +1141,7 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page1"></div>
               </div>
-              <div class="index-instructions width-100">Great! Phase 3 is complete.</div>
+              <div class="index-instructions width-100">Great! Phase three is complete.</div>
               <div class="index-instructions">Now, let's move on to the final phase.</div>
               <div class="button-group">
                 <button id="nextButton41" class="move-screen-button button enabled">Next</button>
@@ -1107,7 +1157,7 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page2"></div>
               </div>
-              <div class="index-instructions">In phase 4, you must try and collect as many points as possible, like in phase 1.</div>
+              <div class="index-instructions">In phase four, you must try and collect as many points as possible, like in phase one.</div>
              <div class="button-group">
                 <button id="backButton42" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton42" class="move-screen-button button enabled">Next</button>
@@ -1123,8 +1173,8 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page3"></div>
               </div>
-              <div class="index-instructions blue-coloured width-60">Unlike phase 1, we will show you how many points <span id="target3_P4">Player A</span> found in the same round.</div>
-              <div class="index-instructions width-60"><span id="target3_P4_2">Player A</span> used exactly the same cards as you every round.</div>
+              <div class="index-instructions blue-coloured width-60">Unlike phase one, we will show you how many points both you AND <span id="target3_P4">Player A</span> found every <span id="comparisonFreqINSTR3_P4">12</span> turns.</div>
+              <div class="index-instructions width-60"><span id="target3_P4_2">Player A</span> was playing with exactly the same cards as you every round.</div>
               <div class="index-instructions width-60">Your job is to try and use that information to get more points.</div>
              <div class="button-group">
                 <button id="backButton43" class="move-screen-button button enabled">Back</button>
@@ -1142,7 +1192,7 @@
                 <div class="progress-bar" id="page4"></div>
               </div>
               <div class="index-instructions">Let's have a training round to see how that looks.</div>
-              <div class="index-instructions">You will see how many points a fake player - John Doe - received when they played this round.</div>
+              <div class="index-instructions width-70">You will see how many points a fake player — Player X — received every <span id="comparisonFreqINSTR4_P4">12</span> turns when he played this round.</div>
               <div class="index-instructions width-60">Try to use that information to find as many points as possible.</div>
              <div class="button-group">
                 <button id="backButton44" class="move-screen-button button enabled">Back</button>
@@ -1155,28 +1205,30 @@
     <!-- TRAIN_P4 -->
     <div id="TRAIN_P4" class="w">
       <div class="wrapper">
+        <div class="watermark top-20">Training</div>
+        <div class="watermark top-20">Find as many points as possible</div>
         <div id="overlay_P4-t1" class="gone overlay"></div>
+        <div id="soo-information_P4-t1" class="soo-information">
+          <div class="soo-box-text">
+            <p>In the last <span id="comparisonFreq_P4-t1">2 trials</span>,</p>
+            <p class="score-container">
+              <span class="align-left">You scored: </span>
+              <span class="spacer"></span>
+              <span id="player-score_P4-t1" class="align-right">100</span>
+            </p>
+            <p id="comparer-score-container" class="score-container">
+              <span class="align-left"><span id="targetName_P4-t1">Player B</span> scored: </span>
+              <span class="spacer"></span>
+              <span id="soo-score_P4-t1" class="align-right">100</span>
+            </p>
+          </div>
+          <div id="read-comparison_P4-t1" class="hidden font-15">Press anywhere in this box to continue.</div>
+        </div>
         <div class="thirds-container">
           <!-- Left column: Info box -->
-          <aside class="info-left">
-            <div class="grid-wrapper center-wrapper">
-              <div id="soo-information_P4-t1" class="soo-information">
-                <div class="soo-box-text">
-                  <p class="soo-score-container">
-                    <p><span class="align-left">John Doe found: </span></p>
-                    <p><span id="soo-score_P4-t1" class="align-right">100</span> points in this round</p>
-                  </p>
-                </div>
-                <div id="read-comparison_P4-t1" class="hidden font-15">Press anywhere in this box to continue.</div>
-              </div>
-            </div>
-          </aside>
+          <aside class="info-left"></aside>
           <!-- Middle column: Grid -->
           <aside id="middle-third" class="grid-info-wrapper">
-            <div class="watermark high-z">Training</div>
-            <div class="watermark">
-              Find as many points as possible
-            </div>
             <div id="rowWrapper_P4-t1" class="grid-wrapper row-container"></div>
           </aside>
           <!-- Right column: Info box -->
@@ -1201,9 +1253,9 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page5"></div>
               </div>
-              <div class="index-instructions">Great! That's exactly how phase 4 will look.</div>
+              <div class="index-instructions">Great! That's exactly how phase four will look.</div>
               <div class="index-instructions width-60">You will see the number of points <span id="target5_P4">Player A</span> received when they played each round.</div>
-              <div class="index-instructions width-60  blue-coloured">Importantly, none of the cards you have seen in phase 1, 2, or 3 are the same as in phase 4.</div>
+              <div class="index-instructions width-60  blue-coloured">Importantly, none of the cards you have seen in phases one, two, or three are the same as in phase four.</div>
              <div class="button-group">
                 <button id="nextButton45" class="move-screen-button button enabled">Next</button>
               </div>
@@ -1219,8 +1271,8 @@
                 <div class="progress-bar" id="page6"></div>
               </div>
                <div class="index-instructions width-60">As always:</div>
-              <div class="index-instructions width-60">The usual score of a card does not change during a round, but may change after a round.</div>
-              <div class="index-instructions width-60 blue-coloured">Your bonus in phase 4 is affected by the number of points you find.</div>
+              <div class="index-instructions width-60">The number of points each card gives reduces every turn, whether your click on the card or not.</div>
+              <div class="index-instructions width-60 blue-coloured">Your bonus in phase four is affected by the number of points you find.</div>
              <div class="button-group">
                 <button id="backButton46" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton46" class="move-screen-button button enabled">Next</button>
@@ -1274,7 +1326,7 @@
                   </div>
               </div>
               <div class="check">
-                  <div id="4_P4" class="question">Some of the cards I see in phase 4 are the <span class="blue-coloured">same</span> as in phases 1, 2, or 3.</div>
+                  <div id="4_P4" class="question">Some of the cards I see in phase four are the <span class="blue-coloured">same</span> as in phases one, two, or three.</div>
                   <div class="answers">
                       <label>True <input type="radio" name="question-4" value="true"></label>
                       <label> False <input type="radio" name="question-4" value="false"></label>
@@ -1282,7 +1334,7 @@
               </div>
             </aside>
             <div id="correct_P4" class="index-instructions gone">Perfect! These are the correct answers.</div>
-            <button id="check-next_P4" class="button">Check</button>
+            <button id="checkNext_P4" class="button">Check</button>
             <div id="error-msg_P4" class="error hidden">There was a mistake. Please correct the highlighted question.</div>
           </div>
     </div>
@@ -1296,7 +1348,7 @@
             </div>
             <div class="index-instructions">Great! We are ready to play.</div>
             <div class="index-instructions blue-coloured width-60">Training is over. Everything has been reset. From now on, the rounds matter.</div>
-            <div class="index-instructions">When you are ready, click Play to begin phase 4.</div>
+            <div class="index-instructions">When you are ready, click Play to begin phase four.</div>
             <div class="button-group">
                 <button id="nextButton48" class="move-screen-button button enabled">Play</button>
             </div>
@@ -1329,9 +1381,6 @@
           <aside class="info-left"></aside>
           <!-- Middle column: Grid -->
           <aside id="middle-third" class="grid-info-wrapper">
-            <div class="watermark">
-              Find as many points as possible
-            </div>
             <div id="rowWrapper_P4" class="grid-wrapper row-container"></div>
           </aside>
           <!-- Right column: Info box -->
@@ -1389,31 +1438,6 @@
               </div>
             </aside>
           </div>
-    </div>
-
-    <!-- RATE -->
-    <div id="RATE" class="w">
-        <div class="wrapper">
-            <aside class="inter">
-                <div id="rate-what" class="index-instructions padding-10">How do you rate the skill of <span id="rate-participant-id" class="font-30 blue-coloured">Player B</span></div>
-                <div class="index-instructions font-15">Click and drag the slider to rate</div>
-                <div class="rate-slider-container">
-                    <span id= "left-label" class="slider-label left-label">Every selection  <span class="blue-coloured">they</span> made was the worst possible</span>
-                    <div class="range-wrap">
-                      <div id="notch-25" class="notch"></div>
-                      <div id="notch-50" class="notch"></div>
-                      <div id="notch-75" class="notch"></div>
-                      <div class="track" id="track"></div>
-                      <div id="vertical-line" class="vertical-line hidden"></div>
-                      <div class="thumb hidden" id="thumb"></div>
-                      <output id="rate-label-you" class="rating-label above-label hidden">You</output>
-                      <output id="rate-label" class="rating-label below-label hidden">Other player</output>
-                    </div>
-                    <span id= "right-label" class="slider-label right-label">Every selection <span class="blue-coloured">they</span> made was the best possible</span>
-                </div>
-                <button id="nextButtonRate" class="button disabled" disabled>Next</button>
-            </aside>
-        </div>
     </div>
 
     <!-- INTERMEDIARY -->
