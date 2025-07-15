@@ -247,7 +247,7 @@ function showPage(pageId) {
         case 'GAME1':
             loadPhase1(
               settings.moves,
-              Math.floor(settings.numberOfRounds / 2),
+              Math.floor(settings.numberOfRounds / 6),
               settings.comparisonFrequency,
               false,
               true,
