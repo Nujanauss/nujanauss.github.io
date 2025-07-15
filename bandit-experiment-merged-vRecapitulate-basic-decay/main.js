@@ -660,7 +660,7 @@ function loadInstructions8() {
 
 function loadInstructions9() {
     document.getElementById('numberTurnsINSTR9').innerHTML = settings.moves;
-    document.getElementById('numberRoundsINSTR9').innerHTML = Math.floor(settings.numberOfRounds / 2);
+    document.getElementById('numberRoundsINSTR9').innerHTML = Math.floor(settings.numberOfRounds / 6);
     buttonToNewPage('backButton9', 'INSTRUCTIONS8');
     buttonToNewPage('nextButton9', 'INSTRUCTIONS10');
 }
@@ -1426,7 +1426,10 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
       const round = phase1Round + phase2Round + phase3Round - 1;
       for (let i = 0; i < comparisonFrequency; i++) {
         const t = trial - i;
-        const reward = preferenceAgent[`round_${round}`]?.[t]?.reward || 0;
+        let reward = preferenceAgent[`round_${round}`]?.[t]?.reward || 0;
+        if (training) {
+          reward = numberOfMoves - trial;
+        }
         otherScoreSinceLastComp += reward;
       }
 
