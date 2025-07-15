@@ -13,7 +13,7 @@ body {
 }
 
 .consent-wrapper {
-  overflow: auto !important;
+  overflow-y: scroll !important;
   display: flex;
   flex-direction: column;
   font-family: 'Montserrat', sans-serif;
@@ -23,7 +23,7 @@ body {
   height: 95vh;
   margin: auto;
   width:70%;
-  justify-content: center;
+  align-items: center;
 }
 
 .wrapper {
