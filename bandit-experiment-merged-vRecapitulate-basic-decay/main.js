@@ -1682,6 +1682,9 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
       for (let i = 0; i < comparisonFrequency; i++) {
         const t = trial - i;
         const reward = preferenceAgent[`round_${round}`]?.[t]?.reward || 0;
+        if (training) {
+          training = numberOfMoves - trial;
+        }
         otherScoreSinceLastComp += reward;
       }
 
