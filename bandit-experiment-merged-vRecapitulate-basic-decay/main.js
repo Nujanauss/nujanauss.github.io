@@ -1483,6 +1483,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
           sliderRowWrapper.classList.remove('gone');
           const sliderSquares = sliderRowWrapper.querySelectorAll('.square-slider-finder');
           linkedSliders.forEach((slider, i) => {
+              slider.value = 0;
               slider.addEventListener('input', () => sync(i));
               slider.addEventListener('input', () => submitBttnWrap.classList.remove('gone'));
           });
@@ -1681,9 +1682,9 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
       const round = phase1Round + phase2Round + phase3Round + phase4Round - 1;
       for (let i = 0; i < comparisonFrequency; i++) {
         const t = trial - i;
-        const reward = preferenceAgent[`round_${round}`]?.[t]?.reward || 0;
+        let reward = preferenceAgent[`round_${round}`]?.[t]?.reward || 0;
         if (training) {
-          training = numberOfMoves - trial;
+          reward = numberOfMoves - trial;
         }
         otherScoreSinceLastComp += reward;
       }
