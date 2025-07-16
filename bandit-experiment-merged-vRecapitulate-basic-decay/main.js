@@ -1686,9 +1686,6 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
       for (let i = 0; i < comparisonFrequency; i++) {
         const t = trial - i;
         let reward = preferenceAgent[`round_${round}`]?.[t]?.reward || 0;
-        if (training) {
-          reward = numberOfMoves - trial;
-        }
         otherScoreSinceLastComp += reward;
       }
 
@@ -1730,6 +1727,9 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
       square.classList.remove(`reward${x}`);
       square.classList.add(`reward${x}-clicked`);
       reward = Math.round(settings.chanceToWin[((phase1Round + phase2Round + phase3Round + phase4Round - 1) * numberOfMoves + currentTrial)][0][x] * 100);
+      if (training) {
+        reward = numberOfMoves - trial;
+      }
       scoreDisp.classList.remove('gone');
       scoreDisp.classList.remove('animate');
       void scoreDisp.offsetWidth; // force reflow
