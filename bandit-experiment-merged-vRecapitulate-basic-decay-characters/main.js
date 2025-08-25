@@ -347,7 +347,7 @@ function showPage(pageId) {
         break;
         case 'GAME3':
             loadPhase3(
-              6,
+              settings.moves,
               2,
               settings.comparisonFrequency,
               false,
@@ -499,11 +499,12 @@ async function loadIndex() {
     const settingsJSON = await loadGameSettings(files);
     sessionStorage.setItem('gameSettings', JSON.stringify(settingsJSON));
 
-    const preferenceJSON = await loadAgent(files, 'oracle');
-    sessionStorage.setItem('preferenceAgent', JSON.stringify(preferenceJSON));
-
+    const oracleJSON = await loadAgent(files, 'oracle');
+    sessionStorage.setItem('oracleAgent', JSON.stringify(oracleJSON));
     const randomJSON = await loadAgent(files, 'random');
     sessionStorage.setItem('randomAgent', JSON.stringify(randomJSON));
+    const leftyJSON = await loadAgent(files, 'lefty');
+    sessionStorage.setItem('leftyAgent', JSON.stringify(leftyJSON));
 
     async function loadGameSettings(files) {
       const settingsFiles = files.filter(file => file.startsWith('settings_') && file.endsWith('.json'));
@@ -651,8 +652,9 @@ function loadInstructions1() {
     //});
 
     settings = getGameSettings().vars;
-    preferenceAgent = getAgent('preferenceAgent');
+    oracleAgent = getAgent('oracleAgent');
     randomAgent = getAgent('randomAgent');
+    leftyAgent = getAgent('leftyAgent');
 
     buttonToNewPage('nextButton1', 'INSTRUCTIONS2');
     
@@ -670,7 +672,7 @@ function loadInstructions1() {
 
 function loadInstructions2() {
     buttonToNewPage('backButton2', 'INSTRUCTIONS1');
-    buttonToNewPage('nextButton2', 'SELECT_PARTNER');//buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//
+    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'SELECT_PARTNER');//
 }
 
 function loadInstructions3() {
@@ -1331,6 +1333,8 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
     let   movesMade       = 0;
     let   historyData          = [];
 
+    const agent = targetName.includes('A') ? randomAgent : targetName.includes('B') ? leftyAgent : targetName.includes('C') ? oracleAgent : undefined;
+
     // — Compute sizes —
     const size = Math.min(computeSmallSize(1, rowWrapper), 150);
     const smallSize = Math.min(computeSmallSize(historyRows, historyRowWrapper), 150);
@@ -1346,7 +1350,12 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
     function makeDecisions() {
       const interval = setInterval(() => {
         const squares = rowWrapper.querySelector(`.subrow`).querySelectorAll('.square-finder');
-        const idx = preferenceAgent[`round_${phase1Round + phase2Round - 1}`][movesMade].decision;
+        let idx;
+        if (training) {
+          idx = 1;
+        } else {
+          idx = agent[`round_${phase1Round + phase2Round}`][movesMade].decision;
+        }
         handleClick(squares[idx]);
         movesMade++;
 
@@ -1504,9 +1513,14 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
       const tick = pseudo.querySelector('[data-type="tick"]');
       const cross = pseudo.querySelector('[data-type="cross"]');
 
-      square.classList.remove(`reward${x}`, 'grey');
-      square.classList.add(`reward${x}-clicked`);
-      let reward = preferenceAgent[`round_${phase1Round + phase2Round - 1}`][movesMade].reward;
+      requestAnimationFrame(() => {
+        square.classList.remove(`reward${x}`, 'grey');
+        square.classList.add(`reward${x}-clicked`);
+      });
+      let reward = agent[`round_${phase1Round + phase2Round}`][movesMade].reward;
+      if (training) {
+        reward = 50;
+      }
       if (!isLast) {
         updateHistory(x, reward);
       }
@@ -1516,7 +1530,6 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
       setTimeout(() => {
         square.classList.add(`reward${x}`,'grey');
         square.classList.remove(`reward${x}-clicked`);
-
         // Hide the stop icon as soon as the penultimate row moves into focus
         if (isPenultimate) {
           rowWrapper.querySelector(`.subrow`).classList.remove('disabled');
@@ -1552,7 +1565,7 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
       if (isLast) {
         let correct = true;
         if (!training) {
-          actuallyChosen = preferenceAgent[`round_${phase1Round + phase2Round - 1}`][movesMade].decision;
+          actuallyChosen = agent[`round_${phase1Round + phase2Round}`][movesMade].decision;
           correct = (x == actuallyChosen);
           previousRoundCorrect_P2 = correct;
         }
@@ -1675,6 +1688,8 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
     let   decision           = Array(numberOfMoves);
     let   rewardReceived     = Array(numberOfMoves);
     let   timeStamps         = Array(numberOfMoves);
+
+    const agent = targetName.includes('A') ? randomAgent : targetName.includes('B') ? leftyAgent : targetName.includes('C') ? oracleAgent : undefined;
 
     let newX = 0, newY = 0, startX = 0, startY = 0, dropCounter = 0;
     let historyData        = [];
@@ -1918,10 +1933,10 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
       compareInfoBox.classList.remove('gone');
       let otherScoreSinceLastComp = 0;
 
-      const round = phase1Round + phase2Round + phase3Round - 1;
+      const round = phase1Round + phase2Round + phase3Round;
       for (let i = 0; i < comparisonFrequency; i++) {
         const t = trial - i;
-        let reward = preferenceAgent[`round_${round}`]?.[t]?.reward || 0;
+        let reward = agent[`round_${round}`]?.[t]?.reward || 0;
         otherScoreSinceLastComp += reward;
       }
 
@@ -2060,7 +2075,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
       square.classList.remove(`reward${x}`);
       square.classList.add(`reward${x}-clicked`);
-      reward = Math.round(settings.chanceToWin[((phase1Round + phase2Round + phase3Round + phase4Round - 1) * numberOfMoves + currentTrial)][0][x] * 100);
+      reward = Math.round(settings.chanceToWin[((phase1Round + phase2Round + phase3Round -1) * numberOfMoves + currentTrial)][0][x] * 100);
       if (training) {
         reward = (numberOfMoves - currentTrial) * 10;
       }
@@ -2256,6 +2271,8 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
     let   decision           = Array(numberOfMoves);
     let   rewardReceived     = Array(numberOfMoves);
     let   timeStamps         = Array(numberOfMoves);
+
+    const agent = targetName.includes('A') ? randomAgent : targetName.includes('B') ? leftyAgent : targetName.includes('C') ? oracleAgent : undefined;
 
     let newX = 0, newY = 0, startX = 0, startY = 0, dropCounter = 0;
     let historyData          = [];
@@ -2478,10 +2495,10 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
       compareInfoBox.classList.remove("gone");
       let otherScoreSinceLastComp = 0;
 
-      const round = phase1Round + phase2Round + phase3Round + phase4Round - 1;
+      const round = phase1Round + phase2Round + phase3Round + phase4Round;
       for (let i = 0; i < comparisonFrequency; i++) {
-        const t = trial - i;
-        let reward = preferenceAgent[`round_${round}`]?.[t]?.reward || 0;
+        const t = trial - i - 1;
+        let reward = agent[`round_${round}`]?.[t]?.reward || 0;
         otherScoreSinceLastComp += reward;
       }
 
