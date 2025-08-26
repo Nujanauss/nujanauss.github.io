@@ -258,7 +258,7 @@ function showPage(pageId) {
         case 'GAME1':
             loadPhase1(
               settings.moves,
-              1,
+              Math.floor(settings.numberOfRounds / 4),
               10,
               settings.comparisonFrequency,
               false,
@@ -303,7 +303,7 @@ function showPage(pageId) {
         case 'GAME2':
             loadPhase2(
               6,
-              1,
+              Math.floor(settings.numberOfRounds / 4),
               10,
               false,
               {
@@ -348,7 +348,7 @@ function showPage(pageId) {
         case 'GAME3':
             loadPhase3(
               settings.moves,
-              2,
+              Math.floor(settings.numberOfRounds / 4),
               settings.comparisonFrequency,
               false,
               {
@@ -402,7 +402,7 @@ function showPage(pageId) {
         case 'GAME4':
             loadPhase4(
               settings.moves,
-              Math.floor(settings.numberOfRounds / 6),
+              Math.floor(settings.numberOfRounds / 4),
               settings.comparisonFrequency,
               false,
               {
@@ -690,7 +690,6 @@ function loadInstructions5() {
 }
 
 function loadInstructions6() {
-    document.getElementById('numberTurnsINSTR6').innerHTML = settings.moves;
     document.getElementById('comparisonFreqINSTR6').innerHTML = settings.comparisonFrequency;
     document.getElementById('comparisonFreqINSTR6_2').innerHTML = settings.comparisonFrequency;
     buttonToNewPage('nextButton6', 'INSTRUCTIONS7');
@@ -708,7 +707,7 @@ function loadInstructions8() {
 
 function loadInstructions9() {
     document.getElementById('numberTurnsINSTR9').innerHTML = settings.moves;
-    document.getElementById('numberRoundsINSTR9').innerHTML = Math.floor(settings.numberOfRounds / 6);
+    document.getElementById('numberRoundsINSTR9').innerHTML = Math.floor(settings.numberOfRounds / 4);
     buttonToNewPage('backButton9', 'INSTRUCTIONS8');
     buttonToNewPage('nextButton9', 'INSTRUCTIONS10');
 }

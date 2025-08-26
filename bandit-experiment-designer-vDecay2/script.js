@@ -671,12 +671,15 @@ document.addEventListener('DOMContentLoaded', async function() {
           decay:          decay,
           recurrance:     recurranceProb,
           numberOfRounds: numberOfRounds,
+          comparisonFrequency: 2,
           chanceToWin:    chanceToWin
         }
       };
       saveJSON(settings, `settings_${id}.json`);
       const randomSim   = runSimulations('random');
       const oracleSim = runSimulations('oracle');
+      const leftySim = runSimulations('lefty');
+      saveJSON(leftySim, `leftySimulationResults_${id}.json`);
       saveJSON(randomSim, `randomSimulationResults_${id}.json`);
       saveJSON(oracleSim, `oracleSimulationResults_${id}.json`);
     });
@@ -695,7 +698,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     function runTrial(agent, trial, roundResult, round) {
       const decision = agent.nextDecision(trial);
-      let reward = Math.round(chanceToWin[trial][0][decision] * 100);
+      let reward = Math.round(chanceToWin[round * numberOfMoves + trial][0][decision] * 100);
       agent.update(decision, reward);
       agent.updatePreviousDecision(decision);
       roundResult.push({ trial, decision, reward });
@@ -703,7 +706,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function getNewAgentFromType(type) {
-      if (type === 'oracle') return new Oracle(cols, 0.1);
+      if (type === 'oracle') return new Oracle(cols, 0.07);
+      if (type === 'lefty') return new Lefty(cols, 0.7);
       return new RandomAgent();
     }
   }
@@ -727,24 +731,53 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
   }
 
+  class Lefty extends Agent {
+    constructor(numActions = cols, bias = 0.7) {
+      super(numActions);
+      this.bias = bias;
+      this.N = Array(numActions).fill(0); // Track number of times each arm has been pulled
+    }
+
+    nextDecision(trial) {
+      if (Math.random() < this.bias) {
+        // With bias probability, pick left-most arm
+        return 0;
+      } else {
+        // Choose arm(s) with the highest "uncertainty" score (less used = higher score)
+        const total = this.N.reduce((a, b) => a + b, 0) || 1;
+        const uncertaintyScores = this.N.map(n => total - n);
+        const maxScore = Math.max(...uncertaintyScores);
+        
+        // Collect all arms with the max uncertainty score, EXCEPT index 0
+        const bestArms = [];
+        for (let i = 0; i < uncertaintyScores.length; i++) {
+          if (i !== 0 && uncertaintyScores[i] === maxScore) {
+            bestArms.push(i);
+          }
+        }
+
+        // If all arms except 0 are excluded (edge case), fallback to random non-zero arm
+        if (bestArms.length === 0) {
+          const nonZeroArms = this.N.map((_, i) => i).filter(i => i !== 0);
+          return nonZeroArms[Math.floor(Math.random() * nonZeroArms.length)];
+        }
+
+        return bestArms[Math.floor(Math.random() * bestArms.length)];
+      }
+    }
+    update(action, reward) {
+      this.N[action] += 1;
+    }
+  }
+
   class Oracle extends Agent {
-    constructor(numActions = cols, flaw = 0.15) {
+    constructor(numActions = cols, flaw = 0.07) {
       super(numActions);
       this.flaw = flaw;
       this.N = Array(numActions).fill(0); // Number of times each arm has been pulled
     }
 
     nextDecision(trial) {
-      const unpulled = [];
-      for (let i = 0; i < this.numActions; i++) {
-        if (this.N[i] === 0) unpulled.push(i);
-      }
-
-      if (unpulled.length > 0 && Math.random() < 0.9) {
-        // With 90% probability, pick randomly among unpulled arms
-        return unpulled[Math.floor(Math.random() * unpulled.length)];
-      }
-
       if (Math.random() > this.flaw) {
         // Choose best arm using oracle, breaking ties randomly
         const trialData = chanceToWin[trial][0];
@@ -755,30 +788,37 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
         return bestArms[Math.floor(Math.random() * bestArms.length)];
       } else {
-        // Choose randomly based on uncertainty (inverse of how often arm has been used)
-        const total = this.N.reduce((a, b) => a + b, 0) + 1e-6;
-        const invProbs = this.N.map(n => 1 - n / total);
-        const sum = invProbs.reduce((a, b) => a + b, 0);
+        // Flawed case: avoid the true best arm(s)
+        const trialData = chanceToWin[trial][0];
+        const maxVal = Math.max(...trialData);
+        const trueBestArms = [];
+        for (let i = 0; i < trialData.length; i++) {
+          if (trialData[i] === maxVal) trueBestArms.push(i);
+        }
 
-        const normProbs = invProbs.map(p => p / sum);
-        return weightedRandomChoice(normProbs);
+        // Choose arm(s) with highest "uncertainty" score, excluding best arms
+        const total = this.N.reduce((a, b) => a + b, 0) || 1;
+        const uncertaintyScores = this.N.map(n => total - n);
+        const maxScore = Math.max(...uncertaintyScores);
+        let candidateArms = [];
+        for (let i = 0; i < uncertaintyScores.length; i++) {
+          if (uncertaintyScores[i] === maxScore && !trueBestArms.includes(i)) {
+            candidateArms.push(i);
+          }
+        }
+
+        // Fallback: if all max-uncertainty arms are best arms, pick random non-best arm
+        if (candidateArms.length === 0) {
+          candidateArms = this.N.map((_, i) => i).filter(i => !trueBestArms.includes(i));
+        }
+
+        return candidateArms[Math.floor(Math.random() * candidateArms.length)];
       }
     }
 
     update(action, reward) {
       this.N[action] += 1;
     }
-  }
-
-  // Fairly choose an index based on given probability distribution
-  function weightedRandomChoice(probabilities) {
-    const r = Math.random();
-    let acc = 0;
-    for (let i = 0; i < probabilities.length; i++) {
-      acc += probabilities[i];
-      if (r < acc) return i;
-    }
-    return probabilities.length - 1; // fallback (shouldn't normally happen)
   }
 
   function makeid(length) {
