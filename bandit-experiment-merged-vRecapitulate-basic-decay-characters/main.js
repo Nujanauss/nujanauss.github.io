@@ -672,7 +672,7 @@ function loadInstructions1() {
 
 function loadInstructions2() {
     buttonToNewPage('backButton2', 'INSTRUCTIONS1');
-    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'SELECT_PARTNER');//
+    buttonToNewPage('nextButton2', 'RATESELF');//buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//
 }
 
 function loadInstructions3() {
@@ -1341,7 +1341,7 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
     stopIcon.classList.remove('hidden');
     if (!training) {
       var imFileName = targetName.replace(/\s+/g, '-');
-      comparisonTargetIm.src = `/static/${imFileName}-desc.png`;
+      comparisonTargetIm.src = `./static/${imFileName}-desc.png`;
     }
     comparisonTargetIm.classList.remove('gone');
     nextBtn.classList.add('gone');
@@ -1695,7 +1695,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
     if (!training) {
       var imFileName = targetName.replace(/\s+/g, '-');
-      comparisonTargetIm.src = `/static/${imFileName}-desc.png`;
+      comparisonTargetIm.src = `./static/${imFileName}-desc.png`;
     }
     comparisonTargetIm.classList.remove('gone');
 
@@ -1708,7 +1708,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
     const margin = { left: 0, right: 0 };
     const maxAbsScore = 150;            // start small, will expand if needed
     var imFileName = training ? "Player-X" : targetName.replace(/\s+/g, '-');
-    pickUpWrapper.querySelectorAll('img').forEach(i => {i.src = `/static/${imFileName}.png`});
+    pickUpWrapper.querySelectorAll('img').forEach(i => {i.src = `./static/${imFileName}.png`});
 
     let fillBar, label, x;
     if (!svgChart.node().chartInitialized) {
@@ -2281,7 +2281,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
     const smallSize = Math.min(computeSmallSize(historyRows, historyRowWrapper), 150);
     if (!training) {
       var imFileName = targetName.replace(/\s+/g, '-');
-      comparisonTargetIm.src = `/static/${imFileName}-desc.png`;
+      comparisonTargetIm.src = `./static/${imFileName}-desc.png`;
       comparisonTargetIm.classList.remove('gone');
     }
 
@@ -3028,7 +3028,7 @@ function loadSelectObservationTarget() {
         const playerName = String.fromCharCode(65 + i); // A, B, C
         players.push({
             name: `Player ${playerName}`,
-            img: `/static/player-${playerName}.png`,
+            img: `./static/player-${playerName}.png`,
             characteristic: characteristics[i % characteristics.length]
         });
     }
