@@ -45,441 +45,444 @@ function showPage(pageId) {
     currentPage = pageId;
     const pages = document.querySelectorAll('.w');
     pages.forEach(page => page.style.display = 'none');
-    document.getElementById(pageId).style.display = 'block';
-    switch(pageId) {
-        case 'INDEX':
-            loadIndex();
+    requestAnimationFrame(() => {
+        const page = document.getElementById(pageId);
+        page.style.display = 'block';
+        switch(pageId) {
+            case 'INDEX':
+                loadIndex();
+                break;
+            case 'PRECONSENT':
+                loadPreconsent();
+                break;
+            case 'CONSENT':
+                loadConsent();
+                break;
+            case 'DATA-PROTECTION':
+                loadDataProtection();
+                break;
+            case 'INSTRUCTIONS1':
+                loadInstructions1();
+                break;
+            case 'INSTRUCTIONS2':
+                loadInstructions2();
+                break;
+            case 'INSTRUCTIONS3':
+                loadInstructions3();
+                break;
+            case 'INSTRUCTIONS4':
+                loadInstructions4();
+                break;
+            case 'INSTRUCTIONS5':
+                loadInstructions5();
+                break;
+            case 'INSTRUCTIONS6':
+                loadInstructions6();
+                break;
+            case 'INSTRUCTIONS7':
+                loadInstructions7();
+                break;
+            case 'INSTRUCTIONS8':
+                loadInstructions8();
+                break;
+            case 'INSTRUCTIONS9':
+                loadInstructions9();
+                break;
+            case 'INSTRUCTIONS10':
+                loadInstructions10();
+                break;
+            case 'INSTRUCTIONS11':
+                loadInstructions11();
+                break;
+            case 'INSTRUCTIONS1_P2':
+                loadInstructions1_P2();
+                break;
+            case 'INSTRUCTIONS2_P2':
+                loadInstructions2_P2();
+                break;
+            case 'INSTRUCTIONS3_P2':
+                loadInstructions3_P2();
+                break;
+            case 'INSTRUCTIONS4_P2':
+                loadInstructions4_P2();
+                break;
+            case 'INSTRUCTIONS5_P2':
+                loadInstructions5_P2();
+                break;
+            case 'INSTRUCTIONS6_P2':
+                loadInstructions6_P2();
+                break;
+            case 'INSTRUCTIONS7_P2':
+                loadInstructions7_P2();
+                break;
+            case 'INSTRUCTIONS8_P2':
+                loadInstructions8_P2();
+                break;
+            case 'INSTRUCTIONS9_P2':
+                loadInstructions9_P2();
+                break;
+            case 'INSTRUCTIONS10_P2':
+                loadInstructions10_P2();
+                break;
+            case 'INSTRUCTIONS1_P3':
+              loadInstructions1_P3();
+              break;
+            case 'INSTRUCTIONS2_P3':
+              loadInstructions2_P3();
+              break;
+            case 'INSTRUCTIONS3_P3':
+              loadInstructions3_P3();
+              break;
+            case 'INSTRUCTIONS4_P3':
+              loadInstructions4_P3();
+              break;
+            case 'INSTRUCTIONS5_P3':
+              loadInstructions5_P3();
+              break;
+            case 'INSTRUCTIONS6_P3':
+              loadInstructions6_P3();
+              break;
+            case 'INSTRUCTIONS7_P3':
+              loadInstructions7_P3();
+              break;
+            case 'INSTRUCTIONS8_P3':
+              loadInstructions8_P3();
+              break;
+            case 'INSTRUCTIONS9_P3':
+              loadInstructions9_P3();
+              break;
+            case 'INSTRUCTIONS10_P3':
+              loadInstructions10_P3();
+              break;
+            case 'INSTRUCTIONS11_P3':
+              loadInstructions11_P3();
+              break;
+            case 'INSTRUCTIONS1_P4':
+              loadInstructions1_P4();
+              break;
+            case 'INSTRUCTIONS2_P4':
+              loadInstructions2_P4();
+              break;
+            case 'INSTRUCTIONS3_P4':
+              loadInstructions3_P4();
+              break;
+            case 'INSTRUCTIONS4_P4':
+              loadInstructions4_P4();
+              break;
+            case 'INSTRUCTIONS5_P4':
+              loadInstructions5_P4();
+              break;
+            case 'INSTRUCTIONS6_P4':
+              loadInstructions6_P4();
+              break;
+            case 'INSTRUCTIONS7_P4':
+              loadInstructions7_P4();
+              break;
+            case 'INSTRUCTIONS8_P4':
+              loadInstructions8_P4();
+              break;
+            case 'TRAIN':
+                loadPhase1(
+                  1,
+                  1,
+                  0,
+                  settings.comparisonFrequency,
+                  true,
+                  false,
+                  {
+                    topInstruction:   'top-instruction-t1',
+                    buttn:             'nextButton-t1',
+                    nextPage:          'INSTRUCTIONS4',
+                    rowWrapper:        'rowWrapper-t1',
+                    historyRowWrapper: 'historyRowWrapper-t1',
+                    scoreInfoBox:      'infoBox-t1',
+                    scoreText:         'score-t1'
+                  }
+                );
+                break;
+            case 'TRAIN2':
+                loadPhase1(
+                  3,
+                  1,
+                  10,
+                  settings.comparisonFrequency,
+                  true,
+                  true,
+                  {
+                    topInstruction:   'top-instruction-t2',
+                    buttn:             'nextButton-t2',
+                    nextPage:          'INSTRUCTIONS6',
+                    rowWrapper:        'rowWrapper-t2',
+                    historyRowWrapper: 'historyRowWrapper-t2',
+                    scoreInfoBox:      'infoBox-t2',
+                    scoreText:         'score-t2'
+                  }
+                );
+                break;
+            case 'TRAIN3':
+                loadPhase1(
+                  5,
+                  1,
+                  10,
+                  settings.comparisonFrequency,
+                  true,
+                  true,
+                  {
+                    topInstruction:   'top-instruction-t3',
+                    buttn:             'nextButton-t3',
+                    nextPage:          'INSTRUCTIONS8',
+                    rowWrapper:        'rowWrapper-t3',
+                    historyRowWrapper: 'historyRowWrapper-t3',
+                    scoreInfoBox:      'infoBox-t3',
+                    scoreText:         'score-t3',
+                    overlay:           'overlay-t3',
+                    compareInfoBox:    'soo-information-t3',
+                    lastXTrials:       'comparisonFreq-t3',
+                    svgChart:          'score-chart-t3',
+                    scoreInfoBox:      'infoBox-t3',
+                    scoreText:         'score-t3',
+                    readTxt:           'read-comparison-t3'
+                  }
+                );
+                break;
+            case 'CHECK':
+                loadCheck();
+                break;
+            case 'CHECK_P2':
+                loadCheck_P2();
+                break;
+            case 'CHECK_P3':
+                loadCheck_P3();
+                break;
+            case 'CHECK_P4':
+                loadCheck_P4();
+                break;
+            case 'GAME1':
+                loadPhase1(
+                  settings.moves,
+                  Math.floor(settings.numberOfRounds / 4),
+                  10,
+                  settings.comparisonFrequency,
+                  false,
+                  true,
+                  {                    
+                    buttn:             'roundOverButton',
+                    nextPage:          'INSTRUCTIONS1_P2',
+                    rowWrapper:        'rowWrapper',
+                    historyRowWrapper: 'historyRowWrapper',
+                    scoreInfoBox:      'infoBox',
+                    scoreText:         'score',
+                    overlay:           'overlay',
+                    compareInfoBox:    'soo-information',
+                    lastXTrials:       'comparisonFreq',
+                    svgChart:          'score-chart',
+                    scoreInfoBox:      'infoBox',
+                    scoreText:         'score',
+                    readTxt:           'read-comparison'
+                  }
+                );
+                break;
+            case 'TRAIN_P2':
+                loadPhase2(
+                  2,
+                  1,
+                  10,
+                  true,
+                  {
+                    topInstruction:   'top-instruction_P2-t1',
+                    buttn:            'roundOverButton_P2-t1',
+                    nextPage:         'INSTRUCTIONS5_P2',
+                    rowWrapper:       'rowWrapper_P2-t1',
+                    historyRowWrapper: 'historyRowWrapper_P2-t1',
+                    stop:             'stop_P2-t1',
+                    comparisonTarget: 'comparison-target-image_P2-t1'
+                  }
+                );
             break;
-        case 'PRECONSENT':
-            loadPreconsent();
+            case 'SELECT_PARTNER':
+                loadSelectObservationTarget();
+                break;
+            case 'GAME2':
+                loadPhase2(
+                  6,
+                  Math.floor(settings.numberOfRounds / 4),
+                  10,
+                  false,
+                  {
+                    buttn:            'roundOverButton_P2',
+                    nextPage:         'INSTRUCTIONS1_P3',
+                    rowWrapper:       'rowWrapper_P2',
+                    historyRowWrapper: 'historyRowWrapper_P2',
+                    stop:             'stop_P2',
+                    comparisonTarget: 'comparison-target-image_P2'
+                  }
+                );
+                break;
+            case 'TRAIN_P3':
+                loadPhase3(
+                  2,
+                  1,
+                  settings.comparisonFrequency,
+                  true,
+                  {
+                    topInstruction:      'top-instruction_P3-t1',
+                    buttn:               'roundOverButton_P3-t1',
+                    submitBttn:          'submitButton_P3-t1',
+                    submitBttnWrap:      'submitButtonWrap_P3-t1',
+                    nextPage:            'INSTRUCTIONS7_P3',
+                    rowWrapper:          'rowWrapper_P3-t1',
+                    historyRowWrapper:   'historyRowWrapper_P3-t1',
+                    pickUpWrapper:       'pick-up-agents_P3-t1',
+                    pickUpRowWrapper:    'pickUp-rowWrapper_P3-t1',
+                    overlay:             'overlay_P3-t1',
+                    compareInfoBox:      'soo-information_P3-t1',
+                    lastXTrials:         'comparisonFreq_P3-t1',
+                    scorePlayer:         'player-score_P3-t1',
+                    otherName:           'target-name_P3-t1',
+                    otherName2:           'target-name_P3_2-t1',
+                    scoreOther:          'soo-score_P3-t1',
+                    moreOrLessTxt:       'more-or-less_P3-t1',
+                    svgChart:            'score-chart_P3-t1',
+                    comparisonTarget:    'comparison-target-image_P3-t1'
+                  }
+                );
             break;
-        case 'CONSENT':
-            loadConsent();
+            case 'GAME3':
+                loadPhase3(
+                  settings.moves,
+                  Math.floor(settings.numberOfRounds / 4),
+                  settings.comparisonFrequency,
+                  false,
+                  {
+                    buttn:               'roundOverButton_P3',
+                    submitBttn:          'submitButton_P3',
+                    submitBttnWrap:      'submitButtonWrap_P3',
+                    nextPage:            'INSTRUCTIONS1_P4',
+                    rowWrapper:          'rowWrapper_P3',
+                    historyRowWrapper:   'historyRowWrapper_P3',
+                    pickUpWrapper:       'pick-up-agents_P3',
+                    pickUpRowWrapper:    'pickUp-rowWrapper_P3',
+                    overlay:             'overlay_P3',
+                    compareInfoBox:      'soo-information_P3',
+                    lastXTrials:         'comparisonFreq_P3',
+                    scorePlayer:         'player-score_P3',
+                    otherName:           'target-name_P3',
+                    otherName2:           'target-name_P3_2',
+                    scoreOther:          'soo-score_P3',
+                    moreOrLessTxt:       'more-or-less_P3',
+                    svgChart:            'score-chart_P3',
+                    comparisonTarget:    'comparison-target-image_P3'
+                  }
+                );
             break;
-        case 'DATA-PROTECTION':
-            loadDataProtection();
+            case 'TRAIN_P4':
+                loadPhase4(
+                  3,
+                  1,
+                  settings.comparisonFrequency,
+                  true,
+                  {
+                    buttn:               'roundOverButton_P4-t1',
+                    nextPage:            'INSTRUCTIONS5_P4',
+                    rowWrapper:          'rowWrapper_P4-t1',
+                    historyRowWrapper:   'historyRowWrapper_P4-t1',
+                    overlay:             'overlay_P4-t1',
+                    compareInfoBox:      'soo-information_P4-t1',
+                    lastXTrials:         'comparisonFreq_P4-t1',
+                    scorePlayer:         'player-score_P4-t1',
+                    otherName:           'target-name_P4-t1',
+                    scoreOther:          'soo-score_P4-t1',
+                    moreOrLessTxt:       'more-or-less_P4-t1',
+                    svgChart:            'score-chart_P4-t1',
+                    scoreInfoBox:        'infoBox_P4-t1',
+                    scoreText:           'score_P4-t1',
+                    readTxt:             'read-comparison_P4-t1',
+                    comparisonTarget:    'comparison-target-image_P4-t1'
+                  }
+                );
             break;
-        case 'INSTRUCTIONS1':
-            loadInstructions1();
+            case 'GAME4':
+                loadPhase4(
+                  settings.moves,
+                  Math.floor(settings.numberOfRounds / 4),
+                  settings.comparisonFrequency,
+                  false,
+                  {
+                    buttn:               'roundOverButton_P4',
+                    nextPage:            'THANKS',
+                    rowWrapper:          'rowWrapper_P4',
+                    historyRowWrapper:   'historyRowWrapper_P4',
+                    overlay:             'overlay_P4',
+                    compareInfoBox:      'soo-information_P4',
+                    lastXTrials:         'comparisonFreq_P4',
+                    scorePlayer:         'player-score_P4',
+                    otherName:           'target-name_P4',
+                    scoreOther:          'soo-score_P4',
+                    moreOrLessTxt:       'more-or-less_P4',
+                    svgChart:            'score-chart_P4',
+                    scoreInfoBox:        'infoBox_P4',
+                    scoreText:           'score_P4',
+                    readTxt:             'read-comparison_P4',
+                    comparisonTarget:    'comparison-target-image_P4'
+                  }
+                );
             break;
-        case 'INSTRUCTIONS2':
-            loadInstructions2();
-            break;
-        case 'INSTRUCTIONS3':
-            loadInstructions3();
-            break;
-        case 'INSTRUCTIONS4':
-            loadInstructions4();
-            break;
-        case 'INSTRUCTIONS5':
-            loadInstructions5();
-            break;
-        case 'INSTRUCTIONS6':
-            loadInstructions6();
-            break;
-        case 'INSTRUCTIONS7':
-            loadInstructions7();
-            break;
-        case 'INSTRUCTIONS8':
-            loadInstructions8();
-            break;
-        case 'INSTRUCTIONS9':
-            loadInstructions9();
-            break;
-        case 'INSTRUCTIONS10':
-            loadInstructions10();
-            break;
-        case 'INSTRUCTIONS11':
-            loadInstructions11();
-            break;
-        case 'INSTRUCTIONS1_P2':
-            loadInstructions1_P2();
-            break;
-        case 'INSTRUCTIONS2_P2':
-            loadInstructions2_P2();
-            break;
-        case 'INSTRUCTIONS3_P2':
-            loadInstructions3_P2();
-            break;
-        case 'INSTRUCTIONS4_P2':
-            loadInstructions4_P2();
-            break;
-        case 'INSTRUCTIONS5_P2':
-            loadInstructions5_P2();
-            break;
-        case 'INSTRUCTIONS6_P2':
-            loadInstructions6_P2();
-            break;
-        case 'INSTRUCTIONS7_P2':
-            loadInstructions7_P2();
-            break;
-        case 'INSTRUCTIONS8_P2':
-            loadInstructions8_P2();
-            break;
-        case 'INSTRUCTIONS9_P2':
-            loadInstructions9_P2();
-            break;
-        case 'INSTRUCTIONS10_P2':
-            loadInstructions10_P2();
-            break;
-        case 'INSTRUCTIONS1_P3':
-          loadInstructions1_P3();
-          break;
-        case 'INSTRUCTIONS2_P3':
-          loadInstructions2_P3();
-          break;
-        case 'INSTRUCTIONS3_P3':
-          loadInstructions3_P3();
-          break;
-        case 'INSTRUCTIONS4_P3':
-          loadInstructions4_P3();
-          break;
-        case 'INSTRUCTIONS5_P3':
-          loadInstructions5_P3();
-          break;
-        case 'INSTRUCTIONS6_P3':
-          loadInstructions6_P3();
-          break;
-        case 'INSTRUCTIONS7_P3':
-          loadInstructions7_P3();
-          break;
-        case 'INSTRUCTIONS8_P3':
-          loadInstructions8_P3();
-          break;
-        case 'INSTRUCTIONS9_P3':
-          loadInstructions9_P3();
-          break;
-        case 'INSTRUCTIONS10_P3':
-          loadInstructions10_P3();
-          break;
-        case 'INSTRUCTIONS11_P3':
-          loadInstructions11_P3();
-          break;
-        case 'INSTRUCTIONS1_P4':
-          loadInstructions1_P4();
-          break;
-        case 'INSTRUCTIONS2_P4':
-          loadInstructions2_P4();
-          break;
-        case 'INSTRUCTIONS3_P4':
-          loadInstructions3_P4();
-          break;
-        case 'INSTRUCTIONS4_P4':
-          loadInstructions4_P4();
-          break;
-        case 'INSTRUCTIONS5_P4':
-          loadInstructions5_P4();
-          break;
-        case 'INSTRUCTIONS6_P4':
-          loadInstructions6_P4();
-          break;
-        case 'INSTRUCTIONS7_P4':
-          loadInstructions7_P4();
-          break;
-        case 'INSTRUCTIONS8_P4':
-          loadInstructions8_P4();
-          break;
-        case 'TRAIN':
-            loadPhase1(
-              1,
-              1,
-              0,
-              settings.comparisonFrequency,
-              true,
-              false,
-              {
-                topInstruction:   'top-instruction-t1',
-                buttn:             'nextButton-t1',
-                nextPage:          'INSTRUCTIONS4',
-                rowWrapper:        'rowWrapper-t1',
-                historyRowWrapper: 'historyRowWrapper-t1',
-                scoreInfoBox:      'infoBox-t1',
-                scoreText:         'score-t1'
-              }
-            );
-            break;
-        case 'TRAIN2':
-            loadPhase1(
-              3,
-              1,
-              10,
-              settings.comparisonFrequency,
-              true,
-              true,
-              {
-                topInstruction:   'top-instruction-t2',
-                buttn:             'nextButton-t2',
-                nextPage:          'INSTRUCTIONS6',
-                rowWrapper:        'rowWrapper-t2',
-                historyRowWrapper: 'historyRowWrapper-t2',
-                scoreInfoBox:      'infoBox-t2',
-                scoreText:         'score-t2'
-              }
-            );
-            break;
-        case 'TRAIN3':
-            loadPhase1(
-              5,
-              1,
-              10,
-              settings.comparisonFrequency,
-              true,
-              true,
-              {
-                topInstruction:   'top-instruction-t3',
-                buttn:             'nextButton-t3',
-                nextPage:          'INSTRUCTIONS8',
-                rowWrapper:        'rowWrapper-t3',
-                historyRowWrapper: 'historyRowWrapper-t3',
-                scoreInfoBox:      'infoBox-t3',
-                scoreText:         'score-t3',
-                overlay:           'overlay-t3',
-                compareInfoBox:    'soo-information-t3',
-                lastXTrials:       'comparisonFreq-t3',
-                svgChart:          'score-chart-t3',
-                scoreInfoBox:      'infoBox-t3',
-                scoreText:         'score-t3',
-                readTxt:           'read-comparison-t3'
-              }
-            );
-            break;
-        case 'CHECK':
-            loadCheck();
-            break;
-        case 'CHECK_P2':
-            loadCheck_P2();
-            break;
-        case 'CHECK_P3':
-            loadCheck_P3();
-            break;
-        case 'CHECK_P4':
-            loadCheck_P4();
-            break;
-        case 'GAME1':
-            loadPhase1(
-              settings.moves,
-              Math.floor(settings.numberOfRounds / 4),
-              10,
-              settings.comparisonFrequency,
-              false,
-              true,
-              {                    
-                buttn:             'roundOverButton',
-                nextPage:          'INSTRUCTIONS1_P2',
-                rowWrapper:        'rowWrapper',
-                historyRowWrapper: 'historyRowWrapper',
-                scoreInfoBox:      'infoBox',
-                scoreText:         'score',
-                overlay:           'overlay',
-                compareInfoBox:    'soo-information',
-                lastXTrials:       'comparisonFreq',
-                svgChart:          'score-chart',
-                scoreInfoBox:      'infoBox',
-                scoreText:         'score',
-                readTxt:           'read-comparison'
-              }
-            );
-            break;
-        case 'TRAIN_P2':
-            loadPhase2(
-              2,
-              1,
-              10,
-              true,
-              {
-                topInstruction:   'top-instruction_P2-t1',
-                buttn:            'roundOverButton_P2-t1',
-                nextPage:         'INSTRUCTIONS5_P2',
-                rowWrapper:       'rowWrapper_P2-t1',
-                historyRowWrapper: 'historyRowWrapper_P2-t1',
-                stop:             'stop_P2-t1',
-                comparisonTarget: 'comparison-target-image_P2-t1'
-              }
-            );
-        break;
-        case 'SELECT_PARTNER':
-            loadSelectObservationTarget();
-            break;
-        case 'GAME2':
-            loadPhase2(
-              6,
-              Math.floor(settings.numberOfRounds / 4),
-              10,
-              false,
-              {
-                buttn:            'roundOverButton_P2',
-                nextPage:         'INSTRUCTIONS1_P3',
-                rowWrapper:       'rowWrapper_P2',
-                historyRowWrapper: 'historyRowWrapper_P2',
-                stop:             'stop_P2',
-                comparisonTarget: 'comparison-target-image_P2'
-              }
-            );
-            break;
-        case 'TRAIN_P3':
-            loadPhase3(
-              2,
-              1,
-              settings.comparisonFrequency,
-              true,
-              {
-                topInstruction:      'top-instruction_P3-t1',
-                buttn:               'roundOverButton_P3-t1',
-                submitBttn:          'submitButton_P3-t1',
-                submitBttnWrap:      'submitButtonWrap_P3-t1',
-                nextPage:            'INSTRUCTIONS7_P3',
-                rowWrapper:          'rowWrapper_P3-t1',
-                historyRowWrapper:   'historyRowWrapper_P3-t1',
-                pickUpWrapper:       'pick-up-agents_P3-t1',
-                pickUpRowWrapper:    'pickUp-rowWrapper_P3-t1',
-                overlay:             'overlay_P3-t1',
-                compareInfoBox:      'soo-information_P3-t1',
-                lastXTrials:         'comparisonFreq_P3-t1',
-                scorePlayer:         'player-score_P3-t1',
-                otherName:           'target-name_P3-t1',
-                otherName2:           'target-name_P3_2-t1',
-                scoreOther:          'soo-score_P3-t1',
-                moreOrLessTxt:       'more-or-less_P3-t1',
-                svgChart:            'score-chart_P3-t1',
-                comparisonTarget:    'comparison-target-image_P3-t1'
-              }
-            );
-        break;
-        case 'GAME3':
-            loadPhase3(
-              settings.moves,
-              Math.floor(settings.numberOfRounds / 4),
-              settings.comparisonFrequency,
-              false,
-              {
-                buttn:               'roundOverButton_P3',
-                submitBttn:          'submitButton_P3',
-                submitBttnWrap:      'submitButtonWrap_P3',
-                nextPage:            'INSTRUCTIONS1_P4',
-                rowWrapper:          'rowWrapper_P3',
-                historyRowWrapper:   'historyRowWrapper_P3',
-                pickUpWrapper:       'pick-up-agents_P3',
-                pickUpRowWrapper:    'pickUp-rowWrapper_P3',
-                overlay:             'overlay_P3',
-                compareInfoBox:      'soo-information_P3',
-                lastXTrials:         'comparisonFreq_P3',
-                scorePlayer:         'player-score_P3',
-                otherName:           'target-name_P3',
-                otherName2:           'target-name_P3_2',
-                scoreOther:          'soo-score_P3',
-                moreOrLessTxt:       'more-or-less_P3',
-                svgChart:            'score-chart_P3',
-                comparisonTarget:    'comparison-target-image_P3'
-              }
-            );
-        break;
-        case 'TRAIN_P4':
-            loadPhase4(
-              3,
-              1,
-              settings.comparisonFrequency,
-              true,
-              {
-                buttn:               'roundOverButton_P4-t1',
-                nextPage:            'INSTRUCTIONS5_P4',
-                rowWrapper:          'rowWrapper_P4-t1',
-                historyRowWrapper:   'historyRowWrapper_P4-t1',
-                overlay:             'overlay_P4-t1',
-                compareInfoBox:      'soo-information_P4-t1',
-                lastXTrials:         'comparisonFreq_P4-t1',
-                scorePlayer:         'player-score_P4-t1',
-                otherName:           'target-name_P4-t1',
-                scoreOther:          'soo-score_P4-t1',
-                moreOrLessTxt:       'more-or-less_P4-t1',
-                svgChart:            'score-chart_P4-t1',
-                scoreInfoBox:        'infoBox_P4-t1',
-                scoreText:           'score_P4-t1',
-                readTxt:             'read-comparison_P4-t1',
-                comparisonTarget:    'comparison-target-image_P4-t1'
-              }
-            );
-        break;
-        case 'GAME4':
-            loadPhase4(
-              settings.moves,
-              Math.floor(settings.numberOfRounds / 4),
-              settings.comparisonFrequency,
-              false,
-              {
-                buttn:               'roundOverButton_P4',
-                nextPage:            'THANKS',
-                rowWrapper:          'rowWrapper_P4',
-                historyRowWrapper:   'historyRowWrapper_P4',
-                overlay:             'overlay_P4',
-                compareInfoBox:      'soo-information_P4',
-                lastXTrials:         'comparisonFreq_P4',
-                scorePlayer:         'player-score_P4',
-                otherName:           'target-name_P4',
-                scoreOther:          'soo-score_P4',
-                moreOrLessTxt:       'more-or-less_P4',
-                svgChart:            'score-chart_P4',
-                scoreInfoBox:        'infoBox_P4',
-                scoreText:           'score_P4',
-                readTxt:             'read-comparison_P4',
-                comparisonTarget:    'comparison-target-image_P4'
-              }
-            );
-        break;
-        case 'INTERMEDIARY':
-            loadIntermediary();
-            break;
-        case 'DISP':
-            loadScoreDisplay();
-            break;
-        case 'DISP_P2':
-            loadScoreDisplay_P2();
-            break;
-        case 'DISP_P3':
-            loadScoreDisplay_P3();
-            break;
-        case 'DISP_P3':
-            loadScoreDisplay_P3();
-            break;
-        case 'DISP_P4':
-            loadScoreDisplay_P4();
-            break;
-        case 'INTERMEDIARYCOMP':
-            loadIntermediaryComp();
-        case 'RATESELF':
-            loadRate(false,
-              {
-              buttn:        'nextButtonRateSelf',
-              nextPage:     'INSTRUCTIONS2_P2',
-              movableThumb: 'thumb-you',
-              slider:       'track-self',
-              rateLabel:    'rate-label-self'
-              }
-            );
-            break;
-        case 'RATEOTHER':
-            loadRate(true,
-              {
-              buttn:        'nextButtonRateOther',
-              nextPage:     'INSTRUCTIONS2_P3',
-              movableThumb: 'thumb-other',
-              slider:       'track-other',
-              rateLabel:    'rate-label-other'
-              }
-            );
-            break;
-        case 'THANKS':
-            loadThanks();
-            break;
-        case 'FINAL':
-            loadFinal();
-            break;
-        case 'RESCINDED':
-            loadRescinded();
-            break;
-        case 'NOPID':
-            loadNoPid();
-            break;
-    }
+            case 'INTERMEDIARY':
+                loadIntermediary();
+                break;
+            case 'DISP':
+                loadScoreDisplay();
+                break;
+            case 'DISP_P2':
+                loadScoreDisplay_P2();
+                break;
+            case 'DISP_P3':
+                loadScoreDisplay_P3();
+                break;
+            case 'DISP_P3':
+                loadScoreDisplay_P3();
+                break;
+            case 'DISP_P4':
+                loadScoreDisplay_P4();
+                break;
+            case 'INTERMEDIARYCOMP':
+                loadIntermediaryComp();
+            case 'RATESELF':
+                loadRate(false,
+                  {
+                  buttn:        'nextButtonRateSelf',
+                  nextPage:     'INSTRUCTIONS2_P2',
+                  movableThumb: 'thumb-you',
+                  slider:       'track-self',
+                  rateLabel:    'rate-label-self'
+                  }
+                );
+                break;
+            case 'RATEOTHER':
+                loadRate(true,
+                  {
+                  buttn:        'nextButtonRateOther',
+                  nextPage:     'INSTRUCTIONS2_P3',
+                  movableThumb: 'thumb-other',
+                  slider:       'track-other',
+                  rateLabel:    'rate-label-other'
+                  }
+                );
+                break;
+            case 'THANKS':
+                loadThanks();
+                break;
+            case 'FINAL':
+                loadFinal();
+                break;
+            case 'RESCINDED':
+                loadRescinded();
+                break;
+            case 'NOPID':
+                loadNoPid();
+                break;
+        }
+    });
 }
 
 // Initialize the first page
@@ -499,8 +502,8 @@ async function loadIndex() {
     const settingsJSON = await loadGameSettings(files);
     sessionStorage.setItem('gameSettings', JSON.stringify(settingsJSON));
 
-    const oracleJSON = await loadAgent(files, 'oracle');
-    sessionStorage.setItem('oracleAgent', JSON.stringify(oracleJSON));
+    const rationalJSON = await loadAgent(files, 'rational');
+    sessionStorage.setItem('rationalAgent', JSON.stringify(rationalJSON));
     const randomJSON = await loadAgent(files, 'random');
     sessionStorage.setItem('randomAgent', JSON.stringify(randomJSON));
     const leftyJSON = await loadAgent(files, 'lefty');
@@ -652,7 +655,7 @@ function loadInstructions1() {
     //});
 
     settings = getGameSettings().vars;
-    oracleAgent = getAgent('oracleAgent');
+    rationalAgent = getAgent('rationalAgent');
     randomAgent = getAgent('randomAgent');
     leftyAgent = getAgent('leftyAgent');
 
@@ -672,7 +675,7 @@ function loadInstructions1() {
 
 function loadInstructions2() {
     buttonToNewPage('backButton2', 'INSTRUCTIONS1');
-    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'TRAIN_P3');//
+    buttonToNewPage('nextButton2', 'TRAIN_P2');//buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//
 }
 
 function loadInstructions3() {
@@ -1332,7 +1335,7 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
     let   movesMade       = 0;
     let   historyData          = [];
 
-    const agent = targetName.includes('A') ? randomAgent : targetName.includes('B') ? leftyAgent : targetName.includes('C') ? oracleAgent : undefined;
+    const agent = targetName.includes('A') ? randomAgent : targetName.includes('B') ? leftyAgent : targetName.includes('C') ? rationalAgent : undefined;
 
     // — Compute sizes —
     const size = Math.min(computeSmallSize(1, rowWrapper), 150);
@@ -1364,7 +1367,7 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
             autoMode = false;
           }, 700);
         }
-      }, 1000);
+      }, 1100);
     }
 
     function createSquare(x, y) {
@@ -1516,6 +1519,7 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
         square.classList.remove(`reward${x}`, 'grey');
         square.classList.add(`reward${x}-clicked`);
       });
+
       let reward = agent[`round_${phase1Round + phase2Round}`][movesMade].reward;
       if (training) {
         reward = 50;
@@ -1559,7 +1563,7 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
             : 'DISP_P2';
           return buttonToNewPage(buttonId, targetPage);
         }
-      }, 1000);
+      }, 900);
 
       if (isLast) {
         let correct = true;
@@ -1688,7 +1692,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
     let   rewardReceived     = Array(numberOfMoves);
     let   timeStamps         = Array(numberOfMoves);
 
-    const agent = targetName.includes('A') ? randomAgent : targetName.includes('B') ? leftyAgent : targetName.includes('C') ? oracleAgent : undefined;
+    const agent = targetName.includes('A') ? randomAgent : targetName.includes('B') ? leftyAgent : targetName.includes('C') ? rationalAgent : undefined;
 
     let newX = 0, newY = 0, startX = 0, startY = 0, dropCounter = 0;
     let historyData        = [];
@@ -2271,7 +2275,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
     let   rewardReceived     = Array(numberOfMoves);
     let   timeStamps         = Array(numberOfMoves);
 
-    const agent = targetName.includes('A') ? randomAgent : targetName.includes('B') ? leftyAgent : targetName.includes('C') ? oracleAgent : undefined;
+    const agent = targetName.includes('A') ? randomAgent : targetName.includes('B') ? leftyAgent : targetName.includes('C') ? rationalAgent : undefined;
 
     let newX = 0, newY = 0, startX = 0, startY = 0, dropCounter = 0;
     let historyData          = [];
