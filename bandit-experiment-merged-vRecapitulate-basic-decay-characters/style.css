@@ -334,9 +334,28 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 10px; /* vertical spacing between dest and rewards */
+  padding-left: 50px !important;
 }
-
+.group svg {
+  margin-left: 50px !important;
+}
+.drag-drop-group {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.vertical-thirds {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  z-index: 4;
+}
 .info, .filler {
   flex: 0 0 auto; /* Prevents flex items from growing or shrinking */
   width: 190px; /* Initial width, will be overridden */
@@ -1140,6 +1159,21 @@ h3 {
   top: 20%;
 }
 
+.soo-information_P3, #soo-information-training_P3 {
+  text-align: center;
+  z-index: 4;
+  background-color: white;
+  padding: 15px 30px !important;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: grey;
+  border-width: 2px;
+  opacity: 90%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+  position: absolute;
+}
+
 #soo-information {
   font-size: 20px;
 }
@@ -1221,8 +1255,13 @@ h3 {
 
 .submit-button {
   position: absolute;
-  z-index: 5;
+  z-index: 4;
   top: 70%;
+  display: gone;
+}
+.submit-button_P3 {
+  position: absolute;
+  z-index: 4;
   display: gone;
 }
 
@@ -1417,7 +1456,7 @@ textarea {
   background: #ddd;
   transform: translateY(-50%);
   border-radius: 3px;
-  cursor: auto;
+  cursor: pointer;
 }
 .track-clickable {
   cursor: pointer;
@@ -1615,8 +1654,6 @@ textarea {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 50px;
-  z-index: 4;
   background-color: white;
   padding: 15px 30px !important;
   border-radius: 5px;
@@ -1674,5 +1711,4 @@ textarea {
   position: absolute;
   z-index: 500;
   filter: drop-shadow(0.5px 0.5px 0 black) drop-shadow(-0.5px -0.5px 0 black) drop-shadow(-0.5px 0.5px 0 black) drop-shadow(0.5px -0.5px 0 black);
-  left: 100%;
 }

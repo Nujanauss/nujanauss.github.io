@@ -672,7 +672,7 @@ function loadInstructions1() {
 
 function loadInstructions2() {
     buttonToNewPage('backButton2', 'INSTRUCTIONS1');
-    buttonToNewPage('nextButton2', 'RATESELF');//buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//
+    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'TRAIN_P3');//
 }
 
 function loadInstructions3() {
@@ -779,7 +779,7 @@ function loadInstructions10_P2() {
 
 function loadInstructions1_P3() {
     document.getElementById('target1_P3').innerHTML = targetName;
-    document.getElementById('final-round-score_P2').innerHTML = scoresSoFar_P2.at(-1) ? "were correct" : "were incorrect";;
+    document.getElementById('final-round-score_P2').innerHTML = scoresSoFar_P2.at(-1) ? "were correct" : "were incorrect";
     totalScore = 0;
     scoresSoFar_P2.forEach(score => {
       if (score) {
@@ -2986,7 +2986,7 @@ function loadScoreDisplay() {
 }
 
 function loadScoreDisplay_P2() {
-    document.getElementById('round-score_P2').innerHTML = scoresSoFar_P2.at(-1) === 1 ? "were correct" : "were incorrect";
+    document.getElementById('round-score_P2').innerHTML = scoresSoFar_P2.at(-1) ? "were correct" : "were incorrect";
     document.getElementById('round-ordinal_P2').innerHTML = ordinals[phase2Round-1];
     document.getElementById('round-next_P2').innerHTML = (phase2Round+1);
     phase2Round++;
@@ -3186,6 +3186,7 @@ function loadRate(otherRating, ids) {
       movableThumb.style.left = `${val}%`;
       movingLabel.style.left = `${val}%`;
       enableButton(nextButton);
+      updateSliderBackground();
     });
 
     // Vertical Line
@@ -3204,16 +3205,10 @@ function loadRate(otherRating, ids) {
       movingLabel.innerHTML       = targetName;
 
       document.addEventListener('mousemove', (e) => {
-          if (!isDragging) {
-            return;
-          }
-          let background;
-          if (val > selfRating) {
-              background = `linear-gradient(to right, #ddd, #ddd ${selfRating}%, darkgray ${selfRating}%, darkgray ${val}%, #ddd ${val}%, #ddd)`;
-          } else {
-              background = `linear-gradient(to right, #ddd, #ddd ${val}%, darkgray ${val}%, darkgray ${selfRating}%, #ddd ${selfRating}%, #ddd)`;
-          }
-          slider.style.background = background;
+        if (!isDragging) return;
+        val = getValueFromPosition(e.clientX);
+        movingLabel.style.left = `${val}%`;
+        updateSliderBackground();
       });
     }
 
@@ -3235,6 +3230,18 @@ function loadRate(otherRating, ids) {
       movableThumb.style.left = `${newPercentage}%`;  // Set the position in percentage
 
       return steppedValue;
+    }
+
+    function updateSliderBackground() {
+      if (!otherRating) return;
+      
+      let background;
+      if (val > selfRating) {
+          background = `linear-gradient(to right, #ddd, #ddd ${selfRating}%, darkgray ${selfRating}%, darkgray ${val}%, #ddd ${val}%, #ddd)`;
+      } else {
+          background = `linear-gradient(to right, #ddd, #ddd ${val}%, darkgray ${val}%, darkgray ${selfRating}%, #ddd ${selfRating}%, #ddd)`;
+      }
+      slider.style.background = background;
     }
 }
 
