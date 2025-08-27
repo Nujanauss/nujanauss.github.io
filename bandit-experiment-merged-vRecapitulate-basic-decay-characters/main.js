@@ -1707,7 +1707,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
     const height = svgChart.node().clientHeight;
     const margin = { left: 0, right: 0 };
     const maxAbsScore = 150;            // start small, will expand if needed
-    var imFileName = training ? "Player-X" : targetName.replace(/\s+/g, '-');
+    var imFileName = training ? "player-X" : targetName.replace(/\s+/g, '-');
     pickUpWrapper.querySelectorAll('img').forEach(i => {i.src = `./static/${imFileName}.png`});
 
     let fillBar, label, x;
