@@ -675,7 +675,7 @@ function loadInstructions1() {
 
 function loadInstructions2() {
     buttonToNewPage('backButton2', 'INSTRUCTIONS1');
-    buttonToNewPage('nextButton2', 'TRAIN_P2');//buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//
+    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'SELECT_PARTNER');//
 }
 
 function loadInstructions3() {
@@ -3038,7 +3038,8 @@ function loadSelectObservationTarget() {
     }
 
     // Shuffle players
-    shuffleArray(players);
+    //shuffleArray(players);
+    players.reverse(); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!DELETE THIS AND SHUFFLE ABOVE INSTEAD
 
     // Create rows — first row selectable, others greyed
     players.forEach((player, index) => {
