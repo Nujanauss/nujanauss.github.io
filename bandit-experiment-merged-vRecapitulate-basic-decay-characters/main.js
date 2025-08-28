@@ -675,7 +675,7 @@ function loadInstructions1() {
 
 function loadInstructions2() {
     buttonToNewPage('backButton2', 'INSTRUCTIONS1');
-    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'SELECT_PARTNER');//
+    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'CHECK_P4');//
 }
 
 function loadInstructions3() {
@@ -2907,7 +2907,8 @@ function loadCheck_P4() {
         { question: "1_P4", answer: true },
         { question: "2_P4", answer: false },
         { question: "3_P4", answer: true },
-        { question: "4_P4", answer: false }
+        { question: "4_P4", answer: false },
+        { question: "5_P4", answer: true }
     ];
 
     let answers = [];
@@ -2965,7 +2966,7 @@ function loadCheck_P4() {
       };
       sessionStorage.setItem('checkQuestions', JSON.stringify(checkQuestions));
       document.getElementById('correct_P4').classList.remove('gone');
-      document.getElementById('4_P4').style.marginBottom = '0px';
+      document.getElementById('5_P4').style.marginBottom = '0px';
       submitButton.innerHTML = 'Next';
 
       submitButton.classList.add('disabled');
