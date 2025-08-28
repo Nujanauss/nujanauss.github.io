@@ -675,7 +675,7 @@ function loadInstructions1() {
 
 function loadInstructions2() {
     buttonToNewPage('backButton2', 'INSTRUCTIONS1');
-    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'CHECK_P4');//
+    buttonToNewPage('nextButton2', 'TRAIN_P4');//buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//
 }
 
 function loadInstructions3() {
@@ -2271,7 +2271,8 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
     let   score              = 0;
     let   scoreSinceLastComp = 0;
     let   belowSubrows       = [];
-    let   decision           = Array(numberOfMoves);
+    let   decision           = Array(numberOfMoves).fill(-1);
+    let   previousDecision   = Array(numberOfMoves).fill(-1);
     let   rewardReceived     = Array(numberOfMoves);
     let   timeStamps         = Array(numberOfMoves);
 
@@ -2507,7 +2508,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
       // If in training, override rewardSum with training logic
       if (training) {
-        otherScoreSinceLastComp = scoreSinceLastComp;
+        otherScoreSinceLastComp = scoreSinceLastComp + 100;
       }
       diff = otherScoreSinceLastComp - scoreSinceLastComp;
       moreOrLessTxt.innerHTML = (diff > 0) ? 'this much more than' : ((diff == 0) ? 'the same as' : 'this much less than');
@@ -2544,7 +2545,9 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
       square.classList.add(`reward${x}-clicked`);
       reward = Math.round(settings.chanceToWin[((phase1Round + phase2Round + phase3Round + phase4Round - 1) * numberOfMoves + currentTrial)][0][x] * 100);
       if (training) {
-        reward = (numberOfMoves - currentTrial) * 10;
+        movesLeft = numberOfMoves - currentTrial;
+        reward = movesLeft !== 1 ? movesLeft * 10 : (previousDecision.every(item => item.x !== x) ? 90 : 10);
+        previousDecision[currentTrial] = decision[currentTrial];
       }
       scoreDisp.classList.remove('gone');
       scoreDisp.classList.remove('animate');
