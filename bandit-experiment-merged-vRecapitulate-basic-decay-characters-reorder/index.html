@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid World Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="./favicon.ico">
+</head>
+<body>
+
+    <!-- INDEX -->
+    <div id="INDEX" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="padding-50 font-30">Welcome!</div>
+            <div class="index-instructions width-60">In this study, we are investigating people's decision making. We hope you enjoy participating.</div>
+            <div class="index-instructions width-60">The study will take about 40 minutes. You will be directed back to Prolific at the end.</div>
+            <div class="index-instructions">Click Next to continue.</div>
+          </aside>
+          <div id="first-next">
+            <button id="first-next" class="button enabled">Next</button>
+          </div>
+        </div>
+    </div>
+
+    <!-- PRECONSENT -->
+    <div id="PRECONSENT" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="padding-50 font-30">Before we begin</div>
+            <div class="index-instructions blue-coloured  width-60">Do not refresh this tab at any point, or you will no longer be able to access the experiment.</div>
+            <div class="index-instructions  width-60">Click Next to enter fullscreen mode and proceed to the consent pages.</div>
+            <button id="second-next" class="button enabled">Next</button>
+          </aside>
+        </div>
+    </div>
+
+    <!-- CONSENT -->
+    <div id="CONSENT" class="w">
+        <div class="consent-wrapper">
+            <h2 id="consent-first-sentence" class="consent">Informed Consent Form for online experiments on cognitive control</h2>
+            <div class="consent">This is a psychology experiment being conducted by Dr. Peter Dayan, director of the Max Planck Institute for Biological Cybernetics, and the members of his lab. In order to consent to participate, you MUST meet the following criteria:</div>
+            <div class="consent">
+              <ul>
+                <li>18 years of age or older.</li>
+                <li>Fluent speaker of English.</li>
+                <li>Have not previously participated in this experiment.</li>
+              </ul>
+            </div>
+            <div class="consent">This study is designed to look at how people learn how to make decisions to accomplish their goals. In this task, you will be asked to make choices, play games, and answer questions related to those games. The study will take about 10 minutes and will pay £1.75 plus a performance-dependent bonus of up to a maximum of £2. The performance bonus is explained in more detail in the instructions that follow.</div>
+            <div class="consent">Your participation in this research is voluntary. You may refrain from answering any questions that make you uncomfortable and may withdraw your participation at any time without penalty by exiting this task and alerting the experimenter. You may choose not to complete certain parts of the task or answer certain questions. You may contact us at the address provided below if you have additional questions or concerns.</div>
+            <div class="consent">Other than monetary compensation, participating in this study will provide no direct benefits to you. But we hope that this research will benefit society at large by contributing towards establishing a scientific foundation for improving people’s learning and cognitive control abilities.</div>
+            <div class="consent">Your online username may be connected to your individual responses, but we will not be asking for any additional personally identifying information, and we will handle responses as confidentially as possible. We cannot however guarantee the confidentiality of information transmitted over the Internet. We will be keeping deidentified data collected as part of this experiment indefinitely. Data used in scientific publications will remain completely anonymous.</div>
+            <div class="consent">If you have any questions about the study, feel free to contact our lab. Dr. Dayan and his lab members can be reached at <a href="mailto:kyblab.tuebingen@gmail.com">kyblab.tuebingen@gmail.com</a>.</div>
+            <div class="consent">By selecting the “consent” option below, I acknowledge that I am 18 or older, that I am a fluent speaker of English, that I have read this consent form, and that I agree to take part in the research.</div>
+            <div id="consent-buttons-wrapper" class="consent button-group">
+              <button id="consent-given" class="button small-button enabled">I consent to participate</button>
+              <button id="consent-rescinded" class="button small-button enabled">I do not consent to participate</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DATA-PROTECTION -->
+    <div id="DATA-PROTECTION" class="w">
+        <div class="consent-wrapper">
+            <h2 id="consent-first-sentence" class="consent">Data Protection Form for online experiments on cognitive control</h2>
+            <div class="consent">Please click <a href="./static/data-protection-form.pdf">here</a> to view our Data Protection Information Sheet. It is yours to keep.</div>
+            <div class="consent">I have received and taken note of the Data Protection Information Sheet for this study. In doing so, I had sufficient time and opportunity to ask questions about data protection and reconsider my participation in the study. I am aware that:</div>
+            <div class="consent">
+              <ul>
+                <li>The processing and use of the collected data occurs in a pseudoanonymised form within the scope of the legally prescribed provisions. As a general rule, the storage occurs in the form of answered questionnaires, as well as electronic data, for a duration of 10 years or longer, if this is required by the purpose of the study.</li>
+                <li>By providing further personal data in pseudoanonymised form, collected personal data may be used for the preparation of anonymised scientific research work and may also be published and used in an anonymised form in medical journals and scientific publications, so that a direct assignment to my person cannot be established.</li>
+                <li>The information obtained during the course of this study may also be sent in an anonymised form to cooperation partners within the scope of the European General Data Protection Regulation for scientific purposes and to cooperation partners outside of the European Union, i.e. to countries with a lower data protection level (this also applies to the USA).</li>
+                <li>The data collected within the scope of the study can also be used and processed in the future inside of the Max Planck Institute.</li>
+              </ul>
+            </div>
+            <div class="consent">I was informed about my rights. In particular, that at any time:</div>
+            <div class="consent">
+                <ul>
+                  <li>I can withdraw this declaration of consent.</li>
+                  <li>I can request information about my stored data and request the correction or blocking of data.</li>
+                  <li>If I choose to stop participating in this study, I can request that any of my personal data associated with this study are immediately deleted or anonymised.</li>
+                  <li>I can request that my personal data are handed out to me or to third parties (if technically feasible).</li>
+                </ul>
+            </div>
+            <div class="consent">I hereby declare that:</div>
+            <div class="consent">
+                <ul>
+                  <li>I have been adequately informed about the collection and processing of my personal data and rights.</li>
+                  <li>I consent to the collection and processing of personal data within the scope of the study and its pseudoanonymised disclosure, so that only persons conducting the study can establish a link between the data and my person.</li>
+                </ul>
+            </div>
+            <div class="consent">Your online username may be connected to your individual responses, but we will not be asking for any additional personally identifying information, and we will handle responses as confidentially as possible.</div>
+            <div class="consent">We cannot however guarantee the confidentiality of information transmitted over the internet. We will keep deidentified data collected as part of this experiment indefinitely. Data used in scientific publications will remain completely anonymous.</div>
+            <div class="consent consent-checkboxes">
+                <input type="checkbox" id="checkbox-y">
+                <label for="checkbox-y" class="checkbox-label">I agree to participate in this experiment.</label>
+            </div>
+            <div class="consent consent-checkboxes">
+                <input type="checkbox" id="checkbox-z">
+                <label for="checkbox-z" class="checkbox-label">I consent to the use of my data described in the Data Protection Information Sheet and confirm having received a copy of the Data Protection Sheet.</label>
+            </div>
+            <div class="consent consent-checkboxes">
+                <input type="checkbox" id="checkbox-x">
+                <label for="checkbox-x" class="checkbox-label">I consent to data transfer from the MPI for Biological Cybernetics encrypted database to the project-related collaborators: inside of the Max Planck Society and affiliated research institutes, or at partnering institutions like the University of Tuebingen and New York University.</label>
+            </div>
+            <div id="consent-buttons-wrapper" class="consent button-group">
+                <button id="submit-button" class="button small-button">Submit</button>
+                <button id="data-consent-rescinded" class="button small-button enabled">I do not consent to all of the above</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- INSTRUCTIONS1 -->
+    <div id="INSTRUCTIONS1" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="page1"></div>
+            </div>
+            <div class="index-instructions">This experiment has several stages.</div>
+            <div class="index-instructions">At each stage, you will be presented with three cards.</div>
+            <div class="index-instructions"><span class="blue-coloured">Your task is to learn about the cards.</span></div>
+            <button id="nextButton1" class="button enabled">Next</button>
+          </aside>
+        </div>
+    </div>
+
+    <!-- INSTRUCTIONS2 -->
+    <div id="INSTRUCTIONS2" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="page2"></div>
+            </div>
+            <div class="index-instructions">In stage one, you will learn about the cards by clicking on them.</div>
+            <div class="index-instructions blue-coloured">We call clicking on a card a turn.</div>
+            <div class="index-instructions width-60"> There are a fixed number of turns per round. Once you run out of turns, the round is over.</div>
+            <div class="button-group">
+              <button id="backButton2" class="move-screen-button button enabled">Back</button>
+              <button id="nextButton2" class="move-screen-button button enabled">Next</button>
+            </div>
+          </aside>
+        </div>
+    </div>
+
+    <!-- INSTRUCTIONS3 -->
+    <div id="INSTRUCTIONS3" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="page3"></div>
+            </div>
+            <div class="index-instructions">Let's begin with some training.</div>
+            <div class="index-instructions width-100 blue-coloured">You will see three cards. Click on the central card.</div>
+            <div class="index-instructions width-100">When you click on the card, it will turn white.</div>
+            <div class="index-instructions">Click Train to continue.</div>
+            <div class="button-group">
+                <button id="backButton3" class="move-screen-button button enabled">Back</button>
+                <button id="trainingButton" class="move-screen-button button enabled">Train</button>
+            </div>
+          </aside>
+        </div>
+    </div>
+
+    <!-- TRAIN -->
+    <div id="TRAIN" class="w">
+        <div class="wrapper">
+            <div class="watermark">Training<br><span id="top-instruction-t1">Click on the central card</span></div>
+            <div class="thirds-container">
+              <!-- Left column: Info box -->
+              <aside class="info-left"></aside>
+              <!-- Middle column: Grid -->
+              <aside class="grid-info-wrapper">
+                <div id="rowWrapper-t1" class="grid-wrapper row-container"></div>
+              </aside>
+              <!-- Right column: Nothing for now -->
+              <aside class="history">
+                <div id="historyRowWrapper-t1" class="grid-wrapper row-container"></div>
+              </aside> 
+              <aside class="info">
+                <div class="group">
+                  <div id="infoBox-t1" class="box">
+                    <div id="score-t1">Score: 0</div>
+                  </div>
+                  <button id="nextButton-t1" class="button enabled gone margin-top-20 button-sized shimmer">Next</button>
+                </div>
+              </aside>
+            </div>
+        </div>
+    </div>
+
+    <!-- INSTRUCTIONS4 -->
+    <div id="INSTRUCTIONS4" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="page4"></div>
+            </div>
+            <div class="index-instructions">Great! Now, clicking on a card may give you some points.</div>
+            <div class="index-instructions width-70">Each card will give you a different number of points.</div>
+            <div class="index-instructions width-70 blue-coloured">In general, cards give fewer and fewer points every turn, whether you click on them or not.</div>
+            <div class="index-instructions width-70">However, cards will spike to a new high at random times. The cards may spike at different times.</div>
+            <div class="button-group">
+                <button id="nextButton4" class="move-screen-button button enabled">Next</button>
+            </div>
+          </aside>
+        </div>
+    </div>
+
+    <!-- INSTRUCTIONS5 -->
+    <div id="INSTRUCTIONS5" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="page5"></div>
+            </div>
+            <div class="index-instructions width-70">Let's have another training round.</div>
+            <div class="index-instructions width-100">Click on the central card three times and watch its points decrease.</div>
+            <div class="index-instructions">Click Train to continue.</div>
+            <div class="button-group">
+                <button id="backButton5" class="move-screen-button button enabled">Back</button>
+                <button id="trainingButton2" class="move-screen-button button enabled">Train</button>
+            </div>
+          </aside>
+        </div>
+    </div>
+
+    <!-- TRAIN2 -->
+    <div id="TRAIN2" class="w">
+        <div class="wrapper">
+            <div class="watermark">Training<br><span id="top-instruction-t2">Click on the central card three times</span></div>
+            <aside class="history">
+              <div id="historyRowWrapper-t2" class="grid-wrapper row-container"></div>
+            </aside> 
+            <div class="thirds-container">
+              <!-- Left column: Info box -->
+              <aside class="info-left"></aside>
+              <!-- Middle column: Grid -->
+              <aside class="grid-info-wrapper">
+                <div id="rowWrapper-t2" class="grid-wrapper row-container"></div>
+              </aside>
+              <!-- Right column: Nothing for now -->
+              <aside class="info">
+                <div class="group">
+                  <div id="infoBox-t2" class="box">
+                    <div id="score-t2">Score: 0</div>
+                  </div>
+                  <button id="nextButton-t2" class="button enabled gone margin-top-20 button-sized shimmer">Next</button>
+                </div>
+              </aside>
+            </div>
+        </div>
+    </div>
+
+    <!-- INSTRUCTIONS6 -->
+    <div id="INSTRUCTIONS6" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="page6"></div>
+            </div>
+            <div class="index-instructions">Perfect! As you saw, we will display your history of card selections on the left. Every time you click a card, this history will update.</div>
+            <div class="index-instructions width-60">Your total score is in the right-most box.</div>
+            <div class="index-instructions width-70">Every <span id="comparisonFreqINSTR6">2</span> turns, we will show you how many points you scored in the last <span id="comparisonFreqINSTR6_2">2</span> turns.</div>
+            <div class="button-group">
+                <button id="nextButton6" class="move-screen-button button enabled">Next</button>
+            </div>
+          </aside>
+        </div>
+    </div>
+
+    <!-- INSTRUCTIONS7 -->
+    <div id="INSTRUCTIONS7" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="page7"></div>
+            </div>
+            <div class="index-instructions">Let's have another training round to see what that looks like.</div>
+            <div class="index-instructions width-100">Click on the central card five times.</div>
+            <div class="index-instructions width-60">Your history of card selections will be on the left, and your total score on the right.</div>
+            <div class="index-instructions width-60">Every <span id="comparisonFreqINSTR7">2</span> turns we will show you how many points you scored in a central box.</div>
+            <div class="index-instructions width-60 blue-coloured">Click on this central box to make it go away.</div>
+            <div class="index-instructions">Click Train to continue.</div>
+            <div class="button-group">
+                <button id="backButton7" class="move-screen-button button enabled">Back</button>
+                <button id="trainingButton3" class="move-screen-button button enabled">Train</button>
+            </div>
+          </aside>
+        </div>
+    </div>
+
+    <!-- TRAIN3 -->
+    <div id="TRAIN3" class="w">
+        <div class="wrapper">
+            <div class="watermark">Training<br><span id="top-instruction-t3">Click on the central card five times</span></div>
+            <div id="overlay-t3" class="gone overlay"></div>
+            <div class="drag-drop-group">
+              <div class="vertical-thirds">
+                <div id="soo-information-t3" class="soo-information">
+                  <div class="soo-box-text">
+                    <p>In the last <span id="comparisonFreq-t3">2 trials</span>, you scored:</p>
+                    <div class="score-chart-container">
+                      <svg class="score-chart margin-horizontal-50" id="score-chart-t3"></svg>
+                    </div>
+                  </div>
+                  <div id="read-comparison-t3" class="hidden font-15 padding-top-20">Press anywhere in this box to continue.</div>
+                </div>
+              </div>
+            </div>
+            <aside class="history">
+              <div id="historyRowWrapper-t3" class="grid-wrapper row-container"></div>
+            </aside> 
+            <div class="thirds-container">
+              <!-- Left column: Info box -->
+              <aside class="info-left"></aside>
+              <!-- Middle column: Grid -->
+              <aside class="grid-info-wrapper">
+                <div id="rowWrapper-t3" class="grid-wrapper row-container"></div>
+              </aside>
+              <!-- Right column: Nothing for now -->
+              <aside class="info">
+                <div class="group">
+                  <div id="infoBox-t3" class="box">
+                    <div id="score-t3">Score: 0</div>
+                  </div>
+                  <button id="nextButton-t3" class="button enabled gone margin-top-20 button-sized shimmer">Next</button>
+                </div>
+              </aside>
+            </div>
+        </div>
+    </div>
+
+    <!-- INSTRUCTIONS8 -->
+    <div id="INSTRUCTIONS8" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="page8"></div>
+            </div>
+            <div class="index-instructions">Great! That is exactly how this stage looks.</div>
+            <div class="index-instructions blue-coloured width-60">IMPORTANT: The chance that a card will spike to a new high score is fixed for all cards.</div>
+            <div class="index-instructions">Any points you found during training are gone, and the cards have reset.</div>
+            <div class="button-group">
+                <button id="nextButton8" class="move-screen-button button enabled">Next</button>
+            </div>
+          </aside>
+        </div>
+    </div>
+
+
+    <!-- INSTRUCTIONS9 -->
+    <div id="INSTRUCTIONS9" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="page9"></div>
+            </div>
+            <div class="index-instructions">You currently have a bonus of £0.</div>
+            <div class="index-instructions">The more points you get, the higher your bonus will become.</div>
+            <div class="index-instructions blue-coloured">There will now be <span id="numberRoundsINSTR9">6</span> rounds of <span id="numberTurnsINSTR9">12</span> turns each.</div>
+            <div class="button-group">
+                <button id="backButton9" class="move-screen-button button enabled">Back</button>
+                <button id="nextButton9" class="move-screen-button button enabled">Next</button>
+            </div>
+          </aside>
+        </div>
+    </div>
+
+    <!-- INSTRUCTIONS10 -->
+    <div id="INSTRUCTIONS10" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="page10"></div>
+            </div>
+            <div class="index-instructions">Let's check you understand everything.</div>
+            <div class="index-instructions blue-coloured">You must answer the following questions correctly to proceed.</div>
+            <div class="index-instructions">If you are unsure about anything, click Back to go back to the beginning.</div>
+            <div class="button-group">
+                <button id="backButton10" class="move-screen-button button enabled">Back</button>
+                <button id="nextButton10" class="move-screen-button button enabled">Proceed to test</button>
+            </div>
+          </aside>
+        </div>
+    </div>
+
+    <!-- CHECK -->
+    <div id="CHECK" class="w">
+        <div class="wrapper">
+            <aside class="check-inter">
+              <div class="padding-50 font-30">Checking test</div>
+              <div class="check">
+                  <div id="1" class="question">When I click on a card, it will <span class="blue-coloured">always</span> reward me.</div>
+                  <div class="answers">
+                      <label>True <input type="radio" name="question-1" value="true"></label>
+                      <label> False <input type="radio" name="question-1" value="false"></label>
+                  </div>
+              </div>
+              <div class="check">
+                  <div id="2" class="question">A card's score will only begin to decrease when I click <span class="blue-coloured">on it</span>.</div>
+                  <div class="answers">
+                      <label>True <input type="radio" name="question-2" value="true"></label>
+                      <label> False <input type="radio" name="question-2" value="false"></label>
+                  </div>
+              </div>
+              <div class="check">
+                  <div id="3" class="question">Each card may spike to a new high at <span class="blue-coloured">any</span> time.</div>
+                  <div class="answers">
+                      <label>True <input type="radio" name="question-3" value="true"></label>
+                      <label> False <input type="radio" name="question-3" value="false"></label>
+                  </div>
+              </div>
+              <div class="check">
+                  <div id="4" class="question">I must maximise my score on the <span class="blue-coloured">final</span> round to get the highest bonus.</div>
+                  <div class="answers">
+                      <label>True <input type="radio" name="question-4" value="true"></label>
+                      <label> False <input type="radio" name="question-4" value="false"></label>
+                  </div>
+              </div>
+              <div class="check">
+                  <div id="5" class="question">Each round consists of exactly <span id="checkTurns" class="blue-coloured">12</span> turns.</div>
+                  <div class="answers">
+                      <label>True <input type="radio" name="question-5" value="true"></label>
+                      <label> False <input type="radio" name="question-5" value="false"></label>
+                  </div>
+              </div>
+            </aside>
+            <div id="correct" class="index-instructions gone">Perfect! These are the correct answers.</div>
+            <button id="check-next" class="button">Check</button>
+            <div id="error-msg" class="error hidden">There was a mistake. Please correct the highlighted question.</div>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS11 -->
+    <div id="INSTRUCTIONS11" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="index-instructions">Great! We are ready to play.</div>
+            <div class="index-instructions blue-coloured width-60">Training is over. Everything has been reset. From now on, the rounds matter.</div>
+            <div class="index-instructions width-60">When you are ready, click Play to start. Once this stage has ended, we will ask you to rate your performance.</div>
+            <div class="button-group">
+                <button id="nextButton11" class="move-screen-button button enabled">Play</button>
+            </div>
+          </aside>
+        </div>
+    </div>
+
+    <!-- GAME1 -->
+    <div id="GAME1" class="w">
+        <div class="wrapper">
+            <div id="overlay" class="gone overlay"></div>
+            <div class="drag-drop-group">
+              <div class="vertical-thirds">
+                <div id="soo-information" class="soo-information">
+                  <div class="soo-box-text">
+                    <p>In the last <span id="comparisonFreq">2 trials</span>, you scored:</p>
+                    <div class="score-chart-container">
+                      <svg class="score-chart margin-horizontal-50" id="score-chart"></svg>
+                    </div>
+                  </div>
+                  <div id="read-comparison" class="hidden font-15 padding-top-20">Press anywhere in this box to continue.</div>
+                </div>
+              </div>
+            </div>
+            <aside class="history">
+              <div id="historyRowWrapper" class="grid-wrapper row-container"></div>
+            </aside> 
+            <div class="thirds-container">
+              <!-- Left column: Info box -->
+              <aside class="info-left"></aside>
+              <!-- Middle column: Grid -->
+              <aside class="grid-info-wrapper">
+                <div id="rowWrapper" class="grid-wrapper row-container"></div>
+              </aside>
+              <!-- Right column: Nothing for now -->
+              <aside class="info">
+                <div class="group">
+                  <div id="infoBox" class="box">
+                    <div id="score">Score: 0</div>
+                  </div>
+                  <button id="roundOverButton" class="button enabled gone margin-top-20 shimmer">Next</button>
+                </div>
+              </aside>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCOREDISPLAY -->
+    <div id="DISP" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="index-instructions width-100">Great! The <span id="round-ordinal">first</span> round is complete.</div>
+              <div class="index-instructions blue-coloured">You found <span id="round-score">10</span> points</div>
+              <div class="index-instructions">Let's move on to round <span id="round-next">2</span>.</div>
+              <div class="index-instructions">Click Play to proceed.</div>
+              <div class="button-group">
+                <button id="nextButtonDisp" class="move-screen-button button enabled">Play</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS1_P2 -->
+    <div id="INSTRUCTIONS1_P2" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page1"></div>
+              </div>
+              <div class="index-instructions width-100">Great! This stage is complete.</div>
+              <div class="index-instructions width-100">In the previous round, you found <span id="phase-1-final-round-score">10</span> points.</div>
+              <div class="index-instructions width-100 blue-coloured">In total, you found <span id="phase-1-score">10</span> points in this stage.</div>
+              <div class="index-instructions width-60">Before we move on, please tell us how well you think you performed in this stage.</div>
+              <div class="button-group">
+                <button id="nextButton21" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- RATESELF -->
+    <div id="RATESELF" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+                <div class="index-instructions padding-10">Given your experiences, how do you rate your own skill</div>
+                <div class="index-instructions font-15">Click and drag the slider to rate</div>
+                <div class="rate-slider-container">
+                    <span class="slider-label left-label">Every selection <span class="blue-coloured">I</span> made was the worst possible</span>
+                    <div class="range-wrap">
+                      <div id="notch-25" class="notch"></div>
+                      <div id="notch-50" class="notch"></div>
+                      <div id="notch-75" class="notch"></div>
+                      <div class="track track-clickable" id="track-self"></div>
+                      <div class="thumb hidden" id="thumb-you"></div>
+                      <output id="rate-label-self" class="rating-label above-label hidden">You</output>
+                    </div>
+                    <span class="slider-label right-label">Every selection <span class="blue-coloured">I</span> made was the best possible</span>
+                </div>
+                <button id="nextButtonRateSelf" class="button">Next</button>
+            </aside>
+        </div>
+    </div>
+
+    <!-- INSTRUCTIONS2_P2 -->
+    <div id="INSTRUCTIONS2_P2" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page2"></div>
+              </div>
+              <div class="index-instructions">Perfect! Let's move on.</div>
+              <div class="index-instructions">From now on, you will have to consider the decisions made by another player.</div>
+             <div class="button-group">
+                <button id="nextButton22" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS9_P2 -->
+    <div id="INSTRUCTIONS9_P2" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page3"></div>
+              </div>
+              <div class="index-instructions sidth-60">Let's find that player.</div>
+              <div class="index-instructions width-90">We will show you three players in a table. Each with a different characteristic.</div>
+              <div class="index-instructions width-90">You only have access to the first (top) player for now. Select that player.</div>
+              <div class="index-instructions width-90 blue-coloured">By the end of the experiment you will have seen every player.</div>
+              <div class="button-group">
+                  <button id="backButton29" class="move-screen-button button enabled">Back</button>
+                  <button id="nextButton29" class="move-screen-button button enabled">Proceed to select player</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- SELECT_PARTNER -->
+    <div id="SELECT_PARTNER" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div id="selectableTable" class="index-instructions">
+                  <table>
+                      <thead>
+                          <tr>
+                              <th></th>
+                              <th>Name</th>
+                              <th>Characteristic</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="button-group">
+                <button id="selectTargetNextButton" class="button enabled">Select</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+    
+    <!-- INSTRUCTIONS3_P2 -->
+    <div id="INSTRUCTIONS3_P2" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page4"></div>
+              </div>
+              <div class="index-instructions width-60">Great! Let's quickly check you understand what kinds of decision <span id="target3_P2">Player A</span> makes, given their characteristic.</div>
+              <div class="index-instructions width-60">We will show you the value of three cards.</div>
+              <div class="index-instructions width-60">Please tell us which card you think <span id="target3_P2_2">Player A</span> is most likely to select next.</div>
+             <div class="button-group">
+                <button id="nextButton23" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS4_P2 -->
+    <div id="INSTRUCTIONS4_P2" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page5"></div>
+              </div>
+              <div class="index-instructions width-60">If you are correct, the card you select will display a green tick. If you are incorrect, it will show a red cross.</div>
+              <div class="index-instructions width-60 blue-coloured">Remember that <span id="target4_P2">Player A</span>: <span id="player_description">selects cards randomly</span>.</div>
+              <div class="index-instructions">When you are ready, click Test to begin.</div>
+             <div class="button-group">
+                <button id="backButton24" class="move-screen-button button enabled">Back</button>
+                <button id="nextButton24" class="move-screen-button button enabled">Test</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- GAME2 -->
+    <div id="GAME2" class="w">
+        <div class="wrapper">
+        <div class="watermark"><span id="top-instruction_P2">Watch each card being selected</span></div>
+          <aside id="history_P2" class="history">
+            <div id="historyRowWrapper_P2" class="grid-wrapper row-container"></div>
+          </aside> 
+          <div class="thirds-container">
+            <!-- Left column: Info box -->
+            <aside class="info-left"></aside>
+            <!-- Middle column: Grid -->
+            <aside class="grid-info-wrapper">
+              <div id="rowWrapper_P2" class="grid-wrapper row-container height-95"></div>
+            </aside>
+            <!-- Right column: Nothing for now -->
+            <aside class="info">
+              <div class="group">
+                <svg id="stop_P2" xmlns="http://www.w3.org/2000/svg" height="120px" viewBox="0 -960 960 960" width="120px" fill="#ccc" class="class-icon">
+                  <path d="m840-234-80-80v-446q0-17 11.5-28.5T800-800q17 0 28.5 11.5T840-760v526ZM360-714l-80-80v-6q0-17 11.5-28.5T320-840q17 0 28.5 11.5T360-800v86Zm160 160-80-80v-246q0-17 11.5-28.5T480-920q17 0 28.5 11.5T520-880v326Zm160 81h-80v-367q0-17 11.5-28.5T640-880q17 0 28.5 11.5T680-840v367Zm37 343L360-487v224L212-367l157 229q5 8 14 13t19 5h278q10 0 19.5-2.5T717-130ZM402-40q-30 0-56-13.5T303-92L48-465l24-23q19-19 45-22t47 12l116 81v-150L27-820l57-57L876-85l-57 57-44-44q-20 15-44 23.5T680-40H402Zm137-268Zm61-165Z"/>
+                </svg>
+                <button id="roundOverButton_P2" class="button enabled gone margin-top-20 shimmer">Next</button>
+              </div>
+            </aside>
+          </div>
+        </div>
+        <div class="svg-overlay"></div>
+      <img id="comparison-target-image_P2" class="topLeftIm animate gone" src="./static/player-X.png" alt="Player X">
+    </div>
+
+    <!-- SCOREDISPLAY_P2 -->
+    <div id="DISP_P2" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="index-instructions width-100">Oops! That wasn't quite right. Let's try again.</div>
+              <div class="index-instructions width-60">We will again show you the value of three cards.</div>
+              <div class="index-instructions width-60">Please tell us which card you think <span id="target_disp_P2">Player A</span> is most likely to select next.</div>
+              <div class="button-group">
+                <button id="nextButtonDisp_P2" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS2_P3 -->
+    <div id="INSTRUCTIONS2_P3" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page2"></div>
+              </div>
+              <div class="index-instructions">Perfect! Let's move on.</div>
+              <div class="index-instructions">In the next stage, you will have to infer how other players acted.</div>
+             <div class="button-group">
+                <button id="nextButton32" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS3_P3 -->
+    <div id="INSTRUCTIONS3_P3" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page3"></div>
+              </div>
+              <div class="index-instructions blue-coloured width-80">We will show you how many points <span id="target3_P3">Player A</span> found every <span id="comparisonFreqINSTR3_P3">12</span> turns.</div>
+              <div class="index-instructions width-80">Your job is to infer which cards <span id="target3_P3_2">Player A</span> selected to get these points.</div>
+             <div class="button-group">
+                <button id="backButton33" class="move-screen-button button enabled">Back</button>
+                <button id="nextButton33" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS4_P3 -->
+    <div id="INSTRUCTIONS4_P3" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page4"></div>
+              </div>
+              <div class="index-instructions width-80">To help you make your inference, you can click on <span id="comparisonFreqINSTR4_P3">12</span> of the cards before every inference.</div>
+              <div class="index-instructions width-70 blue-coloured">IMPORTANT: The cards that you click on are identical to the cards seen by <span id="target4_P3">Player A</span>.</div>
+              <div class="button-group">
+                <button id="backButton34" class="move-screen-button button enabled">Back</button>
+                <button id="nextButton34" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS5_P3 -->
+    <div id="INSTRUCTIONS5_P3" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page5"></div>
+              </div>
+              <div class="index-instructions width-60">The points you receive from the cards will not affect your bonus. We are concerned with the accuracy of your inferences.</div>
+              <div class="index-instructions">Let's see how this looks with some training.</div>
+             <div class="button-group">
+                <button id="backButton35" class="move-screen-button button enabled">Back</button>
+                <button id="nextButton35" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS6_P3 -->
+    <div id="INSTRUCTIONS6_P3" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page6"></div>
+              </div>
+              <div class="index-instructions width-60">First, click on <span id="comparisonFreqINSTR6_P3">3</span> of the cards.</div>
+              <div class="index-instructions width-60">Then, we will show you how many points your training partner, Player X, found over the same <span id="comparisonFreqINSTR6_P3_2">3</span> turns.</div>
+              <div class="index-instructions width-60">Finally, drag and drop the two Player X icons to tell us which two cards you think Player X selected to get their points.</div>
+              <div class="index-instructions width-60">You may place both icons on the same card.</div>
+              <div class="index-instructions width-60 blue-coloured">IMPORTANT: We only care about WHICH cards were selected, not in what order they were selected. The order of selection is irrelevant. </div>
+             <div class="button-group">
+                <button id="backButton36" class="move-screen-button button enabled">Back</button>
+                <button id="nextButton36" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- TRAIN_P3 -->
+    <div id="TRAIN_P3" class="w">
+      <div class="wrapper">
+        <div class="watermark">Training<br><span id="top-instruction_P3-t1">Click on the cards and infer what decisions Player X made</span></div>
+        <div id="overlay_P3-t1" class="gone overlay"></div>
+        <div class="drag-drop-group">
+          <div class="vertical-thirds">
+            <div id="soo-information_P3-t1" class="soo-information_P3 info-box-disabled width-25">
+              <div class="soo-box-text">
+                <p>In the last <span id="comparisonFreq_P3-t1">2 trials</span>, <span id="target-name_P3-t1">Player X</span> scored <span class="blue-coloured" id="more-or-less_P3-t1">much more</span> you:</p>
+                <div class="score-chart-container">
+                  <svg class="score-chart" id="score-chart_P3-t1"></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vertical-thirds">
+            <div id="pick-up-agents_P3-t1" class="pick-up-agents-wrapper gone">
+                <div class="font-18 margin-top-20">Which squares did <span id="target-name_P3_2-t1">Player X</span> select?</div>
+                <div class="image-collection">
+                  <img class="drag-drop-im gone no-filter" src="./static/player-X.png" alt="Player X">
+                  <img class="drag-drop-im gone no-filter" src="./static/player-X.png" alt="Player X"  >
+                </div>
+                <div class="font-15">Drag and drop the player icons into the squares.</div>
+                <div class="font-15">The order doesn't matter.</div>
+                <div id="pickUp-rowWrapper_P3-t1" class="row-container"></div>
+            </div>
+          </div>
+          <div class="vertical-thirds">
+            <div id="submitButtonWrap_P3-t1" class="button-wrapper center-wrapper-width submit-button_P3 gone">
+              <button id="submitButton_P3-t1" class="button enabled shimmer">Submit</button>
+            </div>
+          </div>
+        </div>
+        <aside id="history_P3-t1" class="history">
+          <div id="historyRowWrapper_P3-t1" class="grid-wrapper row-container"></div>
+        </aside> 
+        <div class="thirds-container">
+          <!-- Left column: Info box -->
+          <aside class="info-left"></aside>
+          <!-- Middle column: Grid -->
+          <aside id="middle-third" class="grid-info-wrapper">
+            <div id="rowWrapper_P3-t1" class="grid-wrapper row-container"></div>
+          </aside>
+          <!-- Right column: Nothing for now -->
+          <aside class="info">
+            <div class="group">
+              <button id="roundOverButton_P3-t1" class="button enabled hidden shimmer">Next</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <img id="comparison-target-image_P3-t1" class="topLeftIm animate gone" src="./static/player-X-desc.png" alt="Player X">
+    </div>
+
+    <!-- INSTRUCTIONS7_P3 -->
+    <div id="INSTRUCTIONS7_P3" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page7"></div>
+              </div>
+              <div class="index-instructions">Great! That's exactly how this stage looks.</div>
+              <div class="index-instructions width-60 blue-coloured">Your bonus at this stage is affected by the accuracy of your guesses.</div>
+              <div class="index-instructions width-60">The better you guess how <span id="target7_P3">Player A</span> acted, the higher your bonus.</div>
+             <div class="button-group">
+                <button id="nextButton37" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS8_P3 -->
+    <div id="INSTRUCTIONS8_P3" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page8"></div>
+              </div>
+               <div class="index-instructions width-60">As always:</div>
+              <div class="index-instructions width-50">Cards give fewer and fewer points every turn, whether you click on them or not. However, there is a fixed, shared chance that a card will spike.</div>
+             <div class="button-group">
+                <button id="backButton38" class="move-screen-button button enabled">Back</button>
+                <button id="nextButton38" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS9_P3 -->
+    <div id="INSTRUCTIONS9_P3" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page9"></div>
+              </div>
+               <div class="index-instructions width-80 blue-coloured">You will now make inferences about <span id="target9_P3">Player A</span>'s selections.</div>
+              <div class="index-instructions width-80">You have not seen these cards before.</div>
+             <div class="button-group">
+                <button id="backButton39" class="move-screen-button button enabled">Back</button>
+                <button id="nextButton39" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS10_P3 -->
+    <div id="INSTRUCTIONS10_P3" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page10"></div>
+              </div>
+              <div class="index-instructions">Let's check you understand everything.</div>
+              <div class="index-instructions blue-coloured">You must answer the following questions correctly to proceed.</div>
+              <div class="index-instructions">If you are unsure about anything, click Back to go back to the beginning.</div>
+              <div class="button-group">
+                  <button id="backButton310" class="move-screen-button button enabled">Back</button>
+                  <button id="nextButton310" class="move-screen-button button enabled">Proceed to test</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- CHECK_P3 -->
+    <div id="CHECK_P3" class="w">
+        <div class="wrapper">
+            <aside class="check-inter">
+              <div class="padding-50 font-30">Checking test</div>
+              <div class="check">
+                  <div id="1_P3" class="question">I will see the decisions <span class="blue-coloured">another player</span> took.</div>
+                  <div class="answers">
+                      <label>True <input type="radio" name="question-1" value="true"></label>
+                      <label> False <input type="radio" name="question-1" value="false"></label>
+                  </div>
+              </div>
+              <div class="check">
+                  <div id="2_P3" class="question">I will always see how many points another player got throughout <span class="blue-coloured">an entire</span> round.</div>
+                  <div class="answers">
+                      <label>True <input type="radio" name="question-2" value="true"></label>
+                      <label> False <input type="radio" name="question-2" value="false"></label>
+                  </div>
+              </div>
+              <div class="check">
+                  <div id="3_P3" class="question">My bonus is determined by the <span class="blue-coloured">number of points</span> the other player found.</div>
+                  <div class="answers">
+                      <label>True <input type="radio" name="question-3" value="true"></label>
+                      <label> False <input type="radio" name="question-3" value="false"></label>
+                  </div>
+              </div>
+              <div class="check">
+                  <div id="4_P3" class="question">My bonus is determined by how well I <span class="blue-coloured">infer</span> what the other player did every few turns.</div>
+                  <div class="answers">
+                      <label>True <input type="radio" name="question-4" value="true"></label>
+                      <label> False <input type="radio" name="question-4" value="false"></label>
+                  </div>
+              </div>
+              <div class="check">
+                  <div id="5_P3" class="question">I must infer both the cards that the other player selected, and the <span class="blue-coloured">order</span> in which they were selected.</div>
+                  <div class="answers">
+                      <label>True <input type="radio" name="question-5" value="true"></label>
+                      <label> False <input type="radio" name="question-5" value="false"></label>
+                  </div>
+              </div>
+            </aside>
+            <div id="correct_P3" class="index-instructions gone">Perfect! These are the correct answers.</div>
+            <button id="checkNext_P3" class="button">Check</button>
+            <div id="error-msg_P3" class="error hidden">There was a mistake. Please correct the highlighted question.</div>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS11_P3 -->
+    <div id="INSTRUCTIONS11_P3" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="page11"></div>
+            </div>
+            <div class="index-instructions">Great! We are ready to play.</div>
+            <div class="index-instructions blue-coloured width-60">Training is over. Everything has been reset. From now on, the rounds matter.</div>
+            <div class="index-instructions">When you are ready, click Play to begin.</div>
+            <div class="button-group">
+                <button id="nextButton311" class="move-screen-button button enabled">Play</button>
+            </div>
+          </aside>
+        </div>
+    </div>
+
+    <!-- GAME3 -->
+    <div id="GAME3" class="w">
+      <div class="wrapper">
+        <div id="overlay_P3" class="gone overlay"></div>
+        <div class="drag-drop-group">
+          <div class="vertical-thirds">
+            <div id="soo-information_P3" class="soo-information_P3 info-box-disabled width-25">
+              <div class="soo-box-text">
+                <p>In the last <span id="comparisonFreq_P3">2 trials</span>, <span id="target-name_P3">Player X</span> scored <span class="blue-coloured" id="more-or-less_P3">much more</span> you:</p>
+                <div class="score-chart-container">
+                  <svg class="score-chart" id="score-chart_P3"></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vertical-thirds">
+            <div id="pick-up-agents_P3" class="pick-up-agents-wrapper gone">
+                <div class="font-18 margin-top-20">Which squares did <span id="target-name_P3_2">Player X</span> select?</div>
+                <div class="image-collection">
+                  <img class="drag-drop-im gone" src="./static/player-X.png" alt="Player X">
+                  <img class="drag-drop-im gone" src="./static/player-X.png" alt="Player X"  >
+                </div>
+                <div class="font-15">Drag and drop the player icons into the squares.</div>
+                <div class="font-15">The order doesn't matter.</div>
+                <div id="pickUp-rowWrapper_P3" class="row-container"></div>
+            </div>
+          </div>
+          <div class="vertical-thirds">
+            <div id="submitButtonWrap_P3" class="button-wrapper center-wrapper-width submit-button_P3 gone">
+              <button id="submitButton_P3" class="button enabled white-shadow">Submit</button>
+            </div>
+          </div>
+        </div>
+        <aside id="history_P3" class="history">
+          <div id="historyRowWrapper_P3" class="grid-wrapper row-container"></div>
+        </aside> 
+        <div id="rowWrapper_P3_2" class="row-container slider-row-wrapper"></div>
+        <div class="thirds-container">
+          <!-- Left column: Info box -->
+          <aside class="info-left"></aside>
+          <!-- Middle column: Grid -->
+          <aside id="middle-third" class="grid-info-wrapper">
+            <div id="rowWrapper_P3" class="grid-wrapper row-container"></div>
+          </aside>
+          <!-- Right column: Nothing for now -->
+          <aside class="info">
+            <div class="group">
+              <button id="roundOverButton_P3" class="button enabled hidden shimmer">Next</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <img id="comparison-target-image_P3" class="topLeftIm animate gone" src="./static/player-X-desc.png" alt="Player X">
+    </div>
+
+    <!-- SCOREDISPLAY_P3 -->
+    <div id="DISP_P3" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="index-instructions width-100">Great! The <span id="round-ordinal_P3">first</span> round is complete.</div>
+              <div class="index-instructions">Let's move on to round <span id="round-next_P3">2</span>.</div>
+              <div class="index-instructions">Click Play to proceed.</div>
+              <div class="button-group">
+                <button id="nextButtonDisp_P3" class="move-screen-button button enabled">Play</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- RATEOTHER -->
+    <div id="RATEOTHER" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+                <div id="rate-what" class="index-instructions padding-10">Given your experiences, how do you rate the skill of <span id="rate-participant-id" class="font-30 blue-coloured">Player B</span></div>
+                <div class="index-instructions font-15">Click and drag the slider to rate</div>
+                <div class="rate-slider-container">
+                    <span id= "left-label" class="slider-label left-label">Every selection  <span class="blue-coloured">they</span> made was the worst possible</span>
+                    <div class="range-wrap">
+                      <div id="notch-25" class="notch"></div>
+                      <div id="notch-50" class="notch"></div>
+                      <div id="notch-75" class="notch"></div>
+                      <div class="track" id="track-other"></div>
+                      <div id="vertical-line" class="vertical-line"></div>
+                      <div class="thumb" id="thumb-other"></div>
+                      <output id="rate-label-other" class="rating-label above-label">Other player</output>
+                      <output id="rate-label-fixed" class="rating-label below-label">You (previous rating)</output>
+                    </div>
+                    <span id= "right-label" class="slider-label right-label">Every selection <span class="blue-coloured">they</span> made was the best possible</span>
+                </div>
+                <button id="nextButtonRateOther" class="button">Next</button>
+            </aside>
+        </div>
+    </div>
+
+
+    <!-- INSTRUCTIONS1_P4 -->
+    <div id="INSTRUCTIONS1_P4" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page1"></div>
+              </div>
+              <div class="index-instructions width-100">Great! This stage is complete.</div>
+              <div class="index-instructions">Let's move on to the final stage.</div>
+              <div class="button-group">
+                <button id="nextButton41" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS2_P4 -->
+    <div id="INSTRUCTIONS2_P4" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page2"></div>
+              </div>
+              <div class="index-instructions">In this stage, you must again try and collect as many points as possible.</div>
+             <div class="button-group">
+                <button id="backButton42" class="move-screen-button button enabled">Back</button>
+                <button id="nextButton42" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS3_P4 -->
+    <div id="INSTRUCTIONS3_P4" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page3"></div>
+              </div>
+              <div class="index-instructions blue-coloured width-60">However, this time, we will show you how many points both you AND <span id="target3_P4">Player A</span> found every <span id="comparisonFreqINSTR3_P4">12</span> turns.</div>
+              <div class="index-instructions width-60"><span id="target3_P4_2">Player A</span> was playing with exactly the same cards as you every round.</div>
+              <div class="index-instructions width-60">Your job is to try and use that information to get more points.</div>
+             <div class="button-group">
+                <button id="backButton43" class="move-screen-button button enabled">Back</button>
+                <button id="nextButton43" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS4_P4 -->
+    <div id="INSTRUCTIONS4_P4" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page4"></div>
+              </div>
+              <div class="index-instructions">Let's have a training round to see how that looks.</div>
+              <div class="index-instructions width-70">You will see how well your training partner — Player X — performed every <span id="comparisonFreqINSTR4_P4">12</span> turns.</div>
+              <div class="index-instructions width-60">Try to use that information to find as many points as possible.</div>
+             <div class="button-group">
+                <button id="backButton44" class="move-screen-button button enabled">Back</button>
+                <button id="nextButton44" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- TRAIN_P4 -->
+    <div id="TRAIN_P4" class="w">
+      <div class="wrapper">
+        <div class="watermark top-20">Training<br>Find as many points as possible</div>
+        <div id="overlay_P4-t1" class="gone overlay"></div>
+        <div class="drag-drop-group">
+          <div class="vertical-thirds">
+            <div id="soo-information_P4-t1" class="soo-information width-25">
+              <div class="soo-box-text">
+                <p>In the last <span id="comparisonFreq_P4-t1">2 trials</span>, <span id="target-name_P4-t1">Player X</span> scored <span class="blue-coloured" id="more-or-less_P4-t1">much more than</span> you:</p>
+                <div class="score-chart-container">
+                  <svg class="score-chart" id="score-chart_P4-t1"></svg>
+                </div>
+              </div>
+              <div id="read-comparison_P4-t1" class="hidden font-15 padding-top-20">Press anywhere in this box to continue.</div>
+            </div>
+          </div>
+        </div>
+        <aside id="history_P4-t1" class="history">
+          <div id="historyRowWrapper_P4-t1" class="grid-wrapper row-container"></div>
+        </aside> 
+        <div class="thirds-container">
+          <!-- Left column: Info box -->
+          <aside class="info-left"></aside>
+          <!-- Middle column: Grid -->
+          <aside class="grid-info-wrapper">
+            <div id="rowWrapper_P4-t1" class="grid-wrapper row-container"></div>
+          </aside>
+          <!-- Right column: Info box -->
+          <aside class="info">
+            <div class="group">
+              <div id="infoBox_P4-t1" class="box">
+                  <div id="score_P4-t1">Score: 0</div>
+              </div>
+              <button id="roundOverButton_P4-t1" class="button enabled gone margin-top-20 button-sized shimmer">Next</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <img class="topLeftIm" src="./static/player-X-desc.png" alt="Player X">
+    </div>
+
+    <!-- INSTRUCTIONS5_P4 -->
+    <div id="INSTRUCTIONS5_P4" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page5"></div>
+              </div>
+              <div class="index-instructions">Great! That's exactly how this stage will look.</div>
+              <div class="index-instructions width-60">You will see the number of points <span id="target5_P4">Player A</span> received when they played each round.</div>
+              <div class="index-instructions width-60  blue-coloured">Importantly, you have never seen these cards before.</div>
+             <div class="button-group">
+                <button id="nextButton45" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS6_P4 -->
+    <div id="INSTRUCTIONS6_P4" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page6"></div>
+              </div>
+               <div class="index-instructions width-60">As always:</div>
+              <div class="index-instructions width-60">The number of points each card gives reduces every turn, whether you click on the card or not.</div>
+              <div class="index-instructions width-60 blue-coloured">Your bonus is affected by the number of points you find.</div>
+             <div class="button-group">
+                <button id="backButton46" class="move-screen-button button enabled">Back</button>
+                <button id="nextButton46" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS7_P4 -->
+    <div id="INSTRUCTIONS7_P4" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page7"></div>
+              </div>
+              <div class="index-instructions">Let's check you understand everything.</div>
+              <div class="index-instructions blue-coloured">You must answer the following questions correctly to proceed.</div>
+              <div class="index-instructions">If you are unsure about anything, click Back to go back to the beginning.</div>
+              <div class="button-group">
+                  <button id="nextButton47" class="move-screen-button button enabled">Proceed to test</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+
+    <!-- CHECK_P4 -->
+    <div id="CHECK_P4" class="w">
+        <div class="wrapper">
+            <aside class="check-inter">
+              <div class="padding-50 font-30">Checking test</div>
+              <div class="check">
+                  <div id="1_P4" class="question">When I click on a card, it will <span class="blue-coloured">always</span> reward me.</div>
+                  <div class="answers">
+                      <label>True <input type="radio" name="question-1" value="true"></label>
+                      <label> False <input type="radio" name="question-1" value="false"></label>
+                  </div>
+              </div>
+              <div class="check">
+                  <div id="2_P4" class="question">All the cards will spike at the <span class="blue-coloured">same</span> time.</div>
+                  <div class="answers">
+                      <label>True <input type="radio" name="question-2" value="true"></label>
+                      <label> False <input type="radio" name="question-2" value="false"></label>
+                  </div>
+              </div>
+              <div class="check">
+                  <div id="3_P4" class="question">The other player played with exactly the <span class="blue-coloured">same</span> cards as me.</div>
+                  <div class="answers">
+                      <label>True <input type="radio" name="question-3" value="true"></label>
+                      <label> False <input type="radio" name="question-3" value="false"></label>
+                  </div>
+              </div>
+              <div class="check">
+                  <div id="4_P4" class="question">I have seen some of these cards <span class="blue-coloured">before</span>.</div>
+                  <div class="answers">
+                      <label>True <input type="radio" name="question-4" value="true"></label>
+                      <label> False <input type="radio" name="question-4" value="false"></label>
+                  </div>
+              </div>
+              <div class="check">
+                  <div id="5_P4" class="question">My bonus is determined by <span class="blue-coloured">my</span> score.</div>
+                  <div class="answers">
+                      <label>True <input type="radio" name="question-4" value="true"></label>
+                      <label> False <input type="radio" name="question-4" value="false"></label>
+                  </div>
+              </div>
+            </aside>
+            <div id="correct_P4" class="index-instructions gone">Perfect! These are the correct answers.</div>
+            <button id="checkNext_P4" class="button">Check</button>
+            <div id="error-msg_P4" class="error hidden">There was a mistake. Please correct the highlighted question.</div>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS8_P4 -->
+    <div id="INSTRUCTIONS8_P4" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="page10"></div>
+            </div>
+            <div class="index-instructions">Great! We are ready to play.</div>
+            <div class="index-instructions blue-coloured width-60">Training is over. Everything has been reset. From now on, the rounds matter.</div>
+            <div class="index-instructions">When you are ready, click Play to begin.</div>
+            <div class="button-group">
+                <button id="nextButton48" class="move-screen-button button enabled">Play</button>
+            </div>
+          </aside>
+        </div>
+    </div>
+
+    <!-- GAME4 -->
+    <div id="GAME4" class="w">
+      <div class="wrapper">
+        <div id="overlay_P4" class="gone overlay"></div>
+        <div class="drag-drop-group">
+          <div class="vertical-thirds">
+            <div id="soo-information_P4" class="soo-information width-25">
+              <div class="soo-box-text">
+                <p>In the last <span id="comparisonFreq_P4">2 trials</span>, <span id="target-name_P4">Player X</span> scored <span class="blue-coloured" id="more-or-less_P4">much more than</span> you:</p>
+                <div class="score-chart-container">
+                  <svg class="score-chart" id="score-chart_P4"></svg>
+                </div>
+              </div>
+              <div id="read-comparison_P4" class="hidden font-15 padding-top-20">Press anywhere in this box to continue.</div>
+            </div>
+          </div>
+        </div>
+        <aside id="history_P4" class="history">
+          <div id="historyRowWrapper_P4" class="grid-wrapper row-container"></div>
+        </aside> 
+        <div class="thirds-container">
+          <!-- Left column: Info box -->
+          <aside class="info-left"></aside>
+          <!-- Middle column: Grid -->
+          <aside class="grid-info-wrapper">
+            <div id="rowWrapper_P4" class="grid-wrapper row-container"></div>
+          </aside>
+          <!-- Right column: Info box -->
+          <aside class="info">
+            <div class="group">
+              <div id="infoBox_P4" class="box">
+                  <div id="score_P4">Score: 0</div>
+              </div>
+              <button id="roundOverButton_P4" class="button enabled gone margin-top-20 button-sized shimmer">Next</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <img id="comparison-target-image_P4" class="topLeftIm" src="./static/player-X.png" alt="Player X">
+    </div>
+
+    <!-- SCOREDISPLAY_P4 -->
+    <div id="DISP_P4" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="index-instructions width-100">Great! The <span id="round-ordinal_P4">first</span> round is complete.</div>
+              <div class="index-instructions blue-coloured">You found <span id="round-score_P4">10</span> points</div>
+              <div class="index-instructions">Let's move on to round <span id="round-next_P4">2</span>.</div>
+              <div class="index-instructions">Click Play to proceed.</div>
+              <div class="button-group">
+                <button id="nextButtonDisp_P4" class="move-screen-button button enabled">Play</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INTERMEDIARY-COMP -->
+    <div id="INTERMEDIARYCOMP" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div id="show-text" class="index-instructions">In the next round, we will again show you the score of another participant from the list.</div>
+              <div id="different-text" class="index-instructions width-90 blue-coloured">Please choose a <span class="font-30">different</span> participant whose scores you will see.</div>
+              <div id="search-text-gen" class="index-instructions width-90">Click Open to display the list of available participants.</div>
+              <div id="loader-wheel-gen" class="loader hide-on-comparison"></div>
+              <div id="selectableTable-gen" class="index-instructions gone">
+                  <table>
+                      <thead>
+                          <tr>
+                              <th>Name</th>
+                              <th>Prolific ID</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="button-group">
+                <button id="nextButtonIntCom" class="button enabled">Open</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INTERMEDIARY -->
+    <div id="INTERMEDIARY" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div id="intermediary-text" class="index-instructions">In the next round, we will not show you the score of another participant.</div>
+            <button id="rounder" class="button enabled">Play</button>
+          </aside>
+        </div>
+    </div>
+
+    <!-- STANDINGS -->
+    <div id="STANDINGS" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="padding-50 font-30">Highest scores</div>
+              <div class="chart-container">
+                  <svg id="barChart" width="400" height="300"></svg>
+              </div>
+              <button id="next-round-button" class="button" disabled>Play</button>
+            </aside>
+        </div>
+    </div>
+    
+    <!-- THANKS -->
+    <div id="THANKS" class="w">
+        <div class="thanks-wrapper">
+            <aside class="inter">
+              <div id="thanks-title" class="padding-50 font-30">You're finished!</div>
+              <div class="index-instructions">Your score from a random round was: <span id="player-score-max">5</span>. This translates to a bonus of <span id="bonus-calculation">£0</span>.</div>
+              <div class="index-instructions">Please enter your information below.</div><div class="index-instructions">If you have any comments about the task, the other players, or about how you made your decisions, these would be very welcome. Please do not provide any identifiable information in your comments.</div><div class="index-instructions">Click Final payment to proceed to the final payment page.</div>
+              <div id="final-user-input" class="final-user-input">
+                <form class="demos">
+                  <label for="gender">Gender:</label>
+                  <div class="dropdown-wrapper">
+                    <select id="gender" name="gender" class="dropdown">
+                      <option value="prefer-not-to-say">Prefer not to say</option>
+                      <option value="woman">Woman</option>
+                      <option value="man">Man</option>
+                      <option value="non-binary">Non-binary</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <br><br>
+                  <label for="age">Age:</label>
+                  <div class="dropdown-wrapper">
+                    <select id="age" name="age" class="dropdown"></select>
+                  </div>
+                </form>
+                <div class="comments">
+                  <textarea id="comments" name="comments" placeholder="Leave your comments here..."></textarea>
+                </div>
+              </div>
+              <div id="final-payment-button-wrapper">
+                <button id="final-payment" class="button enabled">Final payment</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- FINAL -->
+    <div id="FINAL" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+            <div class="padding-50 font-30">Thank you!</div>
+            <div class="index-instructions">We will redirect you to the Prolific payment page presently. Have a lovely rest of the day.</div>
+          </aside>
+        </div>
+    </div>
+
+    <!-- RESCINDED -->
+    <div id="RESCINDED" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+              <div class="padding-50 font-30">Thank you for taking the time to look at the study. We have collected no information about you.</div>
+              <div class="index-instructions">We hope you have a lovely rest of the day. Feel free to close this window at any time.</div>
+          </aside>
+        </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div id="BEFORE" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+              <div class="padding-50 font-30">Sorry, you've been here before!</div>
+              <div class="index-instructions">I'm afraid you can only access the experiment once, even if you didn't complete it.</div>
+              <div class="index-instructions">We hope you have a lovely rest of the day. Feel free to close this window at any time.</div>
+          </aside>
+        </div>
+    </div>
+
+    <!-- NO-PID -->
+    <div id="NOPID" class="w">
+        <div class="wrapper">
+          <aside class="inter">
+              <div class="padding-50 font-30">Sorry, we don't know who you are!</div>
+              <div class="index-instructions">I'm afraid we can't find your prolific ID, which means we won't be able to pay you.</div>
+              <div class="index-instructions">We hope you have a lovely rest of the day. Feel free to close this window at any time.</div>
+          </aside>
+        </div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
