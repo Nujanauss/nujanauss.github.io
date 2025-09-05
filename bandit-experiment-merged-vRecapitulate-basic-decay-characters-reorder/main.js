@@ -2992,7 +2992,7 @@ function loadSelectObservationTarget() {
         const playerName = String.fromCharCode(65 + i); // A, B, C
         players.push({
             name: `Player ${playerName}`,
-            img: `./static/player-${playerName}.png`,
+            img: `./static/Player-${playerName}.png`,
             characteristic: characteristics[i % characteristics.length]
         });
     }
