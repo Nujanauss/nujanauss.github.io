@@ -265,7 +265,7 @@ function showPage(pageId) {
             case 'GAME1':
                 loadPhase1(
                   settings.moves,
-                  Math.floor(settings.numberOfRounds / 4),
+                  Math.floor(settings.numberOfRounds / 8),
                   10,
                   settings.comparisonFrequency,
                   false,
@@ -339,7 +339,7 @@ function showPage(pageId) {
             case 'GAME3':
                 loadPhase3(
                   settings.moves,
-                  Math.floor(settings.numberOfRounds / 4),
+                  Math.floor(settings.numberOfRounds / 8),
                   settings.comparisonFrequency,
                   false,
                   {
@@ -393,7 +393,7 @@ function showPage(pageId) {
             case 'GAME4':
                 loadPhase4(
                   settings.moves,
-                  Math.floor(settings.numberOfRounds / 4),
+                  Math.floor(settings.numberOfRounds / 8),
                   settings.comparisonFrequency,
                   false,
                   {
@@ -664,7 +664,7 @@ function loadInstructions1() {
 
 function loadInstructions2() {
     buttonToNewPage('backButton2', 'INSTRUCTIONS1');
-    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'INSTRUCTIONS2_P2');//
+    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'SELECT_PARTNER');//
 }
 
 function loadInstructions3() {
@@ -2998,8 +2998,8 @@ function loadSelectObservationTarget() {
     }
 
     // Shuffle players
-    shuffleArray(players);
-    //players.reverse();
+    //shuffleArray(players);
+    players.reverse();
 
     // Create rows — first row selectable, others greyed
     players.forEach((player, index) => {
