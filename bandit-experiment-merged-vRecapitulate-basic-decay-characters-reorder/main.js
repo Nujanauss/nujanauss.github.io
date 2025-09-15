@@ -265,7 +265,7 @@ function showPage(pageId) {
             case 'GAME1':
                 loadPhase1(
                   settings.moves,
-                  Math.floor(settings.numberOfRounds / 8),
+                  Math.floor(settings.numberOfRounds / 4),
                   10,
                   settings.comparisonFrequency,
                   false,
@@ -339,7 +339,7 @@ function showPage(pageId) {
             case 'GAME3':
                 loadPhase3(
                   settings.moves,
-                  Math.floor(settings.numberOfRounds / 8),
+                  Math.floor(settings.numberOfRounds / 4),
                   settings.comparisonFrequency,
                   false,
                   {
@@ -393,7 +393,7 @@ function showPage(pageId) {
             case 'GAME4':
                 loadPhase4(
                   settings.moves,
-                  Math.floor(settings.numberOfRounds / 8),
+                  Math.floor(settings.numberOfRounds / 4),
                   settings.comparisonFrequency,
                   false,
                   {
@@ -664,7 +664,7 @@ function loadInstructions1() {
 
 function loadInstructions2() {
     buttonToNewPage('backButton2', 'INSTRUCTIONS1');
-    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'SELECT_PARTNER');//
+    buttonToNewPage('nextButton2', 'CHECK_P4');//buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//
 }
 
 function loadInstructions3() {
@@ -2625,7 +2625,34 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
 
 function loadCheck() {
+    wrongCount = 0;
+
+    let questions = document.querySelectorAll('.check');
+    questions.forEach(question => {
+      question.querySelectorAll('input[type="radio"]').forEach(answer => answer.checked = false)
+    });
     const submitButton = document.getElementById('check-next');
+    if (submitButton._clickHandler) {
+      submitButton.removeEventListener('click', submitButton._clickHandler);
+    }
+
+    document.getElementById('error-msg').classList.add('gone');
+    document.getElementById('error-msg2').classList.add('gone');
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+      radio.checked = false;
+      radio.defaultChecked = false;
+    });
+
+    submitButton.classList.add('disabled');
+    submitButton.classList.remove('enabled');
+    submitButton.disabled = true;
+    submitButton.style.cursor = 'not-allowed';
+    submitButton.innerHTML = 'Check';
+
+    questions.forEach(question => {
+      question.querySelector('.question').style.color = '#333';
+    });
+
     document.getElementById('checkTurns').innerHTML = settings.moves;
     let correctAnswers = [
         { question: "1", answer: true },
@@ -2637,37 +2664,37 @@ function loadCheck() {
 
     let answers = [];
     let checkedAnswerLog = [];
-    let questions = document.querySelectorAll('.check');
     questions.forEach(question => {
         let qID = question.querySelector('.question').id;
         question.querySelectorAll('input[type="radio"]').forEach(answer => {
-          answer.addEventListener('change', () => {
-            document.getElementById('error-msg').style.visibility = 'hidden';
+          answer.onchange = null; // remove any old listener
+          answer.onchange = () => {
+            document.getElementById('error-msg').classList.add('gone');
             question.querySelector('.question').style.color = '#333';
             if (answer.checked) {
               answers.push({
                 question: qID,
-                answer: answer.value === 'true' ? true : false,
+                answer: answer.value === 'true',
                 timestamp: new Date().toISOString().split('T')[1]
               });
             }
-            if (new Set(answers.map(item => item.question)).size > correctAnswers.length - 1) { // if we have enough answers, release Check button
+            if (new Set(answers.map(item => item.question)).size > correctAnswers.length - 1) {
                 submitButton.classList.remove('disabled');
                 submitButton.classList.add('enabled');
                 submitButton.disabled = false;
                 submitButton.style.cursor = 'pointer';
             }
-          });
+          };
         });
     });
 
-    if (new Set(answers.map(item => item.question)).size < correctAnswers.length) { // else cannot Check until all answers complete
+    submitButton.onclick = () => {
       submitButton.classList.add('disabled');
+      submitButton.classList.remove('enabled');
       submitButton.disabled = true;
       submitButton.style.cursor = 'not-allowed';
-    }
 
-    submitButton.addEventListener('click', () => {
+      wrongCount = 0;
       let questionsChecked = [];
       checkedAnswerLog.push({timestamp: new Date().toISOString().split('T')[1]});
       for (let i = answers.length - 1; i >= 0; i--) { // work backwards because of updating answers
@@ -2678,32 +2705,45 @@ function loadCheck() {
         questionsChecked.push(userAnswer.question);
         let correctAnswer = correctAnswers.find(answer => answer.question === userAnswer.question);
         if (userAnswer.answer !== correctAnswer.answer) {
+          wrongCount++;
           let questionElement = document.getElementById(userAnswer.question);
           questionElement.style.color = '#b50000';
-          document.getElementById('error-msg').style.visibility = 'visible';
-          return;
         }
       }
+
+      setTimeout(() => {
+        if (wrongCount === 0) {
+          submitButton.innerHTML = 'Next';
+          submitButton.classList.remove('disabled');
+          submitButton.disabled = false;
+          submitButton.style.cursor = 'pointer';
+          buttonToNewPage('check-next', 'INSTRUCTIONS11');
+        } else if (wrongCount > 1) {
+          submitButton.innerHTML = 'Back';
+          submitButton.classList.remove('disabled');
+          submitButton.disabled = false;
+          submitButton.style.cursor = 'pointer';
+          buttonToNewPage('check-next', 'INSTRUCTIONS2');
+        }
+      }, 400);
+
+      document.getElementById('5').style.marginBottom = '0px';
+      if (wrongCount === 0) {
+        document.getElementById('correct').classList.remove('gone');
+      } else if (wrongCount == 1) {
+        document.getElementById('error-msg').classList.remove('gone');
+      } else {
+        questions.forEach(question => question.querySelector('.question').style.color = '#333');
+        document.getElementById('error-msg').classList.add('gone');
+        document.getElementById('error-msg2').classList.remove('gone');
+      }
+
       let checkQuestions = {
         answers: answers,
         checkedAnswerLog: checkedAnswerLog
       };
       sessionStorage.setItem('checkQuestions', JSON.stringify(checkQuestions));
-      document.getElementById('correct').classList.remove('gone');
-      document.getElementById('5').style.marginBottom = '0px';
-      submitButton.innerHTML = 'Next';
-
-      submitButton.classList.add('disabled');
-      submitButton.disabled = true;
-      submitButton.style.cursor = 'not-allowed';
-      setTimeout(() => {
-          submitButton.classList.remove('disabled');
-          submitButton.classList.add('enabled');
-          submitButton.disabled = false;
-          submitButton.style.cursor = 'pointer';
-          buttonToNewPage('check-next', 'INSTRUCTIONS11');
-      }, 800);
-    });
+    };
 }
 
 function loadCheck_P2() {
@@ -2788,7 +2828,34 @@ function loadCheck_P2() {
 }
 
 function loadCheck_P3() {
+    wrongCount_P3 = 0;
+
+    let questions = document.querySelectorAll('.check');
+    questions.forEach(question => {
+      question.querySelectorAll('input[type="radio"]').forEach(answer => answer.checked = false)
+    });
     const submitButton = document.getElementById('checkNext_P3');
+    if (submitButton._clickHandler) {
+      submitButton.removeEventListener('click', submitButton._clickHandler);
+    }
+
+    document.getElementById('error-msg_P3').classList.add('gone');
+    document.getElementById('error-msg2_P3').classList.add('gone');
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+      radio.checked = false;
+      radio.defaultChecked = false;
+    });
+
+    submitButton.classList.add('disabled');
+    submitButton.classList.remove('enabled');
+    submitButton.disabled = true;
+    submitButton.style.cursor = 'not-allowed';
+    submitButton.innerHTML = 'Check';
+
+    questions.forEach(question => {
+      question.querySelector('.question').style.color = '#333';
+    });
+
     let correctAnswers = [
         { question: "1_P3", answer: false },
         { question: "2_P3", answer: false },
@@ -2799,37 +2866,37 @@ function loadCheck_P3() {
 
     let answers = [];
     let checkedAnswerLog = [];
-    let questions = document.querySelectorAll('.check');
     questions.forEach(question => {
         let qID = question.querySelector('.question').id;
         question.querySelectorAll('input[type="radio"]').forEach(answer => {
-          answer.addEventListener('change', () => {
-            document.getElementById('error-msg_P3').style.visibility = 'hidden';
+          answer.onchange = null; // remove any old listener
+          answer.onchange = () => {
+            document.getElementById('error-msg_P3').classList.add('gone');
             question.querySelector('.question').style.color = '#333';
             if (answer.checked) {
               answers.push({
                 question: qID,
-                answer: answer.value === 'true' ? true : false,
+                answer: answer.value === 'true',
                 timestamp: new Date().toISOString().split('T')[1]
               });
             }
-            if (new Set(answers.map(item => item.question)).size > correctAnswers.length - 1) { // if we have enough answers, release Check button
+            if (new Set(answers.map(item => item.question)).size > correctAnswers.length - 1) {
                 submitButton.classList.remove('disabled');
                 submitButton.classList.add('enabled');
                 submitButton.disabled = false;
                 submitButton.style.cursor = 'pointer';
             }
-          });
+          };
         });
     });
 
-    if (new Set(answers.map(item => item.question)).size < correctAnswers.length) { // else cannot Check until all answers complete
+    submitButton.onclick = () => {
       submitButton.classList.add('disabled');
+      submitButton.classList.remove('enabled');
       submitButton.disabled = true;
       submitButton.style.cursor = 'not-allowed';
-    }
 
-    submitButton.addEventListener('click', () => {
+      wrongCount_P3 = 0;
       let questionsChecked = [];
       checkedAnswerLog.push({timestamp: new Date().toISOString().split('T')[1]});
       for (let i = answers.length - 1; i >= 0; i--) { // work backwards because of updating answers
@@ -2840,36 +2907,76 @@ function loadCheck_P3() {
         questionsChecked.push(userAnswer.question);
         let correctAnswer = correctAnswers.find(answer => answer.question === userAnswer.question);
         if (userAnswer.answer !== correctAnswer.answer) {
+          wrongCount_P3++;
           let questionElement = document.getElementById(userAnswer.question);
           questionElement.style.color = '#b50000';
-          document.getElementById('error-msg_P3').style.visibility = 'visible';
-          return;
         }
       }
+
+      setTimeout(() => {
+        if (wrongCount_P3 === 0) {
+          submitButton.innerHTML = 'Next';
+          submitButton.classList.remove('disabled');
+          submitButton.disabled = false;
+          submitButton.style.cursor = 'pointer';
+          buttonToNewPage('checkNext_P3', 'INSTRUCTIONS11_P3');
+        } else if (wrongCount_P3 > 1) {
+          submitButton.innerHTML = 'Back';
+          submitButton.classList.remove('disabled');
+          submitButton.disabled = false;
+          submitButton.style.cursor = 'pointer';
+          buttonToNewPage('checkNext_P3', 'INSTRUCTIONS3_P3');
+        }
+      }, 400);
+
+      document.getElementById('5_P3').style.marginBottom = '0px';
+      if (wrongCount_P3 === 0) {
+        document.getElementById('correct_P3').classList.remove('gone');
+      } else if (wrongCount_P3 == 1) {
+        document.getElementById('error-msg_P3').classList.remove('gone');
+      } else {
+        questions.forEach(question => question.querySelector('.question').style.color = '#333');
+        document.getElementById('error-msg_P3').classList.add('gone');
+        document.getElementById('error-msg2_P3').classList.remove('gone');
+      }
+
       let checkQuestions = {
         answers: answers,
         checkedAnswerLog: checkedAnswerLog
       };
       sessionStorage.setItem('checkQuestions', JSON.stringify(checkQuestions));
-      document.getElementById('correct_P3').classList.remove('gone');
-      document.getElementById('5_P3').style.marginBottom = '0px';
-      submitButton.innerHTML = 'Next';
-
-      submitButton.classList.add('disabled');
-      submitButton.disabled = true;
-      submitButton.style.cursor = 'not-allowed';
-      setTimeout(() => {
-          submitButton.classList.remove('disabled');
-          submitButton.classList.add('enabled');
-          submitButton.disabled = false;
-          submitButton.style.cursor = 'pointer';
-          buttonToNewPage('checkNext_P3', 'INSTRUCTIONS11_P3');
-      }, 800);
-    });
+    };
 }
 
 function loadCheck_P4() {
+    wrongCount_P4 = 0;
+
+    let questions = document.querySelectorAll('.check');
+    questions.forEach(question => {
+      question.querySelectorAll('input[type="radio"]').forEach(answer => answer.checked = false)
+    });
     const submitButton = document.getElementById('checkNext_P4');
+    if (submitButton._clickHandler) {
+      submitButton.removeEventListener('click', submitButton._clickHandler);
+    }
+
+    document.getElementById('error-msg_P4').classList.add('gone');
+    document.getElementById('error-msg2_P4').classList.add('gone');
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+      radio.checked = false;
+      radio.defaultChecked = false;
+    });
+
+    submitButton.classList.add('disabled');
+    submitButton.classList.remove('enabled');
+    submitButton.disabled = true;
+    submitButton.style.cursor = 'not-allowed';
+    submitButton.innerHTML = 'Check';
+
+    questions.forEach(question => {
+      question.querySelector('.question').style.color = '#333';
+    });
+
     let correctAnswers = [
         { question: "1_P4", answer: true },
         { question: "2_P4", answer: false },
@@ -2880,17 +2987,17 @@ function loadCheck_P4() {
 
     let answers = [];
     let checkedAnswerLog = [];
-    let questions = document.querySelectorAll('.check');
     questions.forEach(question => {
         let qID = question.querySelector('.question').id;
         question.querySelectorAll('input[type="radio"]').forEach(answer => {
-          answer.addEventListener('change', () => {
-            document.getElementById('error-msg_P4').style.visibility = 'hidden';
+          answer.onchange = null; // remove any old listener
+          answer.onchange = () => {
+            document.getElementById('error-msg_P4').classList.add('gone');
             question.querySelector('.question').style.color = '#333';
             if (answer.checked) {
               answers.push({
                 question: qID,
-                answer: answer.value === 'true' ? true : false,
+                answer: answer.value === 'true',
                 timestamp: new Date().toISOString().split('T')[1]
               });
             }
@@ -2900,17 +3007,17 @@ function loadCheck_P4() {
                 submitButton.disabled = false;
                 submitButton.style.cursor = 'pointer';
             }
-          });
+          };
         });
     });
 
-    if (new Set(answers.map(item => item.question)).size < correctAnswers.length) { // else cannot Check until all answers complete
+    submitButton.onclick = () => {
       submitButton.classList.add('disabled');
+      submitButton.classList.remove('enabled');
       submitButton.disabled = true;
       submitButton.style.cursor = 'not-allowed';
-    }
 
-    submitButton.addEventListener('click', () => {
+      wrongCount_P4 = 0;
       let questionsChecked = [];
       checkedAnswerLog.push({timestamp: new Date().toISOString().split('T')[1]});
       for (let i = answers.length - 1; i >= 0; i--) { // work backwards because of updating answers
@@ -2921,32 +3028,46 @@ function loadCheck_P4() {
         questionsChecked.push(userAnswer.question);
         let correctAnswer = correctAnswers.find(answer => answer.question === userAnswer.question);
         if (userAnswer.answer !== correctAnswer.answer) {
+          wrongCount_P4++;
           let questionElement = document.getElementById(userAnswer.question);
           questionElement.style.color = '#b50000';
-          document.getElementById('error-msg_P4').style.visibility = 'visible';
-          return;
         }
       }
+
+      setTimeout(() => {
+        if (wrongCount_P4 === 0) {
+          submitButton.innerHTML = 'Next';
+          submitButton.classList.remove('disabled');
+          submitButton.disabled = false;
+          submitButton.style.cursor = 'pointer';
+          buttonToNewPage('checkNext_P4', 'INSTRUCTIONS8_P4');
+        } else if (wrongCount_P4 > 1) {
+          submitButton.innerHTML = 'Back';
+          submitButton.classList.remove('disabled');
+          submitButton.disabled = false;
+          submitButton.style.cursor = 'pointer';
+          buttonToNewPage('checkNext_P4', 'INSTRUCTIONS2_P4');
+        }
+      }, 400);
+
+
+      document.getElementById('5_P4').style.marginBottom = '0px';
+      if (wrongCount_P4 === 0) {
+        document.getElementById('correct_P4').classList.remove('gone');
+      } else if (wrongCount_P4 == 1) {
+        document.getElementById('error-msg_P4').classList.remove('gone');
+      } else {
+        questions.forEach(question => question.querySelector('.question').style.color = '#333');
+        document.getElementById('error-msg_P4').classList.add('gone');
+        document.getElementById('error-msg2_P4').classList.remove('gone');
+      }
+
       let checkQuestions = {
         answers: answers,
         checkedAnswerLog: checkedAnswerLog
       };
       sessionStorage.setItem('checkQuestions', JSON.stringify(checkQuestions));
-      document.getElementById('correct_P4').classList.remove('gone');
-      document.getElementById('5_P4').style.marginBottom = '0px';
-      submitButton.innerHTML = 'Next';
-
-      submitButton.classList.add('disabled');
-      submitButton.disabled = true;
-      submitButton.style.cursor = 'not-allowed';
-      setTimeout(() => {
-          submitButton.classList.remove('disabled');
-          submitButton.classList.add('enabled');
-          submitButton.disabled = false;
-          submitButton.style.cursor = 'pointer';
-          buttonToNewPage('checkNext_P4', 'INSTRUCTIONS8_P4');
-      }, 800);
-    });
+    };
 }
 
 function loadScoreDisplay() {
