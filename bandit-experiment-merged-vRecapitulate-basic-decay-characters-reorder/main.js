@@ -664,7 +664,7 @@ function loadInstructions1() {
 
 function loadInstructions2() {
     buttonToNewPage('backButton2', 'INSTRUCTIONS1');
-    buttonToNewPage('nextButton2', 'CHECK_P4');//buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//
+    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'CHECK_P4');//
 }
 
 function loadInstructions3() {
