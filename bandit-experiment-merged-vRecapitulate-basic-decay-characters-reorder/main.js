@@ -30,6 +30,8 @@ let scoresSoFar_P4 = [];
 let selfRating = 0;
 let settings;
 let preferenceAgent;
+let currentPlayer = 1;
+let players = [];
 let randomAgent;
 let training1Over = false;
 let training2Over = false;
@@ -138,6 +140,12 @@ function showPage(pageId) {
             case 'INSTRUCTIONS3_P3':
               loadInstructions3_P3();
               break;
+            case 'INSTRUCTIONS2_P3_REPEAT':
+              loadInstructions2_P3_REPEAT();
+              break;
+            case 'INSTRUCTIONS3_P3_REPEAT':
+              loadInstructions3_P3_REPEAT();
+              break;
             case 'INSTRUCTIONS4_P3':
               loadInstructions4_P3();
               break;
@@ -170,6 +178,9 @@ function showPage(pageId) {
               break;
             case 'INSTRUCTIONS3_P4':
               loadInstructions3_P4();
+              break;
+            case 'INSTRUCTIONS3_P4_REPEAT':
+              loadInstructions3_P4_REPEAT();
               break;
             case 'INSTRUCTIONS4_P4':
               loadInstructions4_P4();
@@ -264,8 +275,8 @@ function showPage(pageId) {
                 break;
             case 'GAME1':
                 loadPhase1(
-                  settings.moves,
-                  Math.floor(settings.numberOfRounds / 4),
+                  1,//settings.moves,
+                  1,//Math.floor(settings.numberOfRounds / 4),
                   10,
                   settings.comparisonFrequency,
                   false,
@@ -299,7 +310,7 @@ function showPage(pageId) {
                   {
                     topInstruction:   'top-instruction_P2',
                     buttn:            'roundOverButton_P2',
-                    nextPage:         'INSTRUCTIONS2_P3',
+                    nextPage:         (currentPlayer > 1) ? 'INSTRUCTIONS2_P3_REPEAT' : 'INSTRUCTIONS2_P3',
                     rowWrapper:       'rowWrapper_P2',
                     historyRowWrapper: 'historyRowWrapper_P2',
                     stop:             'stop_P2',
@@ -338,8 +349,8 @@ function showPage(pageId) {
             break;
             case 'GAME3':
                 loadPhase3(
-                  settings.moves,
-                  Math.floor(settings.numberOfRounds / 4),
+                  1,//settings.moves,
+                  1,//Math.floor(settings.numberOfRounds / 4),
                   settings.comparisonFrequency,
                   false,
                   {
@@ -392,13 +403,13 @@ function showPage(pageId) {
             break;
             case 'GAME4':
                 loadPhase4(
-                  settings.moves,
-                  Math.floor(settings.numberOfRounds / 4),
+                  1,//settings.moves,
+                  1,//Math.floor(settings.numberOfRounds / 4),
                   settings.comparisonFrequency,
                   false,
                   {
                     buttn:               'roundOverButton_P4',
-                    nextPage:            'THANKS',
+                    nextPage:            (currentPlayer == 3) ? 'THANKS' : 'TRY_ANOTHER',
                     rowWrapper:          'rowWrapper_P4',
                     historyRowWrapper:   'historyRowWrapper_P4',
                     overlay:             'overlay_P4',
@@ -428,8 +439,8 @@ function showPage(pageId) {
             case 'DISP_P3':
                 loadScoreDisplay_P3();
                 break;
-            case 'DISP_P3':
-                loadScoreDisplay_P3();
+            case 'DISP_P3_WRONG':
+                loadScoreDisplay_P3_WRONG();
                 break;
             case 'DISP_P4':
                 loadScoreDisplay_P4();
@@ -451,7 +462,7 @@ function showPage(pageId) {
                 loadRate(true,
                   {
                   buttn:        'nextButtonRateOther',
-                  nextPage:     'INSTRUCTIONS2_P3',
+                  nextPage:     'INSTRUCTIONS2_P4',
                   movableThumb: 'thumb-other',
                   slider:       'track-other',
                   rateLabel:    'rate-label-other'
@@ -460,6 +471,9 @@ function showPage(pageId) {
                 break;
             case 'THANKS':
                 loadThanks();
+                break;
+            case 'TRY_ANOTHER':
+                loadTryAnother();
                 break;
             case 'FINAL':
                 loadFinal();
@@ -664,7 +678,7 @@ function loadInstructions1() {
 
 function loadInstructions2() {
     buttonToNewPage('backButton2', 'INSTRUCTIONS1');
-    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'CHECK_P4');//
+    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'TRAIN_P3');//
 }
 
 function loadInstructions3() {
@@ -744,6 +758,20 @@ function loadInstructions4_P2() {
 }
 
 function loadInstructions9_P2() {
+    let backButton = document.getElementById('backButton29');
+    let introTxt = document.getElementById('do-this-again');
+    let playerChoice = document.getElementById('player-choice');
+    if (currentPlayer == 1) {
+      playerChoice.innerHTML = 'first (top)';
+    } else if  (currentPlayer == 2) {
+      introTxt.innerHTML = 'As before, we'
+      playerChoice.innerHTML = 'second (middle)';
+      backButton.classList.add('gone');
+    } else {
+      introTxt.innerHTML = 'Finally, again, we'
+      playerChoice.innerHTML = 'third (bottom)';
+      backButton.classList.add('gone');
+    }
     buttonToNewPage('backButton29', 'INSTRUCTIONS2_P2');
     buttonToNewPage('nextButton29', 'SELECT_PARTNER');
 }
@@ -753,12 +781,23 @@ function loadInstructions2_P3() {
     buttonToNewPage('nextButton32','INSTRUCTIONS3_P3');
 }
 
+function loadInstructions2_P3_REPEAT() {
+    buttonToNewPage('nextButton32R','INSTRUCTIONS3_P3_REPEAT');
+}
+
 function loadInstructions3_P3() {
     document.getElementById('target3_P3').innerHTML = targetName;
     document.getElementById('comparisonFreqINSTR3_P3').innerHTML = settings.comparisonFrequency;
     document.getElementById('target3_P3_2').innerHTML = targetName;
     buttonToNewPage('backButton33','INSTRUCTIONS2_P3');
     buttonToNewPage('nextButton33','INSTRUCTIONS4_P3');
+}
+
+function loadInstructions3_P3_REPEAT() {
+    document.getElementById('target3_P3_repeat').innerHTML = targetName;
+    document.getElementById('target3_P3_repeat2').innerHTML = targetName;
+    buttonToNewPage('backButton33R','INSTRUCTIONS2_P3_REPEAT');
+    buttonToNewPage('nextButton33R','INSTRUCTIONS11_P3');
 }
 
 function loadInstructions4_P3() {
@@ -808,12 +847,16 @@ function loadInstructions11_P3() {
 
 
 function loadInstructions1_P4() {
-    buttonToNewPage('nextButton41', 'INSTRUCTIONS2_P4');
+    document.getElementById('target1_P4').innerHTML = targetName;
+    buttonToNewPage('nextButton41', 'RATEOTHER');
 }
 
 function loadInstructions2_P4() {
-    buttonToNewPage('backButton42','INSTRUCTIONS1_P4');
-    buttonToNewPage('nextButton42','INSTRUCTIONS3_P4');
+    if (currentPlayer == 1) {
+      buttonToNewPage('nextButton42','INSTRUCTIONS3_P4');
+    } else {
+      buttonToNewPage('nextButton42','INSTRUCTIONS3_P4_REPEAT');
+    }
 }
 
 function loadInstructions3_P4() {
@@ -822,6 +865,14 @@ function loadInstructions3_P4() {
     document.getElementById('target3_P4_2').innerHTML = targetName;
     buttonToNewPage('backButton43','INSTRUCTIONS2_P4');
     buttonToNewPage('nextButton43','INSTRUCTIONS4_P4');
+}
+
+function loadInstructions3_P4_REPEAT() {
+    document.getElementById('target3_REPEAT_P4').innerHTML = targetName;
+    document.getElementById('comparisonFreqINSTR3_REPEAT_P4').innerHTML = settings.comparisonFrequency;
+    document.getElementById('target3_REPEAT_P4_2').innerHTML = targetName;
+    buttonToNewPage('backButton43R','INSTRUCTIONS2_P4');
+    buttonToNewPage('nextButton43R','INSTRUCTIONS6_P4');
 }
 
 function loadInstructions4_P4() {
@@ -836,8 +887,13 @@ function loadInstructions5_P4() {
 }
 
 function loadInstructions6_P4() {
-    buttonToNewPage('backButton46','INSTRUCTIONS5_P4');
-    buttonToNewPage('nextButton46','INSTRUCTIONS7_P4');
+    if (currentPlayer > 1) {
+      buttonToNewPage('backButton46','INSTRUCTIONS3_P4_REPEAT');
+      buttonToNewPage('nextButton46','INSTRUCTIONS8_P4');
+    } else {
+      buttonToNewPage('backButton46','INSTRUCTIONS5_P4');
+      buttonToNewPage('nextButton46','INSTRUCTIONS7_P4');
+    }
 }
 
 function loadInstructions7_P4() {
@@ -848,6 +904,13 @@ function loadInstructions7_P4() {
 function loadInstructions8_P4() {
     buttonToNewPage('nextButton48','GAME4');
 }
+
+
+function loadTryAnother() {
+    currentPlayer++;
+    buttonToNewPage('nextButton_Try_Another','INSTRUCTIONS9_P2');
+}
+
 
 
 async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparisonFrequency, training, rewarding, ids) {
@@ -1501,6 +1564,9 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
           stopIcon.classList.add('hidden');
           if(topInstruction) {
             topInstruction.innerHTML = "Predict which card " + targetName + " selected next";
+            if (targetName.includes('A')) {
+              topInstruction.innerHTML = "Predict which card " + targetName + " selected next.<br>Any card will do, because this Player selects cards randomly.";
+            }
           }
           squares.forEach(sq => {
             sq.classList.remove('grey');
@@ -1651,10 +1717,16 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
     let   currentTrial       = 0;
     let   score              = 0;
     let   scoreSinceLastComp = 0;
+    let   correctCount       = 0;
+    let   trialCardsPlayer   = Array(comparisonFrequency);
     let   belowSubrows       = [];
-    let   decision           = Array(numberOfMoves);
+    let   usedIndices        = new Set();
+
+    let   cardSelected       = Array(numberOfMoves);
     let   rewardReceived     = Array(numberOfMoves);
-    let   timeStamps         = Array(numberOfMoves);
+    let   iconDropped        = Array(numberOfMoves);
+    let   timeStampsSelected = Array(numberOfMoves);
+    let   timeStampsDropped  = Array(numberOfMoves);
 
     const agent = targetName.includes('A') ? randomAgent : targetName.includes('B') ? leftyAgent : targetName.includes('C') ? rationalAgent : undefined;
 
@@ -1904,6 +1976,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
       for (let i = 0; i < comparisonFrequency; i++) {
         const t = trial - i;
         let reward = agent[`round_${round}`]?.[t]?.reward || 0;
+        trialCardsPlayer[i] = agent[`round_${round}`]?.[t]?.decision;
         otherScoreSinceLastComp += reward;
       }
 
@@ -1982,6 +2055,12 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
             upEvent.clientY <= box.bottom;
 
           if (inside && !dropped) {
+            const x = +square.dataset.x;
+            if (checkCorrect(x)) {
+              correctCount++;
+            }
+            iconDropped[currentTrial-comparisonFrequency+dropCounter] = x;
+            timeStampsDropped[currentTrial-comparisonFrequency+dropCounter] = new Date().toISOString();
             dropCounter++;
             // Shrink the image and place it in the square
             img.classList.remove('drag-drop-im-grabbed');
@@ -2028,14 +2107,36 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
       img.style.left = (e.clientX - centerOffsetX) + 'px';
     }
 
+    function checkCorrect(x) {
+      let correct = false;
+
+      // Look back up to comparisonFrequency trials
+      for (let i = 0; i < comparisonFrequency; i++) {
+        let idx = currentTrial - i;
+
+        // Skip if we've already used this index
+        if (usedIndices.has(idx)) continue;
+
+        // Choose the array depending on training
+        let arr = training ? cardSelected : trialCardsPlayer;
+
+        if (arr[idx] === x) {
+          correct = true;
+          correctCount++;
+          usedIndices.add(idx);  // Mark this index as "consumed"
+          break;                 // Stop after first valid match
+        }
+      }
+
+      return correct;
+    }
 
     function handleClick(square) {
       if (square.style.pointerEvents === 'none') return;
 
       const x = +square.dataset.x;
-      const y = +square.dataset.y;
-      decision[currentTrial] = { x, y };
-      timeStamps[currentTrial] = new Date().toISOString();
+      cardSelected[currentTrial] = x;
+      timeStampsSelected[currentTrial] = new Date().toISOString();
 
       const pseudo = square.firstElementChild;
       const scoreDisp = pseudo.querySelector('[data-type="score"]');
@@ -2164,23 +2265,27 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
         if(topInstruction) {
           topInstruction.innerHTML = 'Click Next to continue'
         }
-        saveData(decision, rewardReceived, timeStamps);
+        saveData(cardSelected, rewardReceived, iconDropped, timeStampsSelected, timeStampsDropped);
         Array.from(rowWrapper.querySelector(`.subrow`).children).forEach(sq => {sq.classList.add('grey');});
-        if (phase3Round == numberOfRounds) {
-          buttonToNewPage(buttonId, nextPageId);
-        } else {
-          buttonToNewPage(buttonId, 'DISP_P3');
+        let targetPage = 'DISP_P3';
+        if (phase3Round === numberOfRounds) {
+          targetPage = (training && correctCount < 2)
+            ? 'DISP_P3_WRONG'
+            : nextPageId;
         }
-      } 
+        buttonToNewPage(buttonId, targetPage);
+      }
     }
 
-    function saveData(decisionArr, timeArr) {
+    function saveData(cardSelectedArr, rewardReceivedArr, iconDroppedArr, timeStampsSelectedArr, timeStampsDroppedArr) {
       const data = { move: {} };
-      decisionArr.forEach((sq, idx) => {
+      cardSelectedArr.forEach((sq, idx) => {
         data.move[idx] = {
           decisionX: sq.x,
-          decisionY: sq.y,
-          timestamp: timeArr[idx]
+          reward: rewardReceivedArr[idx],
+          timeCard: timeStampsSelectedArr[idx],
+          iconDecision: iconDroppedArr[idx],
+          timeIcon: timeStampsDroppedArr[idx],
         };
       });
       sessionStorage.setItem(phase3Round, JSON.stringify(data));
@@ -2636,6 +2741,7 @@ function loadCheck() {
       submitButton.removeEventListener('click', submitButton._clickHandler);
     }
 
+    document.getElementById('correct').classList.add('gone');
     document.getElementById('error-msg').classList.add('gone');
     document.getElementById('error-msg2').classList.add('gone');
     document.querySelectorAll('input[type="radio"]').forEach(radio => {
@@ -2746,87 +2852,6 @@ function loadCheck() {
     };
 }
 
-function loadCheck_P2() {
-    const submitButton = document.getElementById('checkNext_P2');
-    let correctAnswers = [
-        { question: "1_P2", answer: true },
-        { question: "2_P2", answer: false },
-        { question: "3_P2", answer: true },
-        { question: "4_P2", answer: false },
-        { question: "5_P2", answer: true }
-    ];
-
-    let answers = [];
-    let checkedAnswerLog = [];
-    let questions = document.querySelectorAll('.check');
-    questions.forEach(question => {
-        let qID = question.querySelector('.question').id;
-        question.querySelectorAll('input[type="radio"]').forEach(answer => {
-          answer.addEventListener('change', () => {
-            document.getElementById('error-msg_P2').style.visibility = 'hidden';
-            question.querySelector('.question').style.color = '#333';
-            if (answer.checked) {
-              answers.push({
-                question: qID,
-                answer: answer.value === 'true' ? true : false,
-                timestamp: new Date().toISOString().split('T')[1]
-              });
-            }
-            if (new Set(answers.map(item => item.question)).size > correctAnswers.length - 1) { // if we have enough answers, release Check button
-                submitButton.classList.remove('disabled');
-                submitButton.classList.add('enabled');
-                submitButton.disabled = false;
-                submitButton.style.cursor = 'pointer';
-            }
-          });
-        });
-    });
-
-    if (new Set(answers.map(item => item.question)).size < correctAnswers.length) { // else cannot Check until all answers complete
-      submitButton.classList.add('disabled');
-      submitButton.disabled = true;
-      submitButton.style.cursor = 'not-allowed';
-    }
-
-    submitButton.addEventListener('click', () => {
-      let questionsChecked = [];
-      checkedAnswerLog.push({timestamp: new Date().toISOString().split('T')[1]});
-      for (let i = answers.length - 1; i >= 0; i--) { // work backwards because of updating answers
-        let userAnswer = answers[i];
-        if (questionsChecked.includes(userAnswer.question)) {
-          continue;
-        }
-        questionsChecked.push(userAnswer.question);
-        let correctAnswer = correctAnswers.find(answer => answer.question === userAnswer.question);
-        if (userAnswer.answer !== correctAnswer.answer) {
-          let questionElement = document.getElementById(userAnswer.question);
-          questionElement.style.color = '#b50000';
-          document.getElementById('error-msg_P2').style.visibility = 'visible';
-          return;
-        }
-      }
-      let checkQuestions = {
-        answers: answers,
-        checkedAnswerLog: checkedAnswerLog
-      };
-      sessionStorage.setItem('checkQuestions', JSON.stringify(checkQuestions));
-      document.getElementById('correct_P2').classList.remove('gone');
-      document.getElementById('5_P2').style.marginBottom = '0px';
-      submitButton.innerHTML = 'Next';
-
-      submitButton.classList.add('disabled');
-      submitButton.disabled = true;
-      submitButton.style.cursor = 'not-allowed';
-      setTimeout(() => {
-          submitButton.classList.remove('disabled');
-          submitButton.classList.add('enabled');
-          submitButton.disabled = false;
-          submitButton.style.cursor = 'pointer';
-          buttonToNewPage('checkNext_P2', 'INSTRUCTIONS9_P2');
-      }, 800);
-    });
-}
-
 function loadCheck_P3() {
     wrongCount_P3 = 0;
 
@@ -2839,6 +2864,7 @@ function loadCheck_P3() {
       submitButton.removeEventListener('click', submitButton._clickHandler);
     }
 
+    document.getElementById('correct_P3').classList.add('gone');
     document.getElementById('error-msg_P3').classList.add('gone');
     document.getElementById('error-msg2_P3').classList.add('gone');
     document.querySelectorAll('input[type="radio"]').forEach(radio => {
@@ -2960,6 +2986,7 @@ function loadCheck_P4() {
       submitButton.removeEventListener('click', submitButton._clickHandler);
     }
 
+    document.getElementById('correct_P4').classList.add('gone');
     document.getElementById('error-msg_P4').classList.add('gone');
     document.getElementById('error-msg2_P4').classList.add('gone');
     document.querySelectorAll('input[type="radio"]').forEach(radio => {
@@ -3090,6 +3117,10 @@ function loadScoreDisplay_P3() {
     buttonToNewPage('nextButtonDisp_P3','GAME3');
 }
 
+function loadScoreDisplay_P3_WRONG() {
+    buttonToNewPage('nextButtonDisp_P3_WRONG','TRAIN_P3');
+}
+
 function loadScoreDisplay_P4() {
     document.getElementById('round-score_P4').innerHTML = scoresSoFar_P4.at(-1);
     document.getElementById('round-ordinal_P4').innerHTML = ordinals[phase4Round-1];
@@ -3106,26 +3137,24 @@ function loadSelectObservationTarget() {
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = ''; // Clear existing rows
 
-    const numOtherPlayers = 3;
-
-    let players = [];
-    for (let i = 0; i < numOtherPlayers; i++) {
-        const playerName = String.fromCharCode(65 + i); // A, B, C
-        players.push({
-            name: `Player ${playerName}`,
-            img: `./static/Player-${playerName}.png`,
-            characteristic: characteristics[i % characteristics.length]
-        });
+    if (currentPlayer == 1) {
+      const numOtherPlayers = 3;
+      for (let i = 0; i < numOtherPlayers; i++) {
+          const playerName = String.fromCharCode(65 + i); // A, B, C
+          players.push({
+              name: `Player ${playerName}`,
+              img: `./static/Player-${playerName}.png`,
+              characteristic: characteristics[i % characteristics.length]
+          });
+      }
+      shuffleArray(players);
+      //players.reverse();
     }
-
-    // Shuffle players
-    //shuffleArray(players);
-    players.reverse();
 
     // Create rows — first row selectable, others greyed
     players.forEach((player, index) => {
         const row = document.createElement('tr');
-        if (index > 0) row.classList.add('disabled-row'); // Grey out non-first rows
+        if (index != (currentPlayer - 1)) row.classList.add('disabled-row'); // Grey out non-first rows
         row.innerHTML = `
             <td class="center-td">
                 <img src="${player.img}" alt="${player.name}" class="border-filter"; style="width: 100px; height: auto;">
@@ -3224,7 +3253,7 @@ function loadIntermediary() {
 }
 
 function loadRate(otherRating, ids) {
-        // — Get DOM ids —
+    // — Get DOM ids —
     const {
       buttn:          buttonId,
       nextPage:       nextPageId,
@@ -3242,7 +3271,9 @@ function loadRate(otherRating, ids) {
     // Button
     disableButton(nextButton);
     nextButton.addEventListener('click', (e) => {
-      selfRating = val;
+      if (buttonId.includes('Self')) {
+        selfRating = val;
+      }
       addToInstructionTimings(buttonId, new Date().toISOString().split('T')[1]);
       showPage(nextPageId);
     });
@@ -3265,6 +3296,8 @@ function loadRate(otherRating, ids) {
     document.addEventListener('mouseup', () => isDragging = false);
 
     // Slider
+    slider.style.background = '#ddd';
+
     slider.addEventListener('mousedown', (e) => {
       movableThumb.classList.remove('hidden');
       movingLabel.classList.remove('hidden');

@@ -173,6 +173,13 @@ ul {
   margin: 0px;
 }
 
+.condensed-instr-ul {
+  text-align: left;
+}
+.condensed-instr-li {
+  margin: 5px 0;
+}
+
 .wrapper > *:not(.grid-info-wrapper) {
   padding: 10px;
 }

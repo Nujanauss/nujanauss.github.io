@@ -393,28 +393,28 @@
             <aside class="check-inter">
               <div class="padding-50 font-30">Checking test</div>
               <div class="check">
-                  <div id="1" class="question">When I click on a card, it will <span class="blue-coloured">always</span> reward me.</div>
+                  <div id="1" class="question">When I click on a card, it will <span class="blue-coloured">always reward me</span>.</div>
                   <div class="answers">
                       <label>True <input type="radio" name="question-1" value="true"></label>
                       <label> False <input type="radio" name="question-1" value="false"></label>
                   </div>
               </div>
               <div class="check">
-                  <div id="2" class="question">A card's score will only begin to decrease when I click <span class="blue-coloured">on it</span>.</div>
+                  <div id="2" class="question">A card's score will only begin to decrease when I <span class="blue-coloured">click on it</span>.</div>
                   <div class="answers">
                       <label>True <input type="radio" name="question-2" value="true"></label>
                       <label> False <input type="radio" name="question-2" value="false"></label>
                   </div>
               </div>
               <div class="check">
-                  <div id="3" class="question">Each card may spike to a new high at <span class="blue-coloured">any</span> time.</div>
+                  <div id="3" class="question">Each card may spike to a new high at <span class="blue-coloured">any time</span>.</div>
                   <div class="answers">
                       <label>True <input type="radio" name="question-3" value="true"></label>
                       <label> False <input type="radio" name="question-3" value="false"></label>
                   </div>
               </div>
               <div class="check">
-                  <div id="4" class="question">I must maximise my score on the <span class="blue-coloured">final</span> round to get the highest bonus.</div>
+                  <div id="4" class="question">I must maximise my score on the <span class="blue-coloured">final round</span> to get the highest bonus.</div>
                   <div class="answers">
                       <label>True <input type="radio" name="question-4" value="true"></label>
                       <label> False <input type="radio" name="question-4" value="false"></label>
@@ -570,8 +570,8 @@
                 <div class="progress-bar" id="page6"></div>
               </div>
               <div class="index-instructions sidth-60">Let's find that player.</div>
-              <div class="index-instructions width-90">We will show you three players in a table. Each with a different characteristic.</div>
-              <div class="index-instructions width-90">You only have access to the first (top) player for now. Select that player.</div>
+              <div class="index-instructions width-90"><span id="do-this-again">We</span> will show you three players in a table. Each with a different characteristic.</div>
+              <div class="index-instructions width-90">This time, you only have access to the <span id="player-choice">first (top)</span> player. Select that player.</div>
               <div class="index-instructions width-90 blue-coloured">By the end of the experiment you will have seen every player.</div>
               <div class="button-group">
                   <button id="backButton29" class="move-screen-button button enabled">Back</button>
@@ -694,6 +694,50 @@
               <div class="index-instructions">In the next stage, you will have to infer how other players acted.</div>
              <div class="button-group">
                 <button id="nextButton32" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS2_P3_REPEAT -->
+    <div id="INSTRUCTIONS2_P3_REPEAT" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page2"></div>
+              </div>
+              <div class="index-instructions">Perfect! Let's move on.</div>
+              <div class="index-instructions">Just like before, you will have to infer how other players acted.</div>
+             <div class="button-group">
+                <button id="nextButton32R" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS3_P3_REPEAT -->
+    <div id="INSTRUCTIONS3_P3_REPEAT" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page4"></div>
+              </div>
+              <div class="index-instructions">As before:</div>
+              <div class="index-instructions width-80">
+                <ul class="condensed-instr-ul">
+                  <li class="condensed-instr-li">Click on two cards.</li>
+                  <li class="condensed-instr-li">Observe how <span id="target3_P3_repeat">PlayerA</span> performed over the same two turns.</li>
+                  <li class="condensed-instr-li">Tell us which cards you think <span id="target3_P3_repeat2">PlayerA</span> used to get their points.</li>
+                  <li class="condensed-instr-li">The selection order doesn't matter.</li>
+                  <li class="condensed-instr-li">The points you receive from cards do not count towards your bonus.</li>
+                  <li class="condensed-instr-li">Your bonus is determined by the accuracy of your inferences.</li>
+                  <li class="condensed-instr-li">Cards give fewer points every turn, even when you don't click on them.</li>
+                  <li class="condensed-instr-li">Cards spike with a fixed, shared probability.</li>
+                </ul>
+              </div>
+              <div class="button-group">
+                <button id="backButton33R" class="move-screen-button button enabled">Back</button>
+                <button id="nextButton33R" class="move-screen-button button enabled">Next</button>
               </div>
             </aside>
           </div>
@@ -928,7 +972,7 @@
                   </div>
               </div>
               <div class="check">
-                  <div id="5_P3" class="question">I must infer both the cards that the other player selected, and the <span class="blue-coloured">order</span> in which they were selected.</div>
+                  <div id="5_P3" class="question">I must infer both the cards that the other player selected, AND the <span class="blue-coloured">order</span> in which they were selected.</div>
                   <div class="answers">
                       <label>True <input type="radio" name="question-5" value="true"></label>
                       <label> False <input type="radio" name="question-5" value="false"></label>
@@ -1027,6 +1071,37 @@
             </aside>
           </div>
     </div>
+    
+    <!-- SCOREDISPLAY_P3_WRONG -->
+    <div id="DISP_P3_WRONG" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="index-instructions width-100">Oops! That wasn't quite right.</div>
+              <div class="index-instructions width-60">Since Player X received the same number of points as you, the most likely cards Player X selected were the same as yours.</div>
+              <div class="index-instructions width-60">Let's try again.</div>
+              <div class="index-instructions">Click Play to proceed.</div>
+              <div class="button-group">
+                <button id="nextButtonDisp_P3_WRONG" class="move-screen-button button enabled">Play</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS1_P4 -->
+    <div id="INSTRUCTIONS1_P4" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page1"></div>
+              </div>
+              <div class="index-instructions width-100">Great! This stage is complete.</div>
+              <div class="index-instructions width-60">Before we move on, please tell us how well you think <span id="target1_P4">Player A</span> performed in this stage.</div>
+              <div class="button-group">
+                <button id="nextButton41" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
 
     <!-- RATEOTHER -->
     <div id="RATEOTHER" class="w">
@@ -1053,23 +1128,6 @@
         </div>
     </div>
 
-
-    <!-- INSTRUCTIONS1_P4 -->
-    <div id="INSTRUCTIONS1_P4" class="w">
-        <div class="wrapper">
-            <aside class="inter">
-              <div class="progress-bar-container">
-                <div class="progress-bar" id="page1"></div>
-              </div>
-              <div class="index-instructions width-100">Great! This stage is complete.</div>
-              <div class="index-instructions">Let's move on to the final stage.</div>
-              <div class="button-group">
-                <button id="nextButton41" class="move-screen-button button enabled">Next</button>
-              </div>
-            </aside>
-          </div>
-    </div>
-
     <!-- INSTRUCTIONS2_P4 -->
     <div id="INSTRUCTIONS2_P4" class="w">
         <div class="wrapper">
@@ -1077,9 +1135,10 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page2"></div>
               </div>
+              <div class="index-instructions">Perfect! Let's move on.</div>
               <div class="index-instructions">In this stage, you must again try and collect as many points as possible.</div>
+              <div class="index-instructions">Let's move on to the final stage.</div>
              <div class="button-group">
-                <button id="backButton42" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton42" class="move-screen-button button enabled">Next</button>
               </div>
             </aside>
@@ -1099,6 +1158,24 @@
              <div class="button-group">
                 <button id="backButton43" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton43" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+          </div>
+    </div>
+
+    <!-- INSTRUCTIONS3_P4_REPEAT -->
+    <div id="INSTRUCTIONS3_P4_REPEAT" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="page3"></div>
+              </div>
+              <div class="index-instructions blue-coloured width-60">As before, we will show you how many points both you AND <span id="target3_REPEAT_P4">Player A</span> found every <span id="comparisonFreqINSTR3_REPEAT_P4">12</span> turns.</div>
+              <div class="index-instructions width-60"><span id="target3_REPEAT_P4_2">Player A</span> was playing with exactly the same cards as you every round.</div>
+              <div class="index-instructions width-60">Your job is to try and use that information to get more points.</div>
+             <div class="button-group">
+                <button id="backButton43R" class="move-screen-button button enabled">Back</button>
+                <button id="nextButton43R" class="move-screen-button button enabled">Next</button>
               </div>
             </aside>
           </div>
@@ -1387,7 +1464,20 @@
             </aside>
         </div>
     </div>
-    
+
+    <!-- TRY_ANOTHER -->
+    <div id="TRY_ANOTHER" class="w">
+      <div class="wrapper">
+          <aside class="inter">
+            <div class="index-instructions width-100">Fantastic! You've now completed all the stages.</div>
+            <div class="index-instructions blue-coloured">Let's do them again, but this time, with a different player.</div>
+            <div class="button-group">
+              <button id="nextButton_Try_Another" class="move-screen-button button enabled">Next</button>
+            </div>
+          </aside>
+        </div>
+    </div>
+
     <!-- THANKS -->
     <div id="THANKS" class="w">
         <div class="thanks-wrapper">
