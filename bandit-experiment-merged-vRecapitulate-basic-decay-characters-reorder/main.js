@@ -20,7 +20,6 @@ const ordinals = [
 
 let currentPage;
 var phase1Round = 1;
-var phase2Round = 1;
 var phase3Round = 1;
 var phase4Round = 1;
 var check1Entered = 0;
@@ -279,7 +278,7 @@ function showPage(pageId) {
             case 'GAME1':
                 loadPhase1(
                   6,//settings.moves,
-                  2,//Math.floor(settings.numberOfRounds / 4),
+                  2,//Math.floor(settings.numberOfRounds / 9),
                   10,
                   settings.comparisonFrequency,
                   false,
@@ -353,7 +352,7 @@ function showPage(pageId) {
             case 'GAME3':
                 loadPhase3(
                   6,//settings.moves,
-                  2,//Math.floor(settings.numberOfRounds / 4),
+                  2,//Math.floor(settings.numberOfRounds / 9),
                   settings.comparisonFrequency,
                   false,
                   {
@@ -407,7 +406,7 @@ function showPage(pageId) {
             case 'GAME4':
                 loadPhase4(
                   6,//settings.moves,
-                  2,//Math.floor(settings.numberOfRounds / 4),
+                  2,//Math.floor(settings.numberOfRounds / 9),
                   settings.comparisonFrequency,
                   false,
                   {
@@ -482,10 +481,8 @@ function showPage(pageId) {
                 loadFinal();
                 break;
             case 'RESCINDED':
-                loadRescinded();
                 break;
             case 'NOPID':
-                loadNoPid();
                 break;
         }
     });
@@ -912,7 +909,6 @@ function loadInstructions8_P4() {
 function loadTryAnother() {
     currentPlayer++;
     phase1Round++;
-    phase2Round++;
     phase3Round++;
     phase4Round++;
     buttonToNewPage('nextButton_Try_Another','INSTRUCTIONS9_P2');
@@ -1210,7 +1206,7 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
             reward = numberOfMoves * 10;
           }
         } else {
-          reward = Math.round(settings.chanceToWin[((phase1Round - 1) * numberOfMoves + currentTrial)][0][x] * 100);
+          reward = Math.round(settings.chanceToWin[((phase1Round - 1) * settings.moves + currentTrial)][0][x] * 100);
         }
         scoreDisp.classList.remove('gone');
         scoreDisp.classList.remove('animate');
@@ -1663,7 +1659,7 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
           timestamp: timeArr[idx]
         };
       });
-      sessionStorage.setItem("Stage2Round" + phase2Round, JSON.stringify(data));
+      sessionStorage.setItem("Stage2Round", JSON.stringify(data));
     }
 
     // Initialise and draw
@@ -1977,7 +1973,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
       compareInfoBox.classList.remove('gone');
       let otherScoreSinceLastComp = 0;
 
-      const round = phase1Round + phase2Round + phase3Round;
+      const round = phase1Round + phase3Round + (phase4Round - currentPlayer);
       for (let i = 0; i < comparisonFrequency; i++) {
         const t = trial - i;
         let reward = agent[`round_${round}`]?.[t]?.reward || 0;
@@ -2148,7 +2144,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
       square.classList.remove(`reward${x}`);
       square.classList.add(`reward${x}-clicked`);
-      reward = Math.round(settings.chanceToWin[((phase1Round + phase2Round + phase3Round -1) * numberOfMoves + currentTrial)][0][x] * 100);
+      reward = Math.round(settings.chanceToWin[((phase1Round + phase3Round + (phase4Round - currentPlayer) - 1) * settings.moves + currentTrial)][0][x] * 100);
       if (training) {
         reward = (numberOfMoves - currentTrial) * 10;
       }
@@ -2574,7 +2570,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
       compareInfoBox.classList.remove("gone");
       let otherScoreSinceLastComp = 0;
 
-      const round = phase1Round + phase2Round + phase3Round + phase4Round;
+      const round = phase1Round + phase3Round + phase4Round;
       for (let i = 0; i < comparisonFrequency; i++) {
         const t = trial - i - 1;
         let reward = agent[`round_${round}`]?.[t]?.reward || 0;
@@ -2618,7 +2614,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
       square.classList.remove(`reward${x}`);
       square.classList.add(`reward${x}-clicked`);
-      reward = Math.round(settings.chanceToWin[((phase1Round + phase2Round + phase3Round + phase4Round - 1) * numberOfMoves + currentTrial)][0][x] * 100);
+      reward = Math.round(settings.chanceToWin[((phase1Round + phase3Round + phase4Round - 1) * settings.moves + currentTrial)][0][x] * 100);
       if (training) {
         movesLeft = numberOfMoves - currentTrial;
         reward = movesLeft !== 1 ? movesLeft * 10 : (previousDecision.every(item => item.x !== x) ? 90 : 10);
@@ -3134,8 +3130,8 @@ function loadScoreDisplay_P2() {
 }
 
 function loadScoreDisplay_P3() {
-    document.getElementById('round-ordinal_P3').innerHTML = ordinals[phase3Round-1];
-    document.getElementById('round-next_P3').innerHTML = (phase3Round+1);
+    document.getElementById('round-ordinal_P3').innerHTML = ordinals[phase3Round%(Math.floor(settings.numberOfRounds / 9))-1];
+    document.getElementById('round-next_P3').innerHTML = (phase3Round%(Math.floor(settings.numberOfRounds / 9))+1);
     phase3Round++;
     buttonToNewPage('nextButtonDisp_P3','GAME3');
 }
@@ -3146,8 +3142,8 @@ function loadScoreDisplay_P3_WRONG() {
 
 function loadScoreDisplay_P4() {
     document.getElementById('round-score_P4').innerHTML = scoresSoFar_P4.at(-1);
-    document.getElementById('round-ordinal_P4').innerHTML = ordinals[phase4Round-1];
-    document.getElementById('round-next_P4').innerHTML = (phase4Round+1);
+    document.getElementById('round-ordinal_P4').innerHTML = ordinals[phase4Round%(Math.floor(settings.numberOfRounds / 9))-1];
+    document.getElementById('round-next_P4').innerHTML = (phase4Round%(Math.floor(settings.numberOfRounds / 9))+1);
     phase4Round++;
     buttonToNewPage('nextButtonDisp_P4','GAME4');
 }
@@ -3452,8 +3448,6 @@ function loadThanks() {
       return sum;
     };
 }
-
-function loadRescinded() {}
 
 function loadFinal() {
     const prolificID = JSON.parse(sessionStorage.getItem('playerData')).player.prolificID;
