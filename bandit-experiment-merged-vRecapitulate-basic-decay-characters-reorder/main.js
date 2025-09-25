@@ -23,6 +23,9 @@ var phase1Round = 1;
 var phase2Round = 1;
 var phase3Round = 1;
 var phase4Round = 1;
+var check1Entered = 0;
+var check3Entered = 0;
+var check4Entered = 0;
 let scoresSoFar = [];
 let scoresSoFar_P2 = [];
 let scoresSoFar_P3 = [];
@@ -275,8 +278,8 @@ function showPage(pageId) {
                 break;
             case 'GAME1':
                 loadPhase1(
-                  1,//settings.moves,
-                  1,//Math.floor(settings.numberOfRounds / 4),
+                  6,//settings.moves,
+                  2,//Math.floor(settings.numberOfRounds / 4),
                   10,
                   settings.comparisonFrequency,
                   false,
@@ -349,8 +352,8 @@ function showPage(pageId) {
             break;
             case 'GAME3':
                 loadPhase3(
-                  1,//settings.moves,
-                  1,//Math.floor(settings.numberOfRounds / 4),
+                  6,//settings.moves,
+                  2,//Math.floor(settings.numberOfRounds / 4),
                   settings.comparisonFrequency,
                   false,
                   {
@@ -403,8 +406,8 @@ function showPage(pageId) {
             break;
             case 'GAME4':
                 loadPhase4(
-                  1,//settings.moves,
-                  1,//Math.floor(settings.numberOfRounds / 4),
+                  6,//settings.moves,
+                  2,//Math.floor(settings.numberOfRounds / 4),
                   settings.comparisonFrequency,
                   false,
                   {
@@ -908,6 +911,10 @@ function loadInstructions8_P4() {
 
 function loadTryAnother() {
     currentPlayer++;
+    phase1Round++;
+    phase2Round++;
+    phase3Round++;
+    phase4Round++;
     buttonToNewPage('nextButton_Try_Another','INSTRUCTIONS9_P2');
 }
 
@@ -1185,8 +1192,7 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
       if (square.style.pointerEvents === 'none') return;
 
       const x = +square.dataset.x;
-      const y = +square.dataset.y;
-      decision[currentTrial] = { x, y };
+      decision[currentTrial] = x;
       timeStamps[currentTrial] = new Date().toISOString();
 
       const pseudo = square.firstElementChild;
@@ -1307,16 +1313,16 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
     }
 
     function saveData(decisionArr, rewardArr, timeArr) {
-      const data = { move: {} };
+      const data = {};
       decisionArr.forEach((sq, idx) => {
-        data.move[idx] = {
-          decisionX: sq.x,
-          decisionY: sq.y,
+        data[idx] = {
+          trial:     idx,
+          decision:  sq,
           reward:    rewardArr[idx],
           timestamp: timeArr[idx]
         };
       });
-      sessionStorage.setItem(phase1Round, JSON.stringify(data));
+      sessionStorage.setItem("Stage1Round" + phase1Round, JSON.stringify(data));
     }
 
     renderHistory();
@@ -1529,8 +1535,7 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
       }
 
       const x = +square.dataset.x;
-      const y = +square.dataset.y;
-      decision[movesMade] = { x, y };
+      decision[movesMade] = x;
       timeStamps[movesMade] = new Date().toISOString();
 
       const pseudo = square.firstElementChild;
@@ -1650,15 +1655,15 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
     }
 
     function saveData(decisionArr, timeArr) {
-      const data = { move: {} };
+      const data = {};
       decisionArr.forEach((sq, idx) => {
-        data.move[idx] = {
-          decisionX: sq.x,
-          decisionY: sq.y,
+        data[idx] = {
+          player:   targetName,
+          decision: sq,
           timestamp: timeArr[idx]
         };
       });
-      sessionStorage.setItem(phase2Round, JSON.stringify(data));
+      sessionStorage.setItem("Stage2Round" + phase2Round, JSON.stringify(data));
     }
 
     // Initialise and draw
@@ -2268,7 +2273,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
         saveData(cardSelected, rewardReceived, iconDropped, timeStampsSelected, timeStampsDropped);
         Array.from(rowWrapper.querySelector(`.subrow`).children).forEach(sq => {sq.classList.add('grey');});
         let targetPage = 'DISP_P3';
-        if (phase3Round === numberOfRounds) {
+        if ((phase3Round % numberOfRounds) === 0) {
           targetPage = (training && correctCount < 2)
             ? 'DISP_P3_WRONG'
             : nextPageId;
@@ -2278,17 +2283,17 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
     }
 
     function saveData(cardSelectedArr, rewardReceivedArr, iconDroppedArr, timeStampsSelectedArr, timeStampsDroppedArr) {
-      const data = { move: {} };
+      const data = {};
       cardSelectedArr.forEach((sq, idx) => {
-        data.move[idx] = {
-          decisionX: sq.x,
+        data[idx] = {
+          decision: sq,
           reward: rewardReceivedArr[idx],
           timeCard: timeStampsSelectedArr[idx],
           iconDecision: iconDroppedArr[idx],
           timeIcon: timeStampsDroppedArr[idx],
         };
       });
-      sessionStorage.setItem(phase3Round, JSON.stringify(data));
+      sessionStorage.setItem("Stage3Round" + phase3Round, JSON.stringify(data));
     }
 
     renderHistory();
@@ -2342,6 +2347,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
     let   belowSubrows       = [];
     let   decision           = Array(numberOfMoves).fill(-1);
     let   previousDecision   = Array(numberOfMoves).fill(-1);
+    let   comparisonValue    = Array(numberOfMoves).fill(-1);
     let   rewardReceived     = Array(numberOfMoves);
     let   timeStamps         = Array(numberOfMoves);
 
@@ -2581,6 +2587,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
       }
       diff = otherScoreSinceLastComp - scoreSinceLastComp;
       moreOrLessTxt.innerHTML = (diff > 0) ? 'this much more than' : ((diff == 0) ? 'the same as' : 'this much less than');
+      comparisonValue[trial] = diff;
       updateDifferenceBar(diff);
 
       overlay.classList.remove("gone");
@@ -2601,8 +2608,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
       if (square.style.pointerEvents === 'none') return;
 
       const x = +square.dataset.x;
-      const y = +square.dataset.y;
-      decision[currentTrial] = { x, y };
+      decision[currentTrial] = x;
       timeStamps[currentTrial] = new Date().toISOString();
 
       const pseudo = square.firstElementChild;
@@ -2647,9 +2653,9 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
           }
           nextBtn.classList.remove('gone');
           nextBtn.classList.remove('hidden');
-          saveData(decision, rewardReceived, timeStamps);
+          saveData(decision, rewardReceived, comparisonValue, timeStamps);
           Array.from(rowWrapper.querySelector(`.subrow`).children).forEach(sq => {sq.classList.add('grey');});
-          if (phase4Round == numberOfRounds) {
+          if ((phase4Round % numberOfRounds) === 0) {
             buttonToNewPage(buttonId, nextPageId);
           } else {
             buttonToNewPage(buttonId, 'DISP_P4');
@@ -2712,16 +2718,18 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
         .attr("fill", color);
     }
 
-    function saveData(decisionArr, timeArr) {
-      const data = { move: {} };
+    function saveData(decisionArr, rewardArr, comparisonValue, timeArr) {
+      const data = {};
       decisionArr.forEach((sq, idx) => {
-        data.move[idx] = {
-          decisionX: sq.x,
-          decisionY: sq.y,
-          timestamp: timeArr[idx]
+        data[idx] = {
+          trial:      idx,
+          decision:   sq,
+          reward:     rewardArr[idx],
+          comparison: comparisonValue[idx],
+          timestamp:  timeArr[idx]
         };
       });
-      sessionStorage.setItem(phase4Round, JSON.stringify(data));
+      sessionStorage.setItem("Stage4Round" + phase4Round, JSON.stringify(data));
     }
 
     renderHistory();
@@ -2730,6 +2738,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
 
 function loadCheck() {
+    check1Entered++;
     wrongCount = 0;
 
     let questions = document.querySelectorAll('.check');
@@ -2829,7 +2838,11 @@ function loadCheck() {
           submitButton.classList.remove('disabled');
           submitButton.disabled = false;
           submitButton.style.cursor = 'pointer';
-          buttonToNewPage('check-next', 'INSTRUCTIONS2');
+          if (check1Entered < 2) {
+            buttonToNewPage('check-next', 'INSTRUCTIONS2');
+          } else {
+            buttonToNewPage('check-next', 'RESCINDED');
+          }
         }
       }, 400);
 
@@ -2853,6 +2866,7 @@ function loadCheck() {
 }
 
 function loadCheck_P3() {
+    check3Entered++;
     wrongCount_P3 = 0;
 
     let questions = document.querySelectorAll('.check');
@@ -2951,7 +2965,11 @@ function loadCheck_P3() {
           submitButton.classList.remove('disabled');
           submitButton.disabled = false;
           submitButton.style.cursor = 'pointer';
-          buttonToNewPage('checkNext_P3', 'INSTRUCTIONS3_P3');
+          if (check3Entered < 2) {
+            buttonToNewPage('checkNext_P3', 'INSTRUCTIONS3_P3');
+          } else {
+            buttonToNewPage('check-next', 'RESCINDED');
+          }
         }
       }, 400);
 
@@ -2975,6 +2993,7 @@ function loadCheck_P3() {
 }
 
 function loadCheck_P4() {
+    check4Entered++;
     wrongCount_P4 = 0;
 
     let questions = document.querySelectorAll('.check');
@@ -3073,7 +3092,11 @@ function loadCheck_P4() {
           submitButton.classList.remove('disabled');
           submitButton.disabled = false;
           submitButton.style.cursor = 'pointer';
-          buttonToNewPage('checkNext_P4', 'INSTRUCTIONS2_P4');
+          if (check4Entered < 2) {
+            buttonToNewPage('checkNext_P4', 'INSTRUCTIONS2_P4');
+          } else {
+            buttonToNewPage('check-next', 'RESCINDED');
+          }
         }
       }, 400);
 
@@ -3429,6 +3452,8 @@ function loadThanks() {
       return sum;
     };
 }
+
+function loadRescinded() {}
 
 function loadFinal() {
     const prolificID = JSON.parse(sessionStorage.getItem('playerData')).player.prolificID;
