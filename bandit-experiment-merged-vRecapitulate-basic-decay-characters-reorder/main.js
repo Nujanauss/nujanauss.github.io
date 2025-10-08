@@ -341,7 +341,7 @@ function showPage(pageId) {
                     lastXTrials:         'comparisonFreq_P3-t1',
                     scorePlayer:         'player-score_P3-t1',
                     otherName:           'target-name_P3-t1',
-                    otherName2:           'target-name_P3_2-t1',
+                    otherName2:          'target-name_P3_2-t1',
                     scoreOther:          'soo-score_P3-t1',
                     moreOrLessTxt:       'more-or-less_P3-t1',
                     svgChart:            'score-chart_P3-t1',
@@ -678,7 +678,7 @@ function loadInstructions1() {
 
 function loadInstructions2() {
     buttonToNewPage('backButton2', 'INSTRUCTIONS1');
-    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'TRAIN_P3');//
+    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'INSTRUCTIONS3_P3');//
 }
 
 function loadInstructions3() {
@@ -815,6 +815,9 @@ function loadInstructions5_P3() {
 function loadInstructions6_P3() {
     document.getElementById('comparisonFreqINSTR6_P3').innerHTML = settings.comparisonFrequency;
     document.getElementById('comparisonFreqINSTR6_P3_2').innerHTML = settings.comparisonFrequency;
+    document.getElementById('target6_P3').innerHTML = targetName;
+    document.getElementById('target6_P3_2').innerHTML = targetName;
+    document.getElementById('target6_P3_3').innerHTML = targetName;
     buttonToNewPage('backButton36','INSTRUCTIONS5_P3');
     buttonToNewPage('nextButton36','TRAIN_P3');
 }
@@ -831,6 +834,7 @@ function loadInstructions8_P3() {
 
 function loadInstructions9_P3() {
     document.getElementById('target9_P3').innerHTML = targetName;
+    document.getElementById('target9_P3_2').innerHTML = targetName;
     buttonToNewPage('backButton39','INSTRUCTIONS8_P3');
     buttonToNewPage('nextButton39','INSTRUCTIONS10_P3');
 }
@@ -1092,6 +1096,7 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
         sub.appendChild(sq);
         if (training && x !== 1) {
           sq.classList.add('grey','disabled');
+          sq.classList.remove('hover-enabled');
         }
       }
       rowWrapper.appendChild(sub);
@@ -1185,7 +1190,7 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
 
     // Handle click on any focus-row tile
     function handleClick(square) {
-      if (square.style.pointerEvents === 'none') return;
+      if (square.style.pointerEvents === 'none' || square.classList.contains('disabled')) return;
 
       const x = +square.dataset.x;
       decision[currentTrial] = x;
@@ -1664,6 +1669,7 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
 
     // Initialise and draw
     setupGrid();
+    setupHistoryGrid();
     setTimeout(() => { makeDecisions(); }, 2000);
 }
 
@@ -1734,21 +1740,21 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
     let newX = 0, newY = 0, startX = 0, startY = 0, dropCounter = 0;
     let historyData        = [];
 
-    if (!training) {
-      var imFileName = targetName.replace(/\s+/g, '-');
-      comparisonTargetIm.src = `./static/${imFileName}-desc.png`;
-    }
+    var imFileName = targetName.replace(/\s+/g, '-');
+    comparisonTargetIm.src = `./static/${imFileName}-desc.png`;
     comparisonTargetIm.classList.remove('gone');
+    if (topInstruction) {
+      topInstruction.innerHTML = 'Click on the cards and guess what decisions the player made';
+    }
 
     // — initialize the chart —
-    otherName.innerHTML = training ? "Player X" : targetName;
-    otherName2.innerHTML = training ? "Player X" : targetName;
-    const otherNameLabel = training ? "Player X" : targetName;
+    otherName2.innerHTML = targetName;
+    const otherNameLabel = targetName;
     const width = svgChart.node().clientWidth;
     const height = svgChart.node().clientHeight;
     const margin = { left: 0, right: 0 };
     const maxAbsScore = 150;            // start small, will expand if needed
-    var imFileName = training ? "player-X" : targetName.replace(/\s+/g, '-');
+    var imFileName = targetName.replace(/\s+/g, '-');
     pickUpWrapper.querySelectorAll('img').forEach(i => {i.src = `./static/${imFileName}.png`});
 
     let fillBar, label, x;
@@ -2292,7 +2298,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
       sessionStorage.setItem("Stage3Round" + phase3Round, JSON.stringify(data));
     }
 
-    renderHistory();
+    setupHistoryGrid();
     setupGrid();
 }
 
@@ -3137,6 +3143,8 @@ function loadScoreDisplay_P3() {
 }
 
 function loadScoreDisplay_P3_WRONG() {
+    document.getElementById('target7_P3_wrong').innerHTML = targetName;
+    document.getElementById('target7_P3_2_wrong').innerHTML = targetName;
     buttonToNewPage('nextButtonDisp_P3_WRONG','TRAIN_P3');
 }
 
