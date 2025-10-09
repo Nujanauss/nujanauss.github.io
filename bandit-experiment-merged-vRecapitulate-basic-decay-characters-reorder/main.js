@@ -920,7 +920,6 @@ function loadInstructions8_P4() {
 
 function loadTryAnother() {
     currentPlayer++;
-    phase1Round++;
     phase3Round++;
     phase4Round++;
     buttonToNewPage('nextButton_Try_Another','INSTRUCTIONS9_P2');
@@ -1389,7 +1388,7 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
     if(topInstruction) {
       topInstruction.innerHTML = "Watch each card being selected";
     }
-    comparisonTargetIm.classList.remove('gone');
+    setTimeout(() => comparisonTargetIm.classList.remove('gone'), 500);
     nextBtn.classList.add('gone');
 
     function makeDecisions() {
