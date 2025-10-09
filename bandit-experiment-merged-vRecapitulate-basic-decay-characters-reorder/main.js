@@ -2358,6 +2358,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
     const historyRows        = 10;
     let   currentTrial       = 0;
     let   score              = 0;
+    let   max                = 0;
     let   scoreSinceLastComp = 0;
     let   belowSubrows       = [];
     let   decision           = Array(numberOfMoves).fill(-1);
@@ -2505,6 +2506,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
       nextBtn.classList.add('gone');
       rowWrapper.innerHTML = '';
       score = 0;
+      max = 0;
       scoreText.textContent = 'Score: 0';
 
       // rows as subrows
@@ -2630,7 +2632,6 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
       const scoreDisp = pseudo.querySelector('[data-type="score"]');
 
       let reward = 0;
-      let max = 0;
 
       square.classList.remove(`reward${x}`);
       square.classList.add(`reward${x}-clicked`);
