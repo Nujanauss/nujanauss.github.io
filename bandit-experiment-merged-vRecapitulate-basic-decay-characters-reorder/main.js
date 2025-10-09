@@ -279,8 +279,8 @@ function showPage(pageId) {
                 break;
             case 'GAME1':
                 loadPhase1(
-                  1,//settings.moves,//
-                  2,//Math.floor(settings.numberOfRounds / 9),//
+                  6,//settings.moves,//
+                  2,//Math.floor(settings.numberOfRounds / 7),//
                   10,
                   settings.comparisonFrequency,
                   false,
@@ -353,8 +353,8 @@ function showPage(pageId) {
             break;
             case 'GAME3':
                 loadPhase3(
-                  1,//settings.moves,//
-                  2,//Math.floor(settings.numberOfRounds / 9),//
+                  6,//settings.moves,//
+                  2,//Math.floor(settings.numberOfRounds / 7),//
                   settings.comparisonFrequency,
                   false,
                   {
@@ -407,8 +407,8 @@ function showPage(pageId) {
             break;
             case 'GAME4':
                 loadPhase4(
-                  3,//settings.moves,//
-                  2,//Math.floor(settings.numberOfRounds / 9),//
+                  6,//settings.moves,//
+                  2,//Math.floor(settings.numberOfRounds / 7),//
                   settings.comparisonFrequency,
                   false,
                   {
@@ -718,7 +718,7 @@ function loadInstructions8() {
 
 function loadInstructions9() {
     document.getElementById('numberTurnsINSTR9').innerHTML = settings.moves;
-    document.getElementById('numberRoundsINSTR9').innerHTML = Math.floor(settings.numberOfRounds / 9);
+    document.getElementById('numberRoundsINSTR9').innerHTML = Math.floor(settings.numberOfRounds / 7);
     buttonToNewPage('backButton9', 'INSTRUCTIONS8');
     buttonToNewPage('nextButton9', 'INSTRUCTIONS10');
 }
@@ -3154,8 +3154,8 @@ function loadScoreDisplay_P2() {
 }
 
 function loadScoreDisplay_P3() {
-    document.getElementById('round-ordinal_P3').innerHTML = ordinals[phase3Round%(Math.floor(settings.numberOfRounds / 9))-1];
-    document.getElementById('round-next_P3').innerHTML = (phase3Round%(Math.floor(settings.numberOfRounds / 9))+1);
+    document.getElementById('round-ordinal_P3').innerHTML = ordinals[phase3Round%(Math.floor(settings.numberOfRounds / 7))-1];
+    document.getElementById('round-next_P3').innerHTML = (phase3Round%(Math.floor(settings.numberOfRounds / 7))+1);
     phase3Round++;
     buttonToNewPage('nextButtonDisp_P3','GAME3');
 }
@@ -3168,8 +3168,8 @@ function loadScoreDisplay_P3_WRONG() {
 
 function loadScoreDisplay_P4() {
     document.getElementById('round-score_P4').innerHTML = scoresSoFar_P4.at(-1);
-    document.getElementById('round-ordinal_P4').innerHTML = ordinals[phase4Round%(Math.floor(settings.numberOfRounds / 9))-1];
-    document.getElementById('round-next_P4').innerHTML = (phase4Round%(Math.floor(settings.numberOfRounds / 9))+1);
+    document.getElementById('round-ordinal_P4').innerHTML = ordinals[phase4Round%(Math.floor(settings.numberOfRounds / 7))-1];
+    document.getElementById('round-next_P4').innerHTML = (phase4Round%(Math.floor(settings.numberOfRounds / 7))+1);
     phase4Round++;
     buttonToNewPage('nextButtonDisp_P4','GAME4');
 }
