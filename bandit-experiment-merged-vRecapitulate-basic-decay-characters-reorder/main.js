@@ -2669,7 +2669,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
         if (currentTrial >= numberOfMoves - 1) {
           if (!training) {
             scoresSoFar_P4.push(score);
-            maxPossibleScoreSoFar_P4.push(maxReward);
+            maxPossibleScoreSoFar_P4.push(max);
           }
           nextBtn.classList.remove('gone');
           nextBtn.classList.remove('hidden');
