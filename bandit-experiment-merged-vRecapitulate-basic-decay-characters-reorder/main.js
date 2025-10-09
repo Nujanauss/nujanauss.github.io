@@ -26,9 +26,11 @@ var check1Entered = 0;
 var check3Entered = 0;
 var check4Entered = 0;
 let scoresSoFar = [];
-let scoresSoFar_P2 = [];
+let maxPossibleScoreSoFar = [];
 let scoresSoFar_P3 = [];
+let maxPossibleScoreSoFar_P3 = [];
 let scoresSoFar_P4 = [];
+let maxPossibleScoreSoFar_P4 = [];
 let selfRating = 0;
 let settings;
 let preferenceAgent;
@@ -277,8 +279,8 @@ function showPage(pageId) {
                 break;
             case 'GAME1':
                 loadPhase1(
-                  6,//settings.moves,
-                  2,//Math.floor(settings.numberOfRounds / 9),
+                  1,//settings.moves,//
+                  2,//Math.floor(settings.numberOfRounds / 9),//
                   10,
                   settings.comparisonFrequency,
                   false,
@@ -351,8 +353,8 @@ function showPage(pageId) {
             break;
             case 'GAME3':
                 loadPhase3(
-                  6,//settings.moves,
-                  2,//Math.floor(settings.numberOfRounds / 9),
+                  1,//settings.moves,//
+                  2,//Math.floor(settings.numberOfRounds / 9),//
                   settings.comparisonFrequency,
                   false,
                   {
@@ -405,8 +407,8 @@ function showPage(pageId) {
             break;
             case 'GAME4':
                 loadPhase4(
-                  6,//settings.moves,
-                  2,//Math.floor(settings.numberOfRounds / 9),
+                  3,//settings.moves,//
+                  2,//Math.floor(settings.numberOfRounds / 9),//
                   settings.comparisonFrequency,
                   false,
                   {
@@ -446,6 +448,9 @@ function showPage(pageId) {
                 break;
             case 'DISP_P4':
                 loadScoreDisplay_P4();
+                break;
+            case 'DISP_P4_WRONG':
+                loadScoreDisplay_P4_WRONG();
                 break;
             case 'INTERMEDIARYCOMP':
                 loadIntermediaryComp();
@@ -678,7 +683,7 @@ function loadInstructions1() {
 
 function loadInstructions2() {
     buttonToNewPage('backButton2', 'INSTRUCTIONS1');
-    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'INSTRUCTIONS3_P3');//
+    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'INSTRUCTIONS2_P4');//
 }
 
 function loadInstructions3() {
@@ -713,7 +718,7 @@ function loadInstructions8() {
 
 function loadInstructions9() {
     document.getElementById('numberTurnsINSTR9').innerHTML = settings.moves;
-    document.getElementById('numberRoundsINSTR9').innerHTML = Math.floor(settings.numberOfRounds / 4);
+    document.getElementById('numberRoundsINSTR9').innerHTML = Math.floor(settings.numberOfRounds / 9);
     buttonToNewPage('backButton9', 'INSTRUCTIONS8');
     buttonToNewPage('nextButton9', 'INSTRUCTIONS10');
 }
@@ -778,6 +783,7 @@ function loadInstructions9_P2() {
 
 
 function loadInstructions2_P3() {
+    document.getElementById('target2_P3').innerHTML = targetName;
     buttonToNewPage('nextButton32','INSTRUCTIONS3_P3');
 }
 
@@ -880,6 +886,8 @@ function loadInstructions3_P4_REPEAT() {
 }
 
 function loadInstructions4_P4() {
+    document.getElementById('target4_P4').innerHTML = targetName;
+    document.getElementById('target4_P4_2').innerHTML = targetName;
     document.getElementById('comparisonFreqINSTR4_P4').innerHTML = settings.comparisonFrequency;
     buttonToNewPage('backButton44','INSTRUCTIONS3_P4');
     buttonToNewPage('nextButton44','TRAIN_P4');
@@ -901,7 +909,7 @@ function loadInstructions6_P4() {
 }
 
 function loadInstructions7_P4() {
-    buttonToNewPage('backButton46','INSTRUCTIONS6_P4');
+    buttonToNewPage('backButton47','INSTRUCTIONS2_P4');
     buttonToNewPage('nextButton47','CHECK_P4');
 }
 
@@ -954,6 +962,7 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
     const cols               = settings.cols;
     let   currentTrial       = 0;
     let   score              = 0;
+    let   max                = 0;
     let   scoreSinceLastComp = 0;
     const historyRows        = historyRowNum;
     let   decision           = Array(numberOfMoves);
@@ -1200,6 +1209,7 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
       const scoreDisp = pseudo.querySelector('[data-type="score"]');
 
       let reward = 0;
+      let maxReward = 0;
       const shouldReward = !(training && !rewarding);
 
       if (shouldReward) {
@@ -1212,6 +1222,7 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
           }
         } else {
           reward = Math.round(settings.chanceToWin[((phase1Round - 1) * settings.moves + currentTrial)][0][x] * 100);
+          maxReward = Math.round(Math.max(...settings.chanceToWin[((phase1Round - 1) * settings.moves + currentTrial)][0]) * 100);
         }
         scoreDisp.classList.remove('gone');
         scoreDisp.classList.remove('animate');
@@ -1219,6 +1230,7 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
         scoreDisp.classList.add('animate');
         scoreDisp.innerHTML = reward;
         score += reward;
+        max += maxReward;
         scoreSinceLastComp += reward;
         scoreText.textContent = `Score: ${score}`;
       } else {
@@ -1242,6 +1254,7 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
         if (currentTrial >= numberOfMoves - 1) {
           if (!training) {
             scoresSoFar.push(score);
+            maxPossibleScoreSoFar.push(max);
           }
           nextBtn.classList.remove('gone');
           nextBtn.classList.remove('hidden');
@@ -1605,9 +1618,6 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
           correct = (x == actuallyChosen);
           previousRoundCorrect_P2 = correct;
         }
-        if (!training) {
-          scoresSoFar_P2.push(correct);
-        }
         if (correct) {
           square.classList.add('greenish');
           tick.classList.remove('gone');
@@ -1742,7 +1752,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
     var imFileName = targetName.replace(/\s+/g, '-');
     comparisonTargetIm.src = `./static/${imFileName}-desc.png`;
-    comparisonTargetIm.classList.remove('gone');
+    setTimeout(() => comparisonTargetIm.classList.remove('gone'), 500);
     if (topInstruction) {
       topInstruction.innerHTML = 'Click on the cards and guess what decisions the player made';
     }
@@ -2265,7 +2275,8 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
             sq.style.pointerEvents = 'none';
         });
         if (!training) {
-          scoresSoFar_P3.push(score);
+          scoresSoFar_P3.push(correctCount);
+          maxPossibleScoreSoFar_P3.push(settings.moves*2);
         }
         nextBtn.classList.remove('gone');
         nextBtn.classList.remove('hidden');
@@ -2361,20 +2372,18 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
     // — Compute sizes and reset —
     const size   = Math.min(computeSmallSize(1, rowWrapper), 150);
     const smallSize = Math.min(computeSmallSize(historyRows, historyRowWrapper), 150);
-    if (!training) {
-      var imFileName = targetName.replace(/\s+/g, '-');
-      comparisonTargetIm.src = `./static/${imFileName}-desc.png`;
-      comparisonTargetIm.classList.remove('gone');
-    }
+    var imFileName = targetName.replace(/\s+/g, '-');
+    comparisonTargetIm.src = `./static/${imFileName}-desc.png`;
 
     // — initialize the chart —
-    otherName.innerHTML = training ? "Player X" : targetName;
-    const otherNameLabel = training ? "Player X" : targetName;
+    comparisonTargetIm.classList.add('gone');
+    otherName.innerHTML = targetName;
+    const otherNameLabel = targetName;
     const width = svgChart.node().clientWidth;
     const height = svgChart.node().clientHeight;
     const margin = { left: 0, right: 0 };
     const maxAbsScore = 150;            // start small, will expand if needed
-    var imFileName = training ? "Player-X" : targetName.replace(/\s+/g, '-');
+    var imFileName = targetName.replace(/\s+/g, '-');
 
     let fillBar, label, x;
     if (!svgChart.node().chartInitialized) {
@@ -2573,7 +2582,8 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
       // Block every comparisonFrequency trials
       if (trial == 0 || trial % comparisonFrequency !== 0) return; // Only run on trials 2, 4, 6, ...
 
-      compareInfoBox.classList.remove("gone");
+      compareInfoBox.classList.remove('gone');
+      comparisonTargetIm.classList.remove('gone');
       let otherScoreSinceLastComp = 0;
 
       const round = phase1Round + phase3Round + phase4Round;
@@ -2599,7 +2609,8 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
       setTimeout(() => {
         readTxt.classList.remove('hidden');
         compareInfoBox.addEventListener('click', function() {
-          compareInfoBox.classList.add("gone");
+          compareInfoBox.classList.add('gone');
+          comparisonTargetIm.classList.add('gone');
           overlay.classList.add('gone');
         });
       }, 1000);
@@ -2617,13 +2628,16 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
       const scoreDisp = pseudo.querySelector('[data-type="score"]');
 
       let reward = 0;
+      let max = 0;
 
       square.classList.remove(`reward${x}`);
       square.classList.add(`reward${x}-clicked`);
       reward = Math.round(settings.chanceToWin[((phase1Round + phase3Round + phase4Round - 1) * settings.moves + currentTrial)][0][x] * 100);
+      let maxReward = Math.round(Math.max(...settings.chanceToWin[((phase1Round + phase3Round + phase4Round - 1) * settings.moves + currentTrial)][0]) * 100);
+
       if (training) {
         movesLeft = numberOfMoves - currentTrial;
-        reward = movesLeft !== 1 ? movesLeft * 10 : (previousDecision.every(item => item.x !== x) ? 90 : 10);
+        reward = movesLeft !== 1 ? movesLeft * 10 : (previousDecision.includes(x) ? 10 : 80);
         previousDecision[currentTrial] = decision[currentTrial];
       }
       scoreDisp.classList.remove('gone');
@@ -2632,6 +2646,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
       scoreDisp.classList.add('animate');
       scoreDisp.innerHTML = reward;
       score += reward;
+      max += maxReward;
       scoreSinceLastComp += reward;
       scoreText.textContent = `Score: ${score}`;
       rewardReceived[currentTrial] = reward;
@@ -2652,16 +2667,19 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
         if (currentTrial >= numberOfMoves - 1) {
           if (!training) {
             scoresSoFar_P4.push(score);
+            maxPossibleScoreSoFar_P4.push(max);
           }
           nextBtn.classList.remove('gone');
           nextBtn.classList.remove('hidden');
           saveData(decision, rewardReceived, comparisonValue, timeStamps);
           Array.from(rowWrapper.querySelector(`.subrow`).children).forEach(sq => {sq.classList.add('grey');});
+          let targetPage = 'DISP_P4';
           if ((phase4Round % numberOfRounds) === 0) {
-            buttonToNewPage(buttonId, nextPageId);
-          } else {
-            buttonToNewPage(buttonId, 'DISP_P4');
+              targetPage = (training && reward < 70)
+                ? 'DISP_P4_WRONG'
+                : nextPageId;
           }
+          buttonToNewPage(buttonId, targetPage);
         } else {
           currentTrial++;
           blockScreenForComparison(currentTrial);
@@ -3156,6 +3174,13 @@ function loadScoreDisplay_P4() {
     buttonToNewPage('nextButtonDisp_P4','GAME4');
 }
 
+function loadScoreDisplay_P4_WRONG() {
+    document.getElementById('target4_P4_wrong').innerHTML = targetName;
+    document.getElementById('target4_P4_2_wrong').innerHTML = targetName;
+    document.getElementById('target4_P4_3_wrong').innerHTML = targetName;
+    buttonToNewPage('nextButtonDisp_P4_WRONG','TRAIN_P4');
+}
+
 function loadSelectObservationTarget() {
     const nextButton = document.getElementById('selectTargetNextButton');
     nextButton.addEventListener('click', generateCopmarisonTarget);
@@ -3392,25 +3417,19 @@ function loadRate(otherRating, ids) {
 }
 
 function loadThanks() {
-    const phase1Round = getUrlParameter('round');
-    const finalRound = getUrlParameter('rounds');
+    let chosenStage = Math.floor(Math.random() * 3) + 1; // stage 1, 2 or 3
+    let chosenScores = [scoresSoFar, scoresSoFar_P3, scoresSoFar_P4][chosenStage-1];
+    let chosenMaxes = [maxPossibleScoreSoFar, maxPossibleScoreSoFar_P3, maxPossibleScoreSoFar_P4][chosenStage-1];
 
-    /*const avgScore = (scoresSum / scoresSoFar.length).toFixed(1);*/
-    const maxScore = Math.max(...scoresSoFar);
-    var playerRowMax = document.getElementById('player-score-max');
-    if (playerRowMax) {
-      playerRowMax.innerHTML = maxScore;
-    }
+    let randomRound = Math.floor(Math.random() * chosenScores.length);
+    let chosenScore = chosenScores[randomRound];
+    let chosenMax = chosenMaxes[randomRound];
 
-    const scoresSum = scoresSoFar.reduce((total, score) => total + score, 0);
-    var playerRowSum = document.getElementById('player-score-sum');
-    if (playerRowSum) {
-      playerRowSum.innerHTML = scoresSum;
-    }
+    let percentageCorrect = Math.round((chosenScore / chosenMax) * 100);
+    document.getElementById('player-score-max').innerHTML = percentageCorrect + '%';
 
-    let maximumPossible = sumHighestValues(settings.chanceToWin) * 100;
-    const MAX_BONUS = 2;
-    let bonus = MAX_BONUS * (scoresSum / maximumPossible);
+    const MAX_BONUS = 5;
+    let bonus = MAX_BONUS * (chosenScore / chosenMax);
     document.getElementById('bonus-calculation').innerHTML = '£' + bonus.toFixed(2);
 
     var genderSelect = document.getElementById('gender');
@@ -3446,15 +3465,6 @@ function loadThanks() {
 
       showPage('FINAL');
     });
-
-    function sumHighestValues(chanceToWin) {
-      let sum = 0;
-      for (let i = 0; i < chanceToWin.length; i++) {
-        let highestValue = Math.max(...chanceToWin[i]);
-        sum += highestValue;
-      }
-      return sum;
-    };
 }
 
 function loadFinal() {
