@@ -2669,7 +2669,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
         if (currentTrial >= numberOfMoves - 1) {
           if (!training) {
             scoresSoFar_P4.push(score);
-            maxPossibleScoreSoFar_P4.push(max);
+            maxPossibleScoreSoFar_P4.push(maxReward);
           }
           nextBtn.classList.remove('gone');
           nextBtn.classList.remove('hidden');
@@ -3427,11 +3427,11 @@ function loadThanks() {
     let chosenScore = chosenScores[randomRound];
     let chosenMax = chosenMaxes[randomRound];
 
-    let percentageCorrect = Math.round((chosenScore / chosenMax) * 100);
+    let percentageCorrect = Math.min(100, Math.round((chosenScore / chosenMax) * 100));
     document.getElementById('player-score-max').innerHTML = percentageCorrect + '%';
 
     const MAX_BONUS = 5;
-    let bonus = MAX_BONUS * (chosenScore / chosenMax);
+    let bonus = Math.min(MAX_BONUS * (chosenScore / chosenMax), MAX_BONUS);
     document.getElementById('bonus-calculation').innerHTML = '£' + bonus.toFixed(2);
 
     var genderSelect = document.getElementById('gender');
