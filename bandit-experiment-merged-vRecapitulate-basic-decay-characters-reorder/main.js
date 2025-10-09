@@ -1986,6 +1986,9 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
     function blockScreenForComparison(trial) {
       dropCounter = 0;
       compareInfoBox.classList.remove('gone');
+      if (otherName) {
+        otherName.innerHTML = targetName;
+      }
       let otherScoreSinceLastComp = 0;
 
       const round = phase1Round + phase3Round + (phase4Round - currentPlayer);
