@@ -153,7 +153,7 @@
               <div class="progress-bar" id="page3"></div>
             </div>
             <div class="index-instructions">Let's begin with some training.</div>
-            <div class="index-instructions width-100 blue-coloured">You will see three cards. Click on the central card.</div>
+            <div class="index-instructions width-100 blue-coloured">You will see three cards. Click on the left card.</div>
             <div class="index-instructions width-100">When you click on the card, it will turn white.</div>
             <div class="index-instructions">Click Train to continue.</div>
             <div class="button-group">
@@ -167,7 +167,7 @@
     <!-- TRAIN -->
     <div id="TRAIN" class="w">
         <div class="wrapper">
-            <div class="watermark">Training<br><span id="top-instruction-t1">Click on the central card</span></div>
+            <div class="watermark">Training<br><span id="top-instruction-t1">Click on the left card</span></div>
             <div class="thirds-container">
               <!-- Left column: Info box -->
               <aside class="info-left"></aside>
@@ -199,9 +199,9 @@
               <div class="progress-bar" id="page4"></div>
             </div>
             <div class="index-instructions">Great! Now, clicking on a card will always give you some points.</div>
-            <div class="index-instructions width-70">Each card will give you a different number of points.</div>
+            <div class="index-instructions width-70">Each card will generally give you a different number of points.</div>
             <div class="index-instructions width-70 blue-coloured">In general, cards give fewer and fewer points every turn, whether you click on them or not.</div>
-            <div class="index-instructions width-70">However, cards will spike to a new high at random times. The cards may spike at different times.</div>
+            <div class="index-instructions width-70">However, cards will reset to a new high at random times. The cards may reset at different times.</div>
             <div class="button-group">
                 <button id="nextButton4" class="move-screen-button button enabled">Next</button>
             </div>
@@ -217,7 +217,7 @@
               <div class="progress-bar" id="page5"></div>
             </div>
             <div class="index-instructions width-70">Let's have another training round.</div>
-            <div class="index-instructions width-100">Click on the central card three times and watch its points decrease.</div>
+            <div class="index-instructions width-100">Click on the central card four times and watch its points decrease.</div>
             <div class="index-instructions">Click Train to continue.</div>
             <div class="button-group">
                 <button id="backButton5" class="move-screen-button button enabled">Back</button>
@@ -230,7 +230,7 @@
     <!-- TRAIN2 -->
     <div id="TRAIN2" class="w">
         <div class="wrapper">
-            <div class="watermark">Training<br><span id="top-instruction-t2">Click on the central card three times</span></div>
+            <div class="watermark">Training<br><span id="top-instruction-t2">Click on the central card four times</span></div>
             <aside class="history">
               <div id="historyRowWrapper-t2" class="grid-wrapper row-container"></div>
             </aside> 
@@ -279,7 +279,7 @@
               <div class="progress-bar" id="page7"></div>
             </div>
             <div class="index-instructions">Let's have another training round to see what that looks like.</div>
-            <div class="index-instructions width-100">Click on the central card five times.</div>
+            <div class="index-instructions width-100">Click on the right card six times.</div>
             <div class="index-instructions width-60">Your history of card selections will be on the left, and your total score on the right.</div>
             <div class="index-instructions width-60">Every <span id="comparisonFreqINSTR7">2</span> turns we will show you how many points you scored in a central box.</div>
             <div class="index-instructions width-60 blue-coloured">Click on this central box to make it go away.</div>
@@ -295,13 +295,13 @@
     <!-- TRAIN3 -->
     <div id="TRAIN3" class="w">
         <div class="wrapper">
-            <div class="watermark">Training<br><span id="top-instruction-t3">Click on the central card five times</span></div>
+            <div class="watermark">Training<br><span id="top-instruction-t3">Click on the right card six times</span></div>
             <div id="overlay-t3" class="gone overlay"></div>
             <div class="drag-drop-group">
               <div class="vertical-thirds">
                 <div id="soo-information-t3" class="soo-information">
                   <div class="soo-box-text">
-                    <p>In the last <span id="comparisonFreq-t3">2 trials</span>, you scored:</p>
+                    <p>In the last <span id="comparisonFreq-t3">2 trials</span>, you found<span id="points-t3"> this many points</span>:</p>
                     <div class="score-chart-container">
                       <svg class="score-chart margin-horizontal-50" id="score-chart-t3"></svg>
                     </div>
@@ -341,7 +341,7 @@
               <div class="progress-bar" id="page8"></div>
             </div>
             <div class="index-instructions">Great! That is exactly how this stage looks.</div>
-            <div class="index-instructions blue-coloured width-60">IMPORTANT: The chance that a card will spike to a new high score is fixed for all cards.</div>
+            <div class="index-instructions blue-coloured width-60">IMPORTANT: The chance that a card will reset to a new high score is fixed for all cards.</div>
             <div class="index-instructions">Any points you found during training are gone, and the cards have reset.</div>
             <div class="button-group">
                 <button id="nextButton8" class="move-screen-button button enabled">Next</button>
@@ -360,7 +360,6 @@
             </div>
             <div class="index-instructions">You currently have a bonus of £0.</div>
             <div class="index-instructions">The more points you get, the higher your bonus will become.</div>
-            <div class="index-instructions blue-coloured">There will now be <span id="numberRoundsINSTR9">6</span> rounds of <span id="numberTurnsINSTR9">12</span> turns each.</div>
             <div class="button-group">
                 <button id="backButton9" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton9" class="move-screen-button button enabled">Next</button>
@@ -380,7 +379,7 @@
             <div class="index-instructions blue-coloured">You must answer the following questions correctly to proceed.</div>
             <div class="index-instructions">If you are unsure about anything, click Back to go back to the beginning.</div>
             <div class="button-group">
-                <button id="backButton10" class="move-screen-button button enabled">Back</button>
+                <button id="backButton10" class="move-screen-button button enabled">Back to beginning</button>
                 <button id="nextButton10" class="move-screen-button button enabled">Proceed to test</button>
             </div>
           </aside>
@@ -407,7 +406,7 @@
                   </div>
               </div>
               <div class="check">
-                  <div id="3" class="question">Each card may spike to a new high at <span class="blue-coloured">any time</span>.</div>
+                  <div id="3" class="question">Each card may reset to a new high at <span class="blue-coloured">any time</span>.</div>
                   <div class="answers">
                       <label>True <input type="radio" name="question-3" value="true"></label>
                       <label> False <input type="radio" name="question-3" value="false"></label>
@@ -418,13 +417,6 @@
                   <div class="answers">
                       <label>True <input type="radio" name="question-4" value="true"></label>
                       <label> False <input type="radio" name="question-4" value="false"></label>
-                  </div>
-              </div>
-              <div class="check">
-                  <div id="5" class="question">Each round consists of exactly <span id="checkTurns" class="blue-coloured">12</span> turns.</div>
-                  <div class="answers">
-                      <label>True <input type="radio" name="question-5" value="true"></label>
-                      <label> False <input type="radio" name="question-5" value="false"></label>
                   </div>
               </div>
             </aside>
@@ -442,6 +434,7 @@
           <aside class="inter">
             <div class="index-instructions">Great! We are ready to play.</div>
             <div class="index-instructions blue-coloured width-60">Training is over. Everything has been reset. From now on, the rounds matter.</div>
+            <div class="index-instructions blue-coloured">There will now be <span id="numberRoundsINSTR11">6</span> rounds of <span id="numberTurnsINSTR11">12</span> turns each.</div>
             <div class="index-instructions width-60">When you are ready, click Play to start. Once this stage has ended, we will ask you to rate your performance.</div>
             <div class="button-group">
                 <button id="nextButton11" class="move-screen-button button enabled">Play</button>
@@ -458,7 +451,7 @@
               <div class="vertical-thirds">
                 <div id="soo-information" class="soo-information">
                   <div class="soo-box-text">
-                    <p>In the last <span id="comparisonFreq">2 trials</span>, you scored:</p>
+                    <p>In the last <span id="comparisonFreq">2 trials</span>, you found<span id="points"> this many points</span>:</p>
                     <div class="score-chart-container">
                       <svg class="score-chart margin-horizontal-50" id="score-chart"></svg>
                     </div>
@@ -531,11 +524,11 @@
                 <div class="index-instructions font-15">Click and drag the slider to rate</div>
                 <div class="rate-slider-container">
                     <span class="slider-label left-label">Every selection <span class="blue-coloured">I</span> made was the worst possible</span>
-                    <div class="range-wrap">
+                    <div id="track-self" class="track-clickable range-wrap">
                       <div id="notch-25" class="notch"></div>
                       <div id="notch-50" class="notch"></div>
                       <div id="notch-75" class="notch"></div>
-                      <div class="track track-clickable" id="track-self"></div>
+                      <div class="track" id="line-self"></div>
                       <div class="thumb hidden" id="thumb-you"></div>
                       <output id="rate-label-self" class="rating-label above-label hidden">You</output>
                     </div>
@@ -732,7 +725,7 @@
                   <li class="condensed-instr-li">The points you receive from the cards do not count towards your bonus.</li>
                   <li class="condensed-instr-li">Your bonus is determined by the accuracy of your inferences.</li>
                   <li class="condensed-instr-li">Cards give fewer points every turn, even when you don't click on them.</li>
-                  <li class="condensed-instr-li">Cards spike with a fixed, shared probability.</li>
+                  <li class="condensed-instr-li">Cards reset with a fixed, shared probability.</li>
                 </ul>
               </div>
               <div class="button-group">
@@ -769,7 +762,7 @@
               </div>
               <div class="index-instructions">It will not always be possible to infer exactly which cards they selected. In these cases, make the best inference you can.</div>
               <div class="index-instructions width-80">To help you make your inferences, you can click on <span id="comparisonFreqINSTR4_P3">12</span> of the cards before you make your inferences.</div>
-              <div class="index-instructions width-70 blue-coloured">IMPORTANT: You will play with the same cards as <span id="target4_P3">Player A</span> in this round.</div>
+              <div class="index-instructions width-70 blue-coloured">IMPORTANT: You will always play with the same cards as <span id="target4_P3">Player A</span>.</div>
               <div class="button-group">
                 <button id="backButton34" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton34" class="move-screen-button button enabled">Next</button>
@@ -824,7 +817,7 @@
           <div class="vertical-thirds">
             <div id="soo-information_P3-t1" class="soo-information_P3 info-box-disabled width-25">
               <div class="soo-box-text">
-                <p>In the last <span id="comparisonFreq_P3-t1">2 trials</span>, <span id="target-name_P3-t1">Player A</span> scored <span class="blue-coloured" id="more-or-less_P3-t1">much more</span> you:</p>
+                <p>In the last <span id="comparisonFreq_P3-t1">2 trials</span>, <span id="target-name_P3-t1">Player A</span> found <span id="more-or-less_P3-t1">1 point more than</span> you:</p>
                 <div class="score-chart-container">
                   <svg class="score-chart" id="score-chart_P3-t1"></svg>
                 </div>
@@ -892,9 +885,10 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page7"></div>
               </div>
-              <div class="index-instructions">Great! That's exactly how this stage looks.</div>
+              <div class="index-instructions">Great! That's right.</div>
+              <div class="index-instructions width-60">Since <span id="target7_P3">Player A</span> received the same number of points as you, the most likely cards <span id="target7_P3_2">Player A</span> selected were the same as yours.</div>
               <div class="index-instructions width-60 blue-coloured">Your bonus at this stage is affected by the accuracy of your inferences.</div>
-              <div class="index-instructions width-60">The better you infer how <span id="target7_P3">Player A</span> acted, the higher your bonus.</div>
+              <div class="index-instructions width-60">The better you infer how <span id="target7_P3_3">Player A</span> acted, the higher your bonus.</div>
              <div class="button-group">
                 <button id="nextButton37" class="move-screen-button button enabled">Next</button>
               </div>
@@ -910,7 +904,7 @@
                 <div class="progress-bar" id="page8"></div>
               </div>
                <div class="index-instructions width-60">As always:</div>
-              <div class="index-instructions width-50">Cards give fewer and fewer points every turn, whether you click on them or not. However, there is a fixed, shared chance that a card will spike.</div>
+              <div class="index-instructions width-50">Cards give fewer and fewer points every turn, whether you click on them or not. However, there is a fixed, shared chance that a card will reset.</div>
              <div class="button-group">
                 <button id="backButton38" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton38" class="move-screen-button button enabled">Next</button>
@@ -947,7 +941,7 @@
               <div class="index-instructions blue-coloured">You must answer the following questions correctly to proceed.</div>
               <div class="index-instructions">If you are unsure about anything, click Back to go back to the beginning.</div>
               <div class="button-group">
-                  <button id="backButton310" class="move-screen-button button enabled">Back</button>
+                  <button id="backButton310" class="move-screen-button button enabled">Back to beginning of stage</button>
                   <button id="nextButton310" class="move-screen-button button enabled">Proceed to test</button>
               </div>
             </aside>
@@ -1027,7 +1021,7 @@
           <div class="vertical-thirds">
             <div id="soo-information_P3" class="soo-information_P3 info-box-disabled width-25">
               <div class="soo-box-text">
-                <p>In the last <span id="comparisonFreq_P3">2 trials</span>, <span id="target-name_P3">Player X</span> scored <span class="blue-coloured" id="more-or-less_P3">much more</span> you:</p>
+                <p>In the last <span id="comparisonFreq_P3">2 trials</span>, <span id="target-name_P3">Player X</span> found <span id="more-or-less_P3">1 point more than</span> you:</p>
                 <div class="score-chart-container">
                   <svg class="score-chart" id="score-chart_P3"></svg>
                 </div>
@@ -1112,11 +1106,11 @@
                 <div class="index-instructions font-15">Click and drag the slider to rate</div>
                 <div class="rate-slider-container">
                     <span id= "left-label" class="slider-label left-label">Every selection  <span class="blue-coloured">they</span> made was the worst possible</span>
-                    <div class="range-wrap">
+                    <div id="track-other" class="track-clickable range-wrap">
                       <div id="notch-25" class="notch"></div>
                       <div id="notch-50" class="notch"></div>
                       <div id="notch-75" class="notch"></div>
-                      <div class="track" id="track-other"></div>
+                      <div class="track" id="line-other"></div>
                       <div id="vertical-line" class="vertical-line"></div>
                       <div class="thumb" id="thumb-other"></div>
                       <output id="rate-label-other" class="rating-label above-label">Other player</output>
@@ -1209,7 +1203,7 @@
           <div class="vertical-thirds">
             <div id="soo-information_P4-t1" class="soo-information width-25">
               <div class="soo-box-text">
-                <p>In the last <span id="comparisonFreq_P4-t1">2 trials</span>, <span id="target-name_P4-t1">Player X</span> scored <span class="blue-coloured" id="more-or-less_P4-t1">much more than</span> you:</p>
+                <p>In the last <span id="comparisonFreq_P4-t1">2 trials</span>, <span id="target-name_P4-t1">Player X</span> found <span id="more-or-less_P4-t1">1 point more than</span> you:</p>
                 <div class="score-chart-container">
                   <svg class="score-chart" id="score-chart_P4-t1"></svg>
                 </div>
@@ -1304,7 +1298,7 @@
               <div class="index-instructions blue-coloured">You must answer the following questions correctly to proceed.</div>
               <div class="index-instructions">If you are unsure about anything, click Back to go back to the beginning.</div>
               <div class="button-group">
-                  <button id="backButton47" class="move-screen-button button enabled">Back</button>
+                  <button id="backButton47" class="move-screen-button button enabled">Back to beginning of stage</button>
                   <button id="nextButton47" class="move-screen-button button enabled">Proceed to test</button>
               </div>
             </aside>
@@ -1325,7 +1319,7 @@
                   </div>
               </div>
               <div class="check">
-                  <div id="2_P4" class="question">All the cards will spike at the <span class="blue-coloured">same</span> time.</div>
+                  <div id="2_P4" class="question">All the cards will reset at the <span class="blue-coloured">same</span> time.</div>
                   <div class="answers">
                       <label>True <input type="radio" name="question-2" value="true"></label>
                       <label> False <input type="radio" name="question-2" value="false"></label>
@@ -1368,7 +1362,8 @@
               <div class="progress-bar" id="page10"></div>
             </div>
             <div class="index-instructions">Great! We are ready to play.</div>
-            <div class="index-instructions blue-coloured width-60">Training is over. Everything has been reset. From now on, the rounds matter.</div>
+            <div class="index-instructions width-60">Training is over. Everything has been reset. From now on, the rounds matter.</div>
+            <div class="index-instructions blue-coloured width-60">IMPORTANT: In this stage, your bonus is determined by your score only.</div>
             <div class="index-instructions">When you are ready, click Play to begin.</div>
             <div class="button-group">
                 <button id="nextButton48" class="move-screen-button button enabled">Play</button>
@@ -1385,7 +1380,7 @@
           <div class="vertical-thirds">
             <div id="soo-information_P4" class="soo-information width-25">
               <div class="soo-box-text">
-                <p>In the last <span id="comparisonFreq_P4">2 trials</span>, <span id="target-name_P4">Player X</span> scored <span class="blue-coloured" id="more-or-less_P4">much more than</span> you:</p>
+                <p>In the last <span id="comparisonFreq_P4">2 trials</span>, <span id="target-name_P4">Player X</span> found <span id="more-or-less_P4">1 point more than</span> you:</p>
                 <div class="score-chart-container">
                   <svg class="score-chart" id="score-chart_P4"></svg>
                 </div>
@@ -1501,7 +1496,7 @@
         <div class="thanks-wrapper">
             <aside class="inter">
               <div id="thanks-title" class="padding-50 font-30">You're finished!</div>
-              <div class="index-instructions">Your score from a random round was: <span id="player-score-max">5</span> of what it could have been. This translates to a bonus of <span id="bonus-calculation">£0</span>.</div>
+              <div class="index-instructions">Well done! In a random round, you performed well enough to obtain a bonus of <span id="player-score-max">£5</span>.</span></div>
               <div class="index-instructions">Please enter your information below.</div><div class="index-instructions">If you have any comments about the task, the other players, or about how you made your decisions, these would be very welcome. Please do not provide any identifiable information in your comments.</div><div class="index-instructions">Click Final payment to proceed to the final payment page.</div>
               <div id="final-user-input" class="final-user-input">
                 <form class="demos">

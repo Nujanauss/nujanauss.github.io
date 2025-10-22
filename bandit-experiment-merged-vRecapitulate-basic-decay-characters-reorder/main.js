@@ -43,11 +43,11 @@ let training3Over = false;
 let trainingP21Over = false;
 
 let targetTable;
-var targetName = 'Player A';
+var targetName = 'Random Player';
 const characteristics = [
     'Selects cards randomly',
     'Mostly selects the left-most card',
-    'Selects cards most likely to score highly'
+    'Almost always selects the best card'
 ];
 
 
@@ -210,7 +210,7 @@ function showPage(pageId) {
                   true,
                   false,
                   {
-                    topInstruction:   'top-instruction-t1',
+                    topInstruction:    'top-instruction-t1',
                     buttn:             'nextButton-t1',
                     nextPage:          'INSTRUCTIONS4',
                     rowWrapper:        'rowWrapper-t1',
@@ -222,14 +222,14 @@ function showPage(pageId) {
                 break;
             case 'TRAIN2':
                 loadPhase1(
-                  3,
+                  4,
                   1,
                   10,
                   settings.comparisonFrequency,
                   true,
                   true,
                   {
-                    topInstruction:   'top-instruction-t2',
+                    topInstruction:    'top-instruction-t2',
                     buttn:             'nextButton-t2',
                     nextPage:          'INSTRUCTIONS6',
                     rowWrapper:        'rowWrapper-t2',
@@ -241,14 +241,14 @@ function showPage(pageId) {
                 break;
             case 'TRAIN3':
                 loadPhase1(
-                  5,
+                  6,
                   1,
                   10,
                   settings.comparisonFrequency,
                   true,
                   true,
                   {
-                    topInstruction:   'top-instruction-t3',
+                    topInstruction:    'top-instruction-t3',
                     buttn:             'nextButton-t3',
                     nextPage:          'INSTRUCTIONS8',
                     rowWrapper:        'rowWrapper-t3',
@@ -258,6 +258,7 @@ function showPage(pageId) {
                     overlay:           'overlay-t3',
                     compareInfoBox:    'soo-information-t3',
                     lastXTrials:       'comparisonFreq-t3',
+                    pointsFound:       'points-t3',
                     svgChart:          'score-chart-t3',
                     scoreInfoBox:      'infoBox-t3',
                     scoreText:         'score-t3',
@@ -279,7 +280,7 @@ function showPage(pageId) {
                 break;
             case 'GAME1':
                 loadPhase1(
-                  6,//settings.moves,//
+                  11,//settings.moves,//
                   2,//Math.floor(settings.numberOfRounds / 7),//
                   10,
                   settings.comparisonFrequency,
@@ -295,6 +296,7 @@ function showPage(pageId) {
                     overlay:           'overlay',
                     compareInfoBox:    'soo-information',
                     lastXTrials:       'comparisonFreq',
+                    pointsFound:       'points',
                     svgChart:          'score-chart',
                     scoreInfoBox:      'infoBox',
                     scoreText:         'score',
@@ -461,6 +463,7 @@ function showPage(pageId) {
                   nextPage:     'INSTRUCTIONS2_P2',
                   movableThumb: 'thumb-you',
                   slider:       'track-self',
+                  line:         'line-self',
                   rateLabel:    'rate-label-self'
                   }
                 );
@@ -472,6 +475,7 @@ function showPage(pageId) {
                   nextPage:     'INSTRUCTIONS2_P4',
                   movableThumb: 'thumb-other',
                   slider:       'track-other',
+                  line:         'line-other',
                   rateLabel:    'rate-label-other'
                   }
                 );
@@ -510,7 +514,7 @@ async function loadIndex() {
     const settingsJSON = await loadGameSettings(files);
     sessionStorage.setItem('gameSettings', JSON.stringify(settingsJSON));
 
-    const rationalJSON = await loadAgent(files, 'rational');
+    const rationalJSON = await loadAgent(files, 'oracle');
     sessionStorage.setItem('rationalAgent', JSON.stringify(rationalJSON));
     const randomJSON = await loadAgent(files, 'random');
     sessionStorage.setItem('randomAgent', JSON.stringify(randomJSON));
@@ -683,7 +687,7 @@ function loadInstructions1() {
 
 function loadInstructions2() {
     buttonToNewPage('backButton2', 'INSTRUCTIONS1');
-    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'INSTRUCTIONS2_P4');//
+    buttonToNewPage('nextButton2', 'INSTRUCTIONS3');//buttonToNewPage('nextButton2', 'RATESELF');//
 }
 
 function loadInstructions3() {
@@ -717,8 +721,6 @@ function loadInstructions8() {
 }
 
 function loadInstructions9() {
-    document.getElementById('numberTurnsINSTR9').innerHTML = settings.moves;
-    document.getElementById('numberRoundsINSTR9').innerHTML = Math.floor(settings.numberOfRounds / 7);
     buttonToNewPage('backButton9', 'INSTRUCTIONS8');
     buttonToNewPage('nextButton9', 'INSTRUCTIONS10');
 }
@@ -729,6 +731,8 @@ function loadInstructions10() {
 }
 
 function loadInstructions11() {
+    document.getElementById('numberTurnsINSTR11').innerHTML = settings.moves;
+    document.getElementById('numberRoundsINSTR11').innerHTML = Math.floor(settings.numberOfRounds / 7);
     buttonToNewPage('nextButton11', 'GAME1');
 }
 
@@ -756,7 +760,7 @@ function loadInstructions3_P2() {
 
 function loadInstructions4_P2() {
     document.getElementById('target4_P2').innerHTML = targetName;
-    character = targetName.includes('A') ? characteristics[0] : targetName.includes('B') ? characteristics[1] : characteristics[2];
+    character = targetName.includes('Random') ? characteristics[0] : targetName.includes('Lefty') ? characteristics[1] : characteristics[2];
     document.getElementById('player_description').innerHTML = character;
     buttonToNewPage('backButton24', 'INSTRUCTIONS3_P2');
     buttonToNewPage('nextButton24', 'GAME2');
@@ -830,6 +834,8 @@ function loadInstructions6_P3() {
 
 function loadInstructions7_P3() {
     document.getElementById('target7_P3').innerHTML = targetName;
+    document.getElementById('target7_P3_2').innerHTML = targetName;
+    document.getElementById('target7_P3_3').innerHTML = targetName;
     buttonToNewPage('nextButton37','INSTRUCTIONS8_P3');
 }
 
@@ -938,6 +944,7 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
       overlay:            overlayId,
       compareInfoBox:     compareInfoBoxId,
       lastXTrials:        lastXTrialsId,
+      pointsFound:        pointsFoundId,
       svgChart:           svgChartId,
       scoreInfoBox:       scoreInfoBoxId,
       scoreText:          scoreTextId,
@@ -952,6 +959,7 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
     const overlay            = overlayId        ? document.getElementById(overlayId)        : null;
     const compareInfoBox     = compareInfoBoxId ? document.getElementById(compareInfoBoxId) : null;
     const lastXTrials        = lastXTrialsId    ? document.getElementById(lastXTrialsId)    : null;
+    const pointsFound        = pointsFoundId    ? document.getElementById(pointsFoundId)    : null;
     const svgChart           = svgChartId       ? d3.select('#' + svgChartId)               : null;
     const scoreInfoBox       = document.getElementById(scoreInfoBoxId);
     const scoreText          = document.getElementById(scoreTextId);
@@ -972,7 +980,7 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
     let   newX = 0, newY = 0, startX = 0, startY = 0, dropCounter = 0;
     let   historyData        = [];
 
-    let fillBar, label, x;
+    let fillBar, barLabel, x;
     let width = 0;
     let height = 0;
     if (svgChart) {
@@ -987,7 +995,7 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
           .attr("class", "bar-bg")
           .attr("x", 0)
           .attr("y", height / 4)
-          .attr("width", width)
+          .attr("width", "100%")
           .attr("height", height / 2);  // Background bar
         svgChart.append("line")
           .attr("class", "zero-line")
@@ -1007,7 +1015,7 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
           .attr("y", height / 4)
           .attr("width", 0)
           .attr("height", height / 2);  // Fill bar
-        svgChart.node().label = svgChart.append("text")
+        svgChart.node().barLabel = svgChart.append("text")
           .attr("class", "bar-label")
           .attr("y", height / 2)
           .attr("x", x(0))
@@ -1015,13 +1023,13 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
           .attr("font-size", "14px")
           .text("You");                 // Bar label ("You")
         svgChart.append("text")
-          .attr("x", x(maxAbsScore))
+          .attr("x", "100%")
           .attr("y", height + 15)
           .attr("font-size", "14px")
           .attr("text-anchor", "middle")
           .text(maxAbsScore);            // Max label
         svgChart.append("text")
-          .attr("x", x(maxAbsScore / 2))
+          .attr("x", "50%")
           .attr("y", height + 15)
           .attr("font-size", "14px")
           .attr("text-anchor", "middle")
@@ -1030,7 +1038,7 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
       }
       x = svgChart.node().xScale;
       fillBar = svgChart.node().fillBar;
-      label = svgChart.node().label;
+      barLabel = svgChart.node().barLabel;
     }
     // — Compute sizes —
     const size   = Math.min(computeSmallSize(1, rowWrapper), 150);
@@ -1102,9 +1110,14 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
       for (let x = 0; x < cols; x++) {
         const sq = createSquare(x);
         sub.appendChild(sq);
-        if (training && x !== 1) {
-          sq.classList.add('grey','disabled');
-          sq.classList.remove('hover-enabled');
+        topInstructionId
+        if (training) {
+            const numberFromId = topInstructionId.match(/\d+/);
+            const extractedNumber = parseInt(numberFromId[0], 10)-1;
+            if (x !== extractedNumber) {
+              sq.classList.add('grey','disabled');
+              sq.classList.remove('hover-enabled');
+            }
         }
       }
       rowWrapper.appendChild(sub);
@@ -1149,6 +1162,13 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
           const sub = document.createElement('div');
           sub.dataset.row = historyRows - y - 1;
           sub.classList.add('history-subrow', 'gap-30');
+          if (y >= 2) {
+            const opacity = 0.7 - (y / (historyRows - 1)) * (0.7 - 0.1);
+            sub.style.opacity = opacity.toFixed(2);
+          }
+          if (y == 1) {
+            sub.style.paddingTop = "10px";
+          }
           if (!historyData[y]) {
               sub.classList.add('hidden');
           }
@@ -1279,49 +1299,31 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
     }
 
     function updateDifferenceBar(value) {
-      // compute new bar position & width
-      const newX = value >= 0 ? x(0) : x(value);
-      const newW = Math.abs(x(value) - x(0));
+      pointsFound.innerHTML = value > 1 ? " " + value + " points" : value === 1 ? " " + value + " point" : "";
+      const newW = Math.round((value / maxAbsScore)*100);
 
       fillBar.transition()
         .duration(1000)
-        .attr("x", newX)
-        .attr("width", newW);
+        .attr("x", x(0))
+        .attr("width", newW + "%");
 
-      const lblWidth = label.node().getBBox().width;
-
-      let lx, anchor, color;
-
-      if (value >= 0) {
-        if (newW >= lblWidth + 10) {
-          // inside the bar, right-aligned, white text
-          lx     = x(0) + newW - 5;
-          anchor = "end";
-          color  = "white";
-        } else {
-          // outside to the right, black text
-          lx     = x(value) + 5;
-          anchor = "start";
-          color  = "black";
-        }
+      let lx, lanchor, color;
+      if (newW >= 15) {
+        // inside the bar, right-aligned, white text
+        lx     = x(0) + newW - 3;
+        lanchor = "end";
+        color  = "white";
       } else {
-        if (newW >= lblWidth + 10) {
-          // inside the bar, left-aligned, white text
-          lx     = x(0) - newW + 5;
-          anchor = "start";
-          color  = "white";
-        } else {
-          // outside to the left, black text
-          lx     = x(value) - 5;
-          anchor = "end";
-          color  = "black";
-        }
+        // outside to the right, black text
+        lx     = newW + 3;
+        lanchor = "start";
+        color  = "black";
       }
 
-      label.transition()
+      barLabel.transition()
         .duration(1000)
-        .attr("x", lx)
-        .attr("text-anchor", anchor)
+        .attr("x", lx + "%")
+        .attr("text-anchor", lanchor)
         .attr("fill", color);
     }
 
@@ -1374,7 +1376,7 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
     let   historyData     = [];
     let rewards_prepped = [43, 44, 83].map(n => n + (Math.random() < 0.5 ? -1 : 1) * Math.floor(Math.random() * 4));
 
-    const agent = targetName.includes('A') ? randomAgent : targetName.includes('B') ? leftyAgent : targetName.includes('C') ? rationalAgent : undefined;
+    const agent = targetName.includes('Random') ? randomAgent : targetName.includes('Lefty') ? leftyAgent : targetName.includes('C') ? rationalAgent : undefined;
 
     // — Compute sizes —
     const size = Math.min(computeSmallSize(1, rowWrapper), 150);
@@ -1383,7 +1385,7 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
     stopIcon.classList.remove('hidden');
     if (!training) {
       var imFileName = targetName.replace(/\s+/g, '-');
-      comparisonTargetIm.src = `./static/${imFileName}-desc.png`;
+      comparisonTargetIm.src = `./static/${imFileName}-desc2.png`;
     }
     if(topInstruction) {
       topInstruction.innerHTML = "Watch each card being selected";
@@ -1516,6 +1518,13 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
           const sub = document.createElement('div');
           sub.dataset.row = historyRows - y - 1;
           sub.classList.add('history-subrow', 'gap-30');
+          if (y >= 2) {
+            const opacity = 0.7 - (y / (historyRows - 1)) * (0.7 - 0.1);
+            sub.style.opacity = opacity.toFixed(2);
+          }
+          if (y == 1) {
+            sub.style.paddingTop = "10px";
+          }
           if (!historyData[y]) {
               sub.classList.add('hidden');
           }
@@ -1582,7 +1591,7 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
           stopIcon.classList.add('hidden');
           if(topInstruction) {
             topInstruction.innerHTML = "Predict which card " + targetName + " selected next";
-            if (targetName.includes('A')) {
+            if (targetName.includes('Random')) {
               topInstruction.innerHTML = "Predict which card " + targetName + " selected next.<br>Any card will do, because this Player selects cards randomly.";
             }
           }
@@ -1613,7 +1622,7 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
 
       if (isLast) {
         if (!training) {
-          actuallyChosen = targetName.includes('A') ? x : targetName.includes('B') ? 0 : 2;
+          actuallyChosen = targetName.includes('Random') ? x : targetName.includes('Lefty') ? 0 : 2;
           correct = (x == actuallyChosen);
           previousRoundCorrect_P2 = correct;
         }
@@ -1744,13 +1753,13 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
     let   timeStampsSelected = Array(numberOfMoves);
     let   timeStampsDropped  = Array(numberOfMoves);
 
-    const agent = targetName.includes('A') ? randomAgent : targetName.includes('B') ? leftyAgent : targetName.includes('C') ? rationalAgent : undefined;
+    const agent = targetName.includes('Random') ? randomAgent : targetName.includes('Lefty') ? leftyAgent : targetName.includes('Expert') ? rationalAgent : undefined;
 
     let newX = 0, newY = 0, startX = 0, startY = 0, dropCounter = 0;
     let historyData        = [];
 
     var imFileName = targetName.replace(/\s+/g, '-');
-    comparisonTargetIm.src = `./static/${imFileName}-desc.png`;
+    comparisonTargetIm.src = `./static/${imFileName}-desc2.png`;
     setTimeout(() => comparisonTargetIm.classList.remove('gone'), 500);
     if (topInstruction) {
       topInstruction.innerHTML = 'Click on the cards and guess what decisions the player made';
@@ -1758,15 +1767,15 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
     // — initialize the chart —
     otherName2.innerHTML = targetName;
-    const otherNameLabel = targetName;
     const width = svgChart.node().clientWidth;
     const height = svgChart.node().clientHeight;
     const margin = { left: 0, right: 0 };
     const maxAbsScore = 150;            // start small, will expand if needed
     var imFileName = targetName.replace(/\s+/g, '-');
+    const barLabelName = targetName.replace(' Player', '');
     pickUpWrapper.querySelectorAll('img').forEach(i => {i.src = `./static/${imFileName}.png`});
 
-    let fillBar, label, x;
+    let fillBar, barLabel, x;
     if (!svgChart.node().chartInitialized) {
         svgChart.node().xScale = d3.scaleLinear()
            .domain([-maxAbsScore, maxAbsScore])
@@ -1776,63 +1785,64 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
           .attr("class", "bar-bg")
           .attr("x", 0)
           .attr("y", height/4)
-          .attr("width", width)
+          .attr("width", "100%")
           .attr("height", height/2);
         svgChart.append("line")                  // draw a zero line
           .attr("class", "zero-line")
-          .attr("x1", x(0))
-          .attr("x2", x(0))
+          .attr("x1", "50%")
+          .attr("x2", "50%")
           .attr("y1", 0)
           .attr("y2", height);
         svgChart.node().fillBar = svgChart.append("rect")  // the actual fill bar (initially zero length)
           .attr("class", "bar-fill")
-          .attr("x", x(0))
+          .attr("x", "50%")
           .attr("y", height/4)
-          .attr("width", 0)
+          .attr("width", "0%")
           .attr("height", height/2);
         svgChart.append("text")                  // You label (center side)
-          .attr("x", x(0))
+          .attr("x", "50%")
           .attr("y", height + 15)
           .attr("text-anchor", "middle")
           .attr("fill", "black")
           .attr("font-size", "14px")
           .text("You");
-        svgChart.node().label = svgChart.append("text")    // bar label
+        svgChart.node().barLabel = svgChart.append("text")    // bar label
           .attr("class", "bar-label")
           .attr("y", height / 2)
-          .attr("x", x(0))
+          .attr("x", "45%")
           .attr("dy", "0.35em")
           .attr("font-size", "14px")
-          .text(otherNameLabel);
+          .text(barLabelName);
         svgChart.append("text")                  // Max label (right side)
-          .attr("x", x(maxAbsScore))
+          .attr("x", "100%")
           .attr("y", height + 15)
           .attr("font-size", "14px")
           .attr("text-anchor", "middle")
-          .text(maxAbsScore);
+          .text("+" + maxAbsScore);
         svgChart.append("text")                  // Min label (left side)
-          .attr("x", x(-maxAbsScore))
+          .attr("x", "0%")
           .attr("y", height + 15) // Below the bar
           .attr("font-size", "14px")
           .attr("text-anchor", "middle")
           .text("-" + maxAbsScore);
         svgChart.append("text")
-          .attr("x", x(-maxAbsScore/2))
+          .attr("x", "25%")
           .attr("y", height + 15)
           .attr("font-size", "14px")
           .attr("text-anchor", "middle")        // Mid label (left side)
-          .text(-maxAbsScore/2);
+          .text("-" + maxAbsScore/2);
         svgChart.append("text")
-          .attr("x", x(maxAbsScore/2))
+          .attr("x", "75%")
           .attr("y", height + 15)
           .attr("font-size", "14px")
           .attr("text-anchor", "middle")        // Mid label (right side)
-          .text(maxAbsScore/2);
+          .text("+" + maxAbsScore/2);
         svgChart.node().chartInitialized = true;
     }
     x = svgChart.node().xScale;
     fillBar = svgChart.node().fillBar;
-    label = svgChart.node().label;
+    barLabel = svgChart.node().barLabel;
+    barLabel.text(barLabelName); // Reset
 
     // — Compute sizes and reset —
     const size   = Math.min(computeSmallSize(1, rowWrapper), 150);
@@ -1961,6 +1971,13 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
           const sub = document.createElement('div');
           sub.dataset.row = historyRows - y - 1;
           sub.classList.add('history-subrow_P3', 'gap-30');
+          if (y >= 2) {
+            const opacity = 0.7 - (y / (historyRows - 1)) * (0.7 - 0.1);
+            sub.style.opacity = opacity.toFixed(2);
+          }
+          if (y == 1) {
+            sub.style.paddingTop = "10px";
+          }
           if (!historyData[y]) {
               sub.classList.add('hidden');
           }
@@ -2004,7 +2021,6 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
         otherScoreSinceLastComp = scoreSinceLastComp;
       }
       diff = otherScoreSinceLastComp - scoreSinceLastComp;
-      moreOrLessTxt.innerHTML = (diff > 0) ? 'this much more than' : ((diff == 0) ? 'the same as' : 'this much less than');
       updateDifferenceBar(diff);
 
       overlay.classList.remove('gone');
@@ -2131,7 +2147,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
       // Look back up to comparisonFrequency trials
       for (let i = 0; i < comparisonFrequency; i++) {
-        let idx = currentTrial - i;
+        let idx = currentTrial - i - 1;
 
         // Skip if we've already used this index
         if (usedIndices.has(idx)) continue;
@@ -2141,7 +2157,6 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
         if (arr[idx] === x) {
           correct = true;
-          correctCount++;
           usedIndices.add(idx);  // Mark this index as "consumed"
           break;                 // Stop after first valid match
         }
@@ -2202,49 +2217,71 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
     }
 
     function updateDifferenceBar(value) {
-      // compute new bar position & width
-      const newX = value >= 0 ? x(0) : x(value);
-      const newW = Math.abs(x(value) - x(0));
-
-      fillBar.transition()
-        .duration(1000)
-        .attr("x", newX)
-        .attr("width", newW);
-
-      const lblWidth = label.node().getBBox().width;
-
-      let lx, anchor, color;
-
-      if (value >= 0) {
-        if (newW >= lblWidth + 10) {
-          // inside the bar, right-aligned, white text
-          lx     = x(0) + newW - 5;
-          anchor = "end";
-          color  = "white";
-        } else {
-          // outside to the right, black text
-          lx     = x(value) + 5;
-          anchor = "start";
-          color  = "black";
-        }
+      if (value > 1) {
+        moreOrLessTxt.innerHTML = Math.abs(value) + ' points more than';
+        //moreOrLessTxt.innerHTML = 'this many more points than';
+      } else if (value === 1) {
+        moreOrLessTxt.innerHTML = '1 point more than';
+        //moreOrLessTxt.innerHTML = 'this many more points than';
+      }  else if (value === 0) {
+        moreOrLessTxt.innerHTML = 'the same as';
+      } else if (value === -1) {
+        moreOrLessTxt.innerHTML = '1 point less than';
+        //moreOrLessTxt.innerHTML = 'this many more points than';
       } else {
-        if (newW >= lblWidth + 10) {
-          // inside the bar, left-aligned, white text
-          lx     = x(0) - newW + 5;
-          anchor = "start";
-          color  = "white";
+        moreOrLessTxt.innerHTML = Math.abs(value) + ' points less than';
+        //moreOrLessTxt.innerHTML = 'this many more points than';
+      }
+
+      var newW = Math.abs((value / maxAbsScore)*100/2);
+
+      if (value < 0) {
+        fillBar.transition()
+        .duration(1000)
+        .attr("x", 50 - newW + "%")
+        .attr("width", newW + "%");
+      } else {
+        fillBar.transition()
+        .duration(1000)
+        .attr("x", 50 + "%")
+        .attr("width", newW + "%");
+      }
+
+      let lx, lanchor, color;
+      if (value === 0) {
+        lx = "51%";
+        lanchor = "start";
+        color = "black";
+      } else if (value > 0) {
+        if (newW >= 15) {
+          // inside bar, near right edge
+          lx = (50 + newW - 1) + "%";
+          lanchor = "end";
+          color = "white";
         } else {
-          // outside to the left, black text
-          lx     = x(value) - 5;
-          anchor = "end";
-          color  = "black";
+          // outside, just to the right
+          lx = (50 + newW + 1) + "%";
+          lanchor = "start";
+          color = "black";
+        }
+      } else { // value < 0
+        if (newW >= 15) {
+          // inside bar, near left edge
+          lx = (50 - newW + 1) + "%";
+          lanchor = "start";
+          color = "white";
+        } else {
+          // outside, just to the left
+          lx = (50 - newW - 1) + "%";
+          lanchor = "end";
+          color = "black";
         }
       }
 
-      label.transition()
+      barLabel.transition()
         .duration(1000)
         .attr("x", lx)
-        .attr("text-anchor", anchor)
+        .attr("text-anchor", lanchor)
         .attr("fill", color);
     }
 
@@ -2367,7 +2404,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
     let   rewardReceived     = Array(numberOfMoves);
     let   timeStamps         = Array(numberOfMoves);
 
-    const agent = targetName.includes('A') ? randomAgent : targetName.includes('B') ? leftyAgent : targetName.includes('C') ? rationalAgent : undefined;
+    const agent = targetName.includes('Random') ? randomAgent : targetName.includes('Lefty') ? leftyAgent : targetName.includes('Expert') ? rationalAgent : undefined;
 
     let newX = 0, newY = 0, startX = 0, startY = 0, dropCounter = 0;
     let historyData          = [];
@@ -2376,19 +2413,18 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
     const size   = Math.min(computeSmallSize(1, rowWrapper), 150);
     const smallSize = Math.min(computeSmallSize(historyRows, historyRowWrapper), 150);
     var imFileName = targetName.replace(/\s+/g, '-');
-    comparisonTargetIm.src = `./static/${imFileName}-desc.png`;
+    comparisonTargetIm.src = `./static/${imFileName}-desc2.png`;
 
     // — initialize the chart —
     comparisonTargetIm.classList.add('gone');
     otherName.innerHTML = targetName;
-    const otherNameLabel = targetName;
     const width = svgChart.node().clientWidth;
     const height = svgChart.node().clientHeight;
     const margin = { left: 0, right: 0 };
     const maxAbsScore = 150;            // start small, will expand if needed
     var imFileName = targetName.replace(/\s+/g, '-');
 
-    let fillBar, label, x;
+    let fillBar, barLabel, x;
     if (!svgChart.node().chartInitialized) {
         svgChart.node().xScale = d3.scaleLinear()
            .domain([-maxAbsScore, maxAbsScore])
@@ -2398,63 +2434,64 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
           .attr("class", "bar-bg")
           .attr("x", 0)
           .attr("y", height/4)
-          .attr("width", width)
+          .attr("width", "100%")
           .attr("height", height/2);
         svgChart.append("line")                  // draw a zero line
           .attr("class", "zero-line")
-          .attr("x1", x(0))
-          .attr("x2", x(0))
+          .attr("x1", "50%")
+          .attr("x2", "50%")
           .attr("y1", 0)
           .attr("y2", height);
         svgChart.node().fillBar = svgChart.append("rect")  // the actual fill bar (initially zero length)
           .attr("class", "bar-fill")
-          .attr("x", x(0))
+          .attr("x", "50%")
           .attr("y", height/4)
-          .attr("width", 0)
+          .attr("width", "0%")
           .attr("height", height/2);
         svgChart.append("text")                  // You label (center side)
-          .attr("x", x(0))
+          .attr("x", "50%")
           .attr("y", height + 15)
           .attr("text-anchor", "middle")
           .attr("fill", "black")
           .attr("font-size", "14px")
           .text("You");
-        svgChart.node().label = svgChart.append("text")    // bar label
+        svgChart.node().barLabel = svgChart.append("text")    // bar label
           .attr("class", "bar-label")
           .attr("y", height / 2)
-          .attr("x", x(0))
+          .attr("x", "45%")
           .attr("dy", "0.35em")
           .attr("font-size", "14px")
-          .text(otherNameLabel);
+          .text(targetName);
         svgChart.append("text")                  // Max label (right side)
-          .attr("x", x(maxAbsScore))
+          .attr("x", "100%")
           .attr("y", height + 15)
           .attr("font-size", "14px")
           .attr("text-anchor", "middle")
-          .text(maxAbsScore);
+          .text("+" + maxAbsScore);
         svgChart.append("text")                  // Min label (left side)
-          .attr("x", x(-maxAbsScore))
+          .attr("x", "0%")
           .attr("y", height + 15) // Below the bar
           .attr("font-size", "14px")
           .attr("text-anchor", "middle")
           .text("-" + maxAbsScore);
         svgChart.append("text")
-          .attr("x", x(-maxAbsScore/2))
+          .attr("x", "25%")
           .attr("y", height + 15)
           .attr("font-size", "14px")
           .attr("text-anchor", "middle")        // Mid label (left side)
-          .text(-maxAbsScore/2);
+          .text("-" + maxAbsScore/2);
         svgChart.append("text")
-          .attr("x", x(maxAbsScore/2))
+          .attr("x", "75%")
           .attr("y", height + 15)
           .attr("font-size", "14px")
           .attr("text-anchor", "middle")        // Mid label (right side)
-          .text(maxAbsScore/2);
+          .text("+" + maxAbsScore/2);
         svgChart.node().chartInitialized = true;
     }
     x = svgChart.node().xScale;
     fillBar = svgChart.node().fillBar;
-    label = svgChart.node().label;
+    barLabel = svgChart.node().barLabel;
+    barLabel.text(targetName); // Reset
 
     compareInfoBox.classList.add("gone");
     compareInfoBox.style.cursor = 'pointer';
@@ -2560,6 +2597,13 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
           const sub = document.createElement('div');
           sub.dataset.row = historyRows - y - 1;
           sub.classList.add('history-subrow_P4', 'gap-30');
+          if (y >= 2) {
+            const opacity = 0.7 - (y / (historyRows - 1)) * (0.7 - 0.1);
+            sub.style.opacity = opacity.toFixed(2);
+          }
+          if (y == 1) {
+            sub.style.paddingTop = "10px";
+          }
           if (!historyData[y]) {
               sub.classList.add('hidden');
           }
@@ -2602,7 +2646,6 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
         otherScoreSinceLastComp = scoreSinceLastComp + 100;
       }
       diff = otherScoreSinceLastComp - scoreSinceLastComp;
-      moreOrLessTxt.innerHTML = (diff > 0) ? 'this much more than' : ((diff == 0) ? 'the same as' : 'this much less than');
       comparisonValue[trial] = diff;
       updateDifferenceBar(diff);
 
@@ -2695,49 +2738,71 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
     }
 
     function updateDifferenceBar(value) {
-      // compute new bar position & width
-      const newX = value >= 0 ? x(0) : x(value);
-      const newW = Math.abs(x(value) - x(0));
-
-      fillBar.transition()
-        .duration(1000)
-        .attr("x", newX)
-        .attr("width", newW);
-
-      const lblWidth = label.node().getBBox().width;
-
-      let lx, anchor, color;
-
-      if (value >= 0) {
-        if (newW >= lblWidth + 10) {
-          // inside the bar, right-aligned, white text
-          lx     = x(0) + newW - 5;
-          anchor = "end";
-          color  = "white";
-        } else {
-          // outside to the right, black text
-          lx     = x(value) + 5;
-          anchor = "start";
-          color  = "black";
-        }
+      if (value > 1) {
+        moreOrLessTxt.innerHTML = Math.abs(value) + ' points more than';
+        //moreOrLessTxt.innerHTML = 'this many more points than';
+      } else if (value === 1) {
+        moreOrLessTxt.innerHTML = '1 point more than';
+        //moreOrLessTxt.innerHTML = 'this many more points than';
+      }  else if (value === 0) {
+        moreOrLessTxt.innerHTML = 'the same as';
+      } else if (value === -1) {
+        moreOrLessTxt.innerHTML = '1 point less than';
+        //moreOrLessTxt.innerHTML = 'this many more points than';
       } else {
-        if (newW >= lblWidth + 10) {
-          // inside the bar, left-aligned, white text
-          lx     = x(0) - newW + 5;
-          anchor = "start";
-          color  = "white";
+        moreOrLessTxt.innerHTML = Math.abs(value) + ' points less than';
+        //moreOrLessTxt.innerHTML = 'this many more points than';
+      }
+
+      var newW = Math.abs((value / maxAbsScore)*100/2);
+
+      if (value < 0) {
+        fillBar.transition()
+        .duration(1000)
+        .attr("x", 50 - newW + "%")
+        .attr("width", newW + "%");
+      } else {
+        fillBar.transition()
+        .duration(1000)
+        .attr("x", 50 + "%")
+        .attr("width", newW + "%");
+      }
+
+      let lx, lanchor, color;
+      if (value === 0) {
+        lx = "51%";
+        lanchor = "start";
+        color = "black";
+      } else if (value > 0) {
+        if (newW >= 15) {
+          // inside bar, near right edge
+          lx = (50 + newW - 1) + "%";
+          lanchor = "end";
+          color = "white";
         } else {
-          // outside to the left, black text
-          lx     = x(value) - 5;
-          anchor = "end";
-          color  = "black";
+          // outside, just to the right
+          lx = (50 + newW + 1) + "%";
+          lanchor = "start";
+          color = "black";
+        }
+      } else { // value < 0
+        if (newW >= 15) {
+          // inside bar, near left edge
+          lx = (50 - newW + 1) + "%";
+          lanchor = "start";
+          color = "white";
+        } else {
+          // outside, just to the left
+          lx = (50 - newW - 1) + "%";
+          lanchor = "end";
+          color = "black";
         }
       }
 
-      label.transition()
+      barLabel.transition()
         .duration(1000)
         .attr("x", lx)
-        .attr("text-anchor", anchor)
+        .attr("text-anchor", lanchor)
         .attr("fill", color);
     }
 
@@ -2791,13 +2856,11 @@ function loadCheck() {
       question.querySelector('.question').style.color = '#333';
     });
 
-    document.getElementById('checkTurns').innerHTML = settings.moves;
     let correctAnswers = [
         { question: "1", answer: true },
         { question: "2", answer: false },
         { question: "3", answer: true },
-        { question: "4", answer: false },
-        { question: "5", answer: true }
+        { question: "4", answer: false }
     ];
 
     let answers = [];
@@ -2869,7 +2932,7 @@ function loadCheck() {
         }
       }, 400);
 
-      document.getElementById('5').style.marginBottom = '0px';
+      document.getElementById('4').style.marginBottom = '0px';
       if (wrongCount === 0) {
         document.getElementById('correct').classList.remove('gone');
       } else if (wrongCount == 1) {
@@ -3192,13 +3255,14 @@ function loadSelectObservationTarget() {
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = ''; // Clear existing rows
 
+    playerNames = ['Random Player','Lefty Player','Expert Player']
     if (currentPlayer == 1) {
       const numOtherPlayers = 3;
       for (let i = 0; i < numOtherPlayers; i++) {
-          const playerName = String.fromCharCode(65 + i); // A, B, C
+          const playerName = playerNames[i];
           players.push({
-              name: `Player ${playerName}`,
-              img: `./static/Player-${playerName}.png`,
+              name: `${playerName}`,
+              img: `./static/${playerName.replace(/ /g, '-')}.png`,
               characteristic: characteristics[i % characteristics.length]
           });
       }
@@ -3314,6 +3378,7 @@ function loadRate(otherRating, ids) {
       nextPage:       nextPageId,
       movableThumb:   movableThumbId,
       slider:         sliderId,
+      line:           lineId,
       rateLabel:      rateLabelId
     } = ids;
 
@@ -3321,6 +3386,7 @@ function loadRate(otherRating, ids) {
     const nextButton     = document.getElementById(buttonId);
     const movableThumb   = document.getElementById(movableThumbId);
     const slider         = document.getElementById(sliderId);
+    const line           = document.getElementById(lineId);
     const movingLabel    = document.getElementById(rateLabelId);
 
     // Button
@@ -3351,7 +3417,7 @@ function loadRate(otherRating, ids) {
     document.addEventListener('mouseup', () => isDragging = false);
 
     // Slider
-    slider.style.background = '#ddd';
+    line.style.background = '#ddd';
 
     slider.addEventListener('mousedown', (e) => {
       movableThumb.classList.remove('hidden');
@@ -3415,7 +3481,7 @@ function loadRate(otherRating, ids) {
       } else {
           background = `linear-gradient(to right, #ddd, #ddd ${val}%, darkgray ${val}%, darkgray ${selfRating}%, #ddd ${selfRating}%, #ddd)`;
       }
-      slider.style.background = background;
+      line.style.background = background;
     }
 }
 
@@ -3429,11 +3495,13 @@ function loadThanks() {
     let chosenMax = chosenMaxes[randomRound];
 
     let percentageCorrect = Math.min(100, Math.round((chosenScore / chosenMax) * 100));
-    document.getElementById('player-score-max').innerHTML = percentageCorrect + '%';
 
-    const MAX_BONUS = 5;
-    let bonus = Math.min(MAX_BONUS * (chosenScore / chosenMax), MAX_BONUS);
-    document.getElementById('bonus-calculation').innerHTML = '£' + bonus.toFixed(2);
+    if (percentageCorrect < 75) {
+      document.getElementById('whether-bonus-paid').innerHTML = "Unfortuantely, you didn't score enough in a random round to obtain a bonus this time."
+    }
+    const MAX_BONUS = 4;
+    //let bonus = Math.min(MAX_BONUS * (chosenScore / chosenMax), MAX_BONUS).toFixed(2);
+    document.getElementById('player-score-max').innerHTML = '£' + MAX_BONUS;
 
     var genderSelect = document.getElementById('gender');
     var ageSelect = document.getElementById('age');
