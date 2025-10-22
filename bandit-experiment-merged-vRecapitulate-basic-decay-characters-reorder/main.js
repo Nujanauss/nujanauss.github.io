@@ -355,7 +355,7 @@ function showPage(pageId) {
             break;
             case 'GAME3':
                 loadPhase3(
-                  6,//settings.moves,//
+                  11,//settings.moves,//
                   2,//Math.floor(settings.numberOfRounds / 7),//
                   settings.comparisonFrequency,
                   false,
@@ -409,7 +409,7 @@ function showPage(pageId) {
             break;
             case 'GAME4':
                 loadPhase4(
-                  6,//settings.moves,//
+                  11,//settings.moves,//
                   2,//Math.floor(settings.numberOfRounds / 7),//
                   settings.comparisonFrequency,
                   false,
