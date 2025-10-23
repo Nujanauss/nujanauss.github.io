@@ -2251,7 +2251,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
         .attr("width", newW + "%");
       } else { // value=0
         const currentW = parseFloat(fillBar.attr("width"));
-        if (currentW === 50) {
+        if (currentW === 0) {
           fillBar.transition()
             .duration(150)
             .attr("x", "50%")
@@ -2782,11 +2782,27 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
         .duration(1000)
         .attr("x", 50 - newW + "%")
         .attr("width", newW + "%");
-      } else {
+      } else if (value > 0) {
         fillBar.transition()
         .duration(1000)
         .attr("x", 50 + "%")
         .attr("width", newW + "%");
+      } else { // value=0
+        const currentW = parseFloat(fillBar.attr("width"));
+        if (currentW === 0) {
+          fillBar.transition()
+            .duration(150)
+            .attr("x", "50%")
+            .attr("width", "10%")
+            .transition()
+            .duration(850)
+            .attr("width", "0%");
+        } else {
+          fillBar.transition()
+            .duration(1000)
+            .attr("x", "50%")
+            .attr("width", newW + "%");
+        }
       }
 
       let lx, lanchor, color;
