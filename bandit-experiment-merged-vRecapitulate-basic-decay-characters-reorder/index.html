@@ -199,9 +199,10 @@
               <div class="progress-bar" id="page4"></div>
             </div>
             <div class="index-instructions">Great! Clicking on a card will ALWAYS give you one or more points.</div>
-            <div class="index-instructions width-70">Each card will generally give you a different number of points.</div>
+            <div class="index-instructions width-70">Each card will usually give you a different number of points.</div>
             <div class="index-instructions width-70 blue-coloured">In general, cards give fewer and fewer points every turn, whether you click on them or not.</div>
-            <div class="index-instructions width-70">However, cards will reset to a new high at random times. This high could be greater or less than than their starting score. The cards have a fixed, shared probability of resetting, and usually reset at different times.</div>
+            <div class="index-instructions width-70">However, cards will reset to a new high at random times. This high could be greater than or less than their starting score.</div>
+            <div class="index-instructions width-70">The cards have a fixed, shared probability of resetting, and usually reset at different times.</div>
             <div class="button-group">
                 <button id="nextButton4" class="move-screen-button button enabled">Next</button>
             </div>
@@ -359,7 +360,7 @@
               <div class="progress-bar" id="page9"></div>
             </div>
             <div class="index-instructions">You currently have a bonus of £0.</div>
-            <div class="index-instructions">To determine whether you receive a bonus of £5, we will calculate your performance in a random round in a random stage.</div>
+            <div class="index-instructions">To determine whether you receive a bonus of <span id="bonusMention">£5</span>, we will calculate your performance in a random round in a random stage.</div>
             <div class="index-instructions">If your performance meets the threshold, you will receive the bonus.</div>
             <div class="button-group">
                 <button id="backButton9" class="move-screen-button button enabled">Back</button>
@@ -744,8 +745,8 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page3"></div>
               </div>
-              <div class="index-instructions blue-coloured width-80">We will now show you information about how many points <span id="target3_P3">Player A</span> found every <span id="comparisonFreqINSTR3_P3">12</span> turns.</div>
-              <div class="index-instructions width-80">Your job is to infer which cards <span id="target3_P3_2">Player A</span> selected to get these points.</div>
+              <div class="index-instructions blue-coloured width-80">We will now show you information about <span id="target3_P3">Player A</span>'s score every <span id="comparisonFreqINSTR3_P3">12</span> turns.</div>
+              <div class="index-instructions width-80">Your job is to infer which cards <span id="target3_P3_2">Player A</span> selected to get their score.</div>
              <div class="button-group">
                 <button id="backButton33" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton33" class="move-screen-button button enabled">Next</button>
@@ -761,10 +762,10 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page4"></div>
               </div>
-              <div class="index-instructions width-80">To do this, first, click on <span id="comparisonFreqINSTR4_P3">12</span> of the cards.</div>
-              <div class="index-instructions width-80">Then you will see how many more or less points <span id="target4_P3">Player A</span> found over the same two turns playing with the SAME cards.</div>
-              <div class="index-instructions width-80"><span id="target4_P3_2">Player A</span> may not have selected the same cards as you to receive their points. Your job is to infer which cards they did select.</div>
-              <div class="index-instructions width-80">If <span id="target4_P3_3">Player A</span> found the same points as you, they probably selected the same cards. If <span id="target4_P3_4">Player A</span> found more or less points than you, they probably selected different cards.</div>
+              <div class="index-instructions width-60">To do this, first, click on <span id="comparisonFreqINSTR4_P3">12</span> of the cards.</div>
+              <div class="index-instructions width-60">Then you will see how many more or less points <span id="target4_P3">Player A</span> found over the same two turns playing with the SAME cards.</div>
+              <div class="index-instructions width-60"><span id="target4_P3_2">Player A</span> may have selected the same cards as you, or different cards. Your job is to infer which cards they did select to get their score.</div>
+              <div class="index-instructions width-60">If <span id="target4_P3_3">Player A</span> found the same points as you in the previous two turns, they probably selected the same cards as you in the previous two turns.</div> <div class="index-instructions width-60">If <span id="target4_P3_4">Player A</span> found more or less points than you in the previous two turns, they probably selected different cards to you.</div>
               <div class="button-group">
                 <button id="backButton34" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton34" class="move-screen-button button enabled">Next</button>
