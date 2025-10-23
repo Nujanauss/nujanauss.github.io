@@ -17,6 +17,7 @@ const ordinals = [
   'ninety-third', 'ninety-fourth', 'ninety-fifth', 'ninety-sixth', 'ninety-seventh',
   'ninety-eighth', 'ninety-ninth', 'one hundredth'
 ];
+const MB3 = 4;
 
 let currentPage;
 var phase1Round = 1;
@@ -721,7 +722,7 @@ function loadInstructions8() {
 }
 
 function loadInstructions9() {
-    document.getElementById('bonusMention').innerHTML = "£" + MAX_BONUS;
+    document.getElementById('bonusMention').innerHTML = "£" + MB3;
     buttonToNewPage('backButton9', 'INSTRUCTIONS8');
     buttonToNewPage('nextButton9', 'INSTRUCTIONS10');
 }
@@ -3493,9 +3494,8 @@ function loadThanks() {
     if (percentageCorrect < 75) {
       document.getElementById('whether-bonus-paid').innerHTML = "Unfortuantely, you didn't score enough in a random round to obtain a bonus this time."
     }
-    const MAX_BONUS = 4;
-    //let bonus = Math.min(MAX_BONUS * (chosenScore / chosenMax), MAX_BONUS).toFixed(2);
-    document.getElementById('player-score-max').innerHTML = '£' + MAX_BONUS;
+    //let bonus = Math.min(MB3 * (chosenScore / chosenMax), MB3).toFixed(2);
+    document.getElementById('player-score-max').innerHTML = '£' + MB3;
 
     var genderSelect = document.getElementById('gender');
     var ageSelect = document.getElementById('age');
