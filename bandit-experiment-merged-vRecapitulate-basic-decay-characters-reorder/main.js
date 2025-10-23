@@ -2181,7 +2181,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
       square.classList.remove(`reward${x}`);
       square.classList.add(`reward${x}-clicked`);
-      reward = Math.round(settings.chanceToWin[(phase1Round + phase3Round + (Math.floor(settings.numberOfRounds / 7) * (currentPlayer-1)) - 1) * settings.moves + currentTrial)][0][x] * 100);
+      reward = Math.round(settings.chanceToWin[(phase1Round + phase3Round + (Math.floor(settings.numberOfRounds / 7) * (currentPlayer-1)) - 1) * settings.moves + currentTrial][0][x] * 100);
       if (training) {
         reward = (numberOfMoves - currentTrial) * 10;
       }
