@@ -2253,11 +2253,11 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
         const currentW = parseFloat(fillBar.attr("width"));
         if (currentW === 0) {
           fillBar.transition()
-            .duration(150)
+            .duration(450)
             .attr("x", "50%")
-            .attr("width", "10%")
+            .attr("width", "7%")
             .transition()
-            .duration(850)
+            .duration(550)
             .attr("width", "0%");
         } else {
           fillBar.transition()
@@ -2791,11 +2791,11 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
         const currentW = parseFloat(fillBar.attr("width"));
         if (currentW === 0) {
           fillBar.transition()
-            .duration(150)
+            .duration(450)
             .attr("x", "50%")
-            .attr("width", "10%")
+            .attr("width", "7%")
             .transition()
-            .duration(850)
+            .duration(550)
             .attr("width", "0%");
         } else {
           fillBar.transition()
