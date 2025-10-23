@@ -284,8 +284,8 @@ function showPage(pageId) {
                 break;
             case 'GAME1':
                 loadPhase1(
-                  11,//settings.moves,//
-                  2,//Math.floor(settings.numberOfRounds / 7),//
+                  settings.moves,//
+                  Math.floor(settings.numberOfRounds / 7),//
                   10,
                   settings.comparisonFrequency,
                   false,
@@ -359,8 +359,8 @@ function showPage(pageId) {
             break;
             case 'GAME3':
                 loadPhase3(
-                  11,//settings.moves,//
-                  2,//Math.floor(settings.numberOfRounds / 7),//
+                  settings.moves,//
+                  Math.floor(settings.numberOfRounds / 7),//
                   settings.comparisonFrequency,
                   false,
                   {
@@ -413,8 +413,8 @@ function showPage(pageId) {
             break;
             case 'GAME4':
                 loadPhase4(
-                  11,//settings.moves,//
-                  2,//Math.floor(settings.numberOfRounds / 7),//
+                  settings.moves,//
+                  Math.floor(settings.numberOfRounds / 7),//
                   settings.comparisonFrequency,
                   false,
                   {
