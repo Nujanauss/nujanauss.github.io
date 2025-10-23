@@ -2254,10 +2254,11 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
         if (currentX === 50) {
           fillBar.transition()
             .duration(150)
-            .attr("x", 60 + "%")
+            .attr("x", "50%")
+            .attr("width", "60%");
             .transition()
-            .duration(300)
-            .attr("x", "50%");
+            .duration(850)
+            .attr("width", "50%");
         } else {
           fillBar.transition()
             .duration(1000)
