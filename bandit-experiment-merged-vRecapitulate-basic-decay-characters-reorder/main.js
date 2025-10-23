@@ -846,7 +846,6 @@ function loadInstructions8_P3() {
 
 function loadInstructions9_P3() {
     document.getElementById('target9_P3').innerHTML = targetName;
-    document.getElementById('target9_P3_2').innerHTML = targetName;
     buttonToNewPage('backButton39','INSTRUCTIONS8_P3');
     buttonToNewPage('nextButton39','INSTRUCTIONS10_P3');
 }
