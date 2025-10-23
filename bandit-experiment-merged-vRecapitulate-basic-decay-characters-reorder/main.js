@@ -1796,11 +1796,11 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
           .attr("x2", "50%")
           .attr("y1", 0)
           .attr("y2", height);
-        svgChart.node().fillBar = svgChart.append("rect")  // the actual fill bar (initially zero length)
+        svgChart.node().fillBar = svgChart.append("rect")  // the actual fill bar (initially 15% length)
           .attr("class", "bar-fill")
           .attr("x", "50%")
           .attr("y", height/4)
-          .attr("width", "0%")
+          .attr("width", "15%")
           .attr("height", height/2);
         svgChart.append("text")                  // You label (center side)
           .attr("x", "50%")
