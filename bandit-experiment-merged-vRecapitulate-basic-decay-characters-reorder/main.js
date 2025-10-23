@@ -2913,9 +2913,7 @@ function loadCheck() {
       }
 
       setTimeout(() => {
-        if (wrongCount === 0) {
-          showPage('INSTRUCTIONS11');
-        } else if (wrongCount > 1) {
+        if (wrongCount > 1) {
           submitButton.innerHTML = 'Back';
           submitButton.classList.remove('disabled');
           submitButton.disabled = false;
@@ -2928,10 +2926,11 @@ function loadCheck() {
         }
       }, 400);
 
-      document.getElementById('4').style.marginBottom = '0px';
       if (wrongCount === 0) {
-        document.getElementById('correct').classList.remove('gone');
-      } else if (wrongCount == 1) {
+        showPage('INSTRUCTIONS11');
+      }
+      document.getElementById('4').style.marginBottom = '0px';
+      if (wrongCount == 1) {
         document.getElementById('error-msg').classList.remove('gone');
       } else {
         questions.forEach(question => question.querySelector('.question').style.color = '#333');
@@ -3036,9 +3035,7 @@ function loadCheck_P3() {
       }
 
       setTimeout(() => {
-        if (wrongCount_P3 === 0) {
-          showPage('INSTRUCTIONS11_P3');
-        } else if (wrongCount_P3 > 1) {
+        if (wrongCount_P3 > 1) {
           submitButton.innerHTML = 'Back';
           submitButton.classList.remove('disabled');
           submitButton.disabled = false;
@@ -3051,10 +3048,11 @@ function loadCheck_P3() {
         }
       }, 400);
 
-      document.getElementById('5_P3').style.marginBottom = '0px';
       if (wrongCount_P3 === 0) {
-        document.getElementById('correct_P3').classList.remove('gone');
-      } else if (wrongCount_P3 == 1) {
+        showPage('INSTRUCTIONS11_P3');
+      }
+      document.getElementById('5_P3').style.marginBottom = '0px';
+      if (wrongCount_P3 == 1) {
         document.getElementById('error-msg_P3').classList.remove('gone');
       } else {
         questions.forEach(question => question.querySelector('.question').style.color = '#333');
@@ -3159,9 +3157,7 @@ function loadCheck_P4() {
       }
 
       setTimeout(() => {
-        if (wrongCount_P4 === 0) {
-          showPage('INSTRUCTIONS8_P4');
-        } else if (wrongCount_P4 > 1) {
+        if (wrongCount_P4 > 1) {
           submitButton.innerHTML = 'Back';
           submitButton.classList.remove('disabled');
           submitButton.disabled = false;
@@ -3174,11 +3170,11 @@ function loadCheck_P4() {
         }
       }, 400);
 
-
-      document.getElementById('5_P4').style.marginBottom = '0px';
       if (wrongCount_P4 === 0) {
-        document.getElementById('correct_P4').classList.remove('gone');
-      } else if (wrongCount_P4 == 1) {
+        showPage('INSTRUCTIONS8_P4');
+      }
+      document.getElementById('5_P4').style.marginBottom = '0px';
+      if (wrongCount_P4 == 1) {
         document.getElementById('error-msg_P4').classList.remove('gone');
       } else {
         questions.forEach(question => question.querySelector('.question').style.color = '#333');
