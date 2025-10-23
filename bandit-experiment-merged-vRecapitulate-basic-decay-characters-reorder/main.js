@@ -70,6 +70,9 @@ function showPage(pageId) {
             case 'CONSENT':
                 loadConsent();
                 break;
+            case 'CONSENT_NEW':
+                loadConsentNew();
+                break;
             case 'DATA-PROTECTION':
                 loadDataProtection();
                 break;
@@ -610,7 +613,7 @@ function loadPreconsent() {
       
       // Continue with the rest of the code regardless of fullscreen success
       addToInstructionTimings('second-next', new Date().toISOString().split('T')[1]);
-      showPage('CONSENT');
+      showPage('CONSENT_NEW');
     });
 }
 
@@ -624,6 +627,11 @@ function loadConsent() {
       });
     });
     buttonToNewPage('consent-given', 'DATA-PROTECTION');
+    buttonToNewPage('consent-rescinded', 'RESCINDED');
+}
+
+function loadConsentNew() {
+    buttonToNewPage('consent-given', 'INSTRUCTIONS1');
     buttonToNewPage('consent-rescinded', 'RESCINDED');
 }
 
