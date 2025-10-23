@@ -198,10 +198,10 @@
             <div class="progress-bar-container">
               <div class="progress-bar" id="page4"></div>
             </div>
-            <div class="index-instructions">Great! Clicking on a card will always give you some points.</div>
+            <div class="index-instructions">Great! Clicking on a card will ALWAYS give you one or more points.</div>
             <div class="index-instructions width-70">Each card will generally give you a different number of points.</div>
             <div class="index-instructions width-70 blue-coloured">In general, cards give fewer and fewer points every turn, whether you click on them or not.</div>
-            <div class="index-instructions width-70">However, cards will reset to a new high at random times. The cards may reset at different times.</div>
+            <div class="index-instructions width-70">However, cards will reset to a new high at random times. This high could be greater or less than than their starting score. The cards have a fixed, shared probability of resetting, and usually reset at different times.</div>
             <div class="button-group">
                 <button id="nextButton4" class="move-screen-button button enabled">Next</button>
             </div>
@@ -218,6 +218,8 @@
             </div>
             <div class="index-instructions width-70">Let's have another training round.</div>
             <div class="index-instructions width-100">Click on the central card four times and watch its points decrease.</div>
+            <div class="index-instructions">We will display your history of card selections on the left. Every time you click a card, this history will update.</div>
+            <div class="index-instructions width-60">Your total score will display in the right-most box.</div>
             <div class="index-instructions">Click Train to continue.</div>
             <div class="button-group">
                 <button id="backButton5" class="move-screen-button button enabled">Back</button>
@@ -261,9 +263,7 @@
             <div class="progress-bar-container">
               <div class="progress-bar" id="page6"></div>
             </div>
-            <div class="index-instructions">Perfect! As you saw, we will display your history of card selections on the left. Every time you click a card, this history will update.</div>
-            <div class="index-instructions width-60">Your total score is in the right-most box.</div>
-            <div class="index-instructions width-70">Every <span id="comparisonFreqINSTR6">2</span> turns, we will show you how many points you scored in the last <span id="comparisonFreqINSTR6_2">2</span> turns.</div>
+            <div class="index-instructions">Perfect! Now every <span id="comparisonFreqINSTR6">2</span> turns, we will show you how many points you scored in the last <span id="comparisonFreqINSTR6_2">2</span> turns.</div>
             <div class="button-group">
                 <button id="nextButton6" class="move-screen-button button enabled">Next</button>
             </div>
@@ -609,7 +609,7 @@
               <div class="index-instructions width-60">Great! Let's check you understand what kinds of decision <span id="target3_P2">Player A</span> makes, given their characteristic.</div>
               <div class="index-instructions width-60">We will show you the scores available for three cards.</div>
               <div class="index-instructions width-60">Please tell us which card you think <span id="target3_P2_2">Player A</span> is most likely to select next.</div>
-              <div class="index-instructions width-60 blue-coloured">All the other players knew the values of the cards before selecting it.</div>
+              <div class="index-instructions width-60 blue-coloured">Unlike you, the other players can see the value of the cards before selecting them.</div>
              <div class="button-group">
                 <button id="nextButton23" class="move-screen-button button enabled">Next</button>
               </div>
@@ -726,7 +726,7 @@
                   <li class="condensed-instr-li">The points you receive from the cards do not count towards your performance score.</li>
                   <li class="condensed-instr-li">Your performance is determined by the accuracy of your inferences.</li>
                   <li class="condensed-instr-li">Cards give fewer points every turn, even when you don't click on them.</li>
-                  <li class="condensed-instr-li">Cards reset with a fixed, shared probability.</li>
+                  <li class="condensed-instr-li">Cards reset to a new high, usually at different times, but with a fixed, shared probability.</li>
                 </ul>
               </div>
               <div class="button-group">
@@ -744,7 +744,7 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page3"></div>
               </div>
-              <div class="index-instructions blue-coloured width-80">We will now show you how many points <span id="target3_P3">Player A</span> found every <span id="comparisonFreqINSTR3_P3">12</span> turns.</div>
+              <div class="index-instructions blue-coloured width-80">We will now show you information about how many points <span id="target3_P3">Player A</span> found every <span id="comparisonFreqINSTR3_P3">12</span> turns.</div>
               <div class="index-instructions width-80">Your job is to infer which cards <span id="target3_P3_2">Player A</span> selected to get these points.</div>
              <div class="button-group">
                 <button id="backButton33" class="move-screen-button button enabled">Back</button>
@@ -905,7 +905,7 @@
                 <div class="progress-bar" id="page8"></div>
               </div>
                <div class="index-instructions width-60">As always:</div>
-              <div class="index-instructions width-50">Cards give fewer and fewer points every turn, whether you click on them or not. However, there is a fixed, shared chance that a card will reset.</div>
+              <div class="index-instructions width-50">Cards give fewer and fewer points every turn, whether you click on them or not. Cards reset to a new high, usually at different times, but with a fixed, shared probability.</div>
              <div class="button-group">
                 <button id="backButton38" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton38" class="move-screen-button button enabled">Next</button>
@@ -962,7 +962,7 @@
                   </div>
               </div>
               <div class="check">
-                  <div id="2_P3" class="question">I will always see how many points another player got throughout <span class="blue-coloured">an entire</span> round.</div>
+                  <div id="2_P3" class="question">Every 2 turns, I will see how many points another player got throughout <span class="blue-coloured">an entire</span> round.</div>
                   <div class="answers">
                       <label>True <input type="radio" name="question-2" value="true"></label>
                       <label> False <input type="radio" name="question-2" value="false"></label>
@@ -1279,7 +1279,7 @@
               </div>
                <div class="index-instructions width-60">As always:</div>
               <div class="index-instructions width-60">The number of points each card gives reduces every turn, whether you click on the card or not.</div>
-              <div class="index-instructions width-60 blue-coloured">Your bonus is affected by the number of points you find.</div>
+              <div class="index-instructions width-60 blue-coloured">Your performance score is affected by the number of points you find.</div>
              <div class="button-group">
                 <button id="backButton46" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton46" class="move-screen-button button enabled">Next</button>
@@ -1364,7 +1364,7 @@
             </div>
             <div class="index-instructions">Great! We are ready to play.</div>
             <div class="index-instructions width-60">Training is over. Everything has been reset. From now on, the rounds matter.</div>
-            <div class="index-instructions blue-coloured width-60">IMPORTANT: In this stage, your bonus is determined by your score only.</div>
+            <div class="index-instructions blue-coloured width-60">IMPORTANT: In this stage, your performance score is determined by your score only.</div>
             <div class="index-instructions">When you are ready, click Play to begin.</div>
             <div class="button-group">
                 <button id="nextButton48" class="move-screen-button button enabled">Play</button>

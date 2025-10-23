@@ -841,7 +841,7 @@ function loadInstructions7_P3() {
 
 function loadInstructions8_P3() {
     buttonToNewPage('backButton38','INSTRUCTIONS7_P3');
-    buttonToNewPage('nextButton38','INSTRUCTIONS9_P3');
+    buttonToNewPage('nextButton38','INSTRUCTIONS10_P3');
 }
 
 function loadInstructions9_P3() {
@@ -2412,6 +2412,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
     const size   = Math.min(computeSmallSize(1, rowWrapper), 150);
     const smallSize = Math.min(computeSmallSize(historyRows, historyRowWrapper), 150);
     var imFileName = targetName.replace(/\s+/g, '-');
+    const barLabelName = targetName.replace(' Player', '');
     comparisonTargetIm.src = `./static/${imFileName}-desc2.png`;
 
     // — initialize the chart —
@@ -2460,7 +2461,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
           .attr("x", "45%")
           .attr("dy", "0.35em")
           .attr("font-size", "14px")
-          .text(targetName);
+          .text(barLabelName);
         svgChart.append("text")                  // Max label (right side)
           .attr("x", "100%")
           .attr("y", height + 15)
@@ -2490,7 +2491,7 @@ function loadPhase4(numberOfMoves, numberOfRounds, comparisonFrequency, training
     x = svgChart.node().xScale;
     fillBar = svgChart.node().fillBar;
     barLabel = svgChart.node().barLabel;
-    barLabel.text(targetName); // Reset
+    barLabel.text(barLabelName); // Reset
 
     compareInfoBox.classList.add("gone");
     compareInfoBox.style.cursor = 'pointer';
@@ -2913,11 +2914,7 @@ function loadCheck() {
 
       setTimeout(() => {
         if (wrongCount === 0) {
-          submitButton.innerHTML = 'Next';
-          submitButton.classList.remove('disabled');
-          submitButton.disabled = false;
-          submitButton.style.cursor = 'pointer';
-          buttonToNewPage('check-next', 'INSTRUCTIONS11');
+          showPage('INSTRUCTIONS11');
         } else if (wrongCount > 1) {
           submitButton.innerHTML = 'Back';
           submitButton.classList.remove('disabled');
@@ -3040,11 +3037,7 @@ function loadCheck_P3() {
 
       setTimeout(() => {
         if (wrongCount_P3 === 0) {
-          submitButton.innerHTML = 'Next';
-          submitButton.classList.remove('disabled');
-          submitButton.disabled = false;
-          submitButton.style.cursor = 'pointer';
-          buttonToNewPage('checkNext_P3', 'INSTRUCTIONS11_P3');
+          showPage('INSTRUCTIONS11_P3');
         } else if (wrongCount_P3 > 1) {
           submitButton.innerHTML = 'Back';
           submitButton.classList.remove('disabled');
@@ -3167,11 +3160,7 @@ function loadCheck_P4() {
 
       setTimeout(() => {
         if (wrongCount_P4 === 0) {
-          submitButton.innerHTML = 'Next';
-          submitButton.classList.remove('disabled');
-          submitButton.disabled = false;
-          submitButton.style.cursor = 'pointer';
-          buttonToNewPage('checkNext_P4', 'INSTRUCTIONS8_P4');
+          showPage('INSTRUCTIONS8_P4');
         } else if (wrongCount_P4 > 1) {
           submitButton.innerHTML = 'Back';
           submitButton.classList.remove('disabled');
@@ -3254,7 +3243,7 @@ function loadSelectObservationTarget() {
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = ''; // Clear existing rows
 
-    playerNames = ['Random Player','Lefty Player','Expert Player']
+    playerNames = ['Lefty Player','Random Player','Expert Player']
     if (currentPlayer == 1) {
       const numOtherPlayers = 3;
       for (let i = 0; i < numOtherPlayers; i++) {
@@ -3265,7 +3254,7 @@ function loadSelectObservationTarget() {
               characteristic: characteristics[i % characteristics.length]
           });
       }
-      shuffleArray(players);
+      //shuffleArray(players);
       //players.reverse();
     }
 
