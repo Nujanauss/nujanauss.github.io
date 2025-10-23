@@ -3239,7 +3239,7 @@ function loadSelectObservationTarget() {
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = ''; // Clear existing rows
 
-    playerNames = ['Lefty Player','Random Player','Expert Player']
+    playerNames = ['Random Player','Lefty Player','Expert Player']
     if (currentPlayer == 1) {
       const numOtherPlayers = 3;
       for (let i = 0; i < numOtherPlayers; i++) {
@@ -3250,7 +3250,13 @@ function loadSelectObservationTarget() {
               characteristic: characteristics[i % characteristics.length]
           });
       }
-      //shuffleArray(players);
+      shuffleArray(players);
+      // Move "Lefty Player" to the front after shuffling
+      const leftyIndex = players.findIndex(p => p.name === 'Lefty Player');
+      if (leftyIndex !== -1) {
+        const [lefty] = players.splice(leftyIndex, 1);
+        players.unshift(lefty);
+      }
       //players.reverse();
     }
 
