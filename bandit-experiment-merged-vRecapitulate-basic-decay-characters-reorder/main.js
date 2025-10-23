@@ -2012,7 +2012,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
       }
       let otherScoreSinceLastComp = 0;
 
-      const round = phase1Round + phase3Round + (phase4Round - currentPlayer);
+      const round = phase1Round + phase3Round + (Math.floor(settings.numberOfRounds / 7) * (currentPlayer-1));
       for (let i = 0; i < comparisonFrequency; i++) {
         const t = trial - i;
         let reward = agent[`round_${round}`]?.[t]?.reward || 0;
@@ -2244,11 +2244,26 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
         .duration(1000)
         .attr("x", 50 - newW + "%")
         .attr("width", newW + "%");
-      } else {
+      } else if (value > 0) {
         fillBar.transition()
         .duration(1000)
         .attr("x", 50 + "%")
         .attr("width", newW + "%");
+      } else { // value=0
+        const currentX = parseFloat(fillBar.attr("x"));
+        if (currentX === 50) {
+          fillBar.transition()
+            .duration(150)
+            .attr("x", 60 + "%")
+            .transition()
+            .duration(300)
+            .attr("x", "50%");
+        } else {
+          fillBar.transition()
+            .duration(1000)
+            .attr("x", "50%")
+            .attr("width", newW + "%");
+        }
       }
 
       let lx, lanchor, color;
@@ -3218,6 +3233,8 @@ function loadScoreDisplay_P3() {
 function loadScoreDisplay_P3_WRONG() {
     document.getElementById('target7_P3_wrong').innerHTML = targetName;
     document.getElementById('target7_P3_2_wrong').innerHTML = targetName;
+    document.getElementById('target7_P3_3_wrong').innerHTML = targetName;
+    document.getElementById('target7_P3_4_wrong').innerHTML = targetName;
     buttonToNewPage('nextButtonDisp_P3_WRONG','TRAIN_P3');
 }
 

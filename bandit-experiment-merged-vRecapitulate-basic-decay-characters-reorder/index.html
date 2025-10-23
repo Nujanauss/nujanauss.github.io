@@ -437,7 +437,7 @@
             <div class="index-instructions">Great! We are ready to play.</div>
             <div class="index-instructions blue-coloured width-60">Training is over. Everything has been reset. From now on, the rounds matter.</div>
             <div class="index-instructions">There will now be <span id="numberRoundsINSTR11">6</span> rounds of <span id="numberTurnsINSTR11">12</span> turns each.</div>
-            <div class="index-instructions width-60">When you are ready, click Play to start. Once this stage has ended, we will ask you to rate your performance.</div>
+            <div class="index-instructions width-60">When you are ready, click Play to start.</div>
             <div class="button-group">
                 <button id="nextButton11" class="move-screen-button button enabled">Play</button>
             </div>
@@ -765,7 +765,7 @@
               <div class="index-instructions width-60">To do this, first, click on <span id="comparisonFreqINSTR4_P3">12</span> of the cards.</div>
               <div class="index-instructions width-60">Then you will see how many more or less points <span id="target4_P3">Player A</span> found over the same two turns playing with the SAME cards.</div>
               <div class="index-instructions width-60"><span id="target4_P3_2">Player A</span> may have selected the same cards as you, or different cards. Your job is to infer which cards they did select to get their score.</div>
-              <div class="index-instructions width-60">If <span id="target4_P3_3">Player A</span> found the same points as you in the previous two turns, they probably selected the same cards as you in the previous two turns.</div> <div class="index-instructions width-60">If <span id="target4_P3_4">Player A</span> found more or less points than you in the previous two turns, they probably selected different cards to you.</div>
+              <div class="index-instructions width-60">If you see that <span id="target4_P3_3">Player A</span> got the same score as you in the previous two turns, they probably selected the same cards as you in those turns.</div> <div class="index-instructions width-60">If <span id="target4_P3_4">Player A</span> got a higher or lower score than you in the previous two turns, they probably selected different cards to you in those turns.</div>
               <div class="button-group">
                 <button id="backButton34" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton34" class="move-screen-button button enabled">Next</button>
@@ -783,8 +783,7 @@
               </div>
               <div class="index-instructions width-60">It will not always be possible to infer exactly which cards the other player selected.</div>
               <div class="index-instructions width-60">In these cases, make the best inference you can by thinking about what the cards were most likely to give.</div>
-              https://nujanauss.github.io/bandit-experiment-merged-vRecapitulate-basic-decay-characters-reorder/?PROLIFIC_PID=test
-              <div class="index-instructions width-60">The points you receive from the cards will not affect your performance. Instead, your performance score is determined by the accuracy of your inferences.</div>
+              <div class="index-instructions width-60 blue-coloured">IMPORTANT: The points you receive from the cards will not affect your performance. Instead, your performance score is determined by the accuracy of your inferences.</div>
               <div class="index-instructions">Let's see how this looks with some training.</div>
              <div class="button-group">
                 <button id="backButton35" class="move-screen-button button enabled">Back</button>
@@ -874,7 +873,9 @@
         <div class="wrapper">
             <aside class="inter">
               <div class="index-instructions width-100">Oops! That wasn't quite right.</div>
-              <div class="index-instructions width-60">Since <span id="target7_P3_wrong">Player A</span> received the same number of points as you, the most likely cards <span id="target7_P3_2_wrong">Player A</span> selected were the same as yours.</div>
+              <div class="index-instructions width-60"><span id="target7_P3_wrong">Player A</span> just selected two cards and received some points, which you see in the top box.</div>
+              <div class="index-instructions width-100">You selected two cards. These same cards were available to <span id="target7_P3_2_wrong">Player A</span>.</div>
+              <div class="index-instructions width-60">Since <span id="target7_P3_3_wrong">Player A</span> received the same number of points as you (have a look at the top box again!), the most likely cards <span id="target7_P3_4_wrong">Player A</span> selected to get those points were exactly the same as the cards you selected!</div>
               <div class="index-instructions width-60">Let's try again.</div>
               <div class="index-instructions">Click Play to proceed.</div>
               <div class="button-group">
@@ -910,7 +911,8 @@
                 <div class="progress-bar" id="page8"></div>
               </div>
                <div class="index-instructions width-60">As always:</div>
-              <div class="index-instructions width-50">Cards give fewer and fewer points every turn, whether you click on them or not. Cards reset to a new high, usually at different times, but with a fixed, shared probability.</div>
+               <div class="index-instructions width-50">Cards give fewer and fewer points every turn, whether you click on them or not.</div>
+               <div class="index-instructions width-50">Cards reset to a new high, usually at different times, but with a fixed, shared probability.</div>
              <div class="button-group">
                 <button id="backButton38" class="move-screen-button button enabled">Back</button>
                 <button id="nextButton38" class="move-screen-button button enabled">Next</button>
