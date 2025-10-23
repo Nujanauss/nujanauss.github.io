@@ -2181,7 +2181,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
       square.classList.remove(`reward${x}`);
       square.classList.add(`reward${x}-clicked`);
-      reward = Math.round(settings.chanceToWin[((phase1Round + phase3Round + (phase4Round - currentPlayer) - 1) * settings.moves + currentTrial)][0][x] * 100);
+      reward = Math.round(settings.chanceToWin[(phase1Round + phase3Round + (Math.floor(settings.numberOfRounds / 7) * (currentPlayer-1)) - 1) * settings.moves + currentTrial)][0][x] * 100);
       if (training) {
         reward = (numberOfMoves - currentTrial) * 10;
       }
@@ -2250,15 +2250,15 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
         .attr("x", 50 + "%")
         .attr("width", newW + "%");
       } else { // value=0
-        const currentX = parseFloat(fillBar.attr("x"));
-        if (currentX === 50) {
+        const currentW = parseFloat(fillBar.attr("width"));
+        if (currentW === 50) {
           fillBar.transition()
             .duration(150)
             .attr("x", "50%")
-            .attr("width", "60%")
+            .attr("width", "10%")
             .transition()
             .duration(850)
-            .attr("width", "50%");
+            .attr("width", "0%");
         } else {
           fillBar.transition()
             .duration(1000)
