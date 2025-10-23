@@ -812,6 +812,10 @@ function loadInstructions3_P3_REPEAT() {
 
 function loadInstructions4_P3() {
     document.getElementById('target4_P3').innerHTML = targetName;
+    document.getElementById('target4_P3_2').innerHTML = targetName;
+    document.getElementById('target4_P3_3').innerHTML = targetName;
+    document.getElementById('target4_P3_4').innerHTML = targetName;
+    document.getElementById('target4_P3_5').innerHTML = targetName;
     document.getElementById('comparisonFreqINSTR4_P3').innerHTML = settings.comparisonFrequency;
     buttonToNewPage('backButton34','INSTRUCTIONS3_P3');
     buttonToNewPage('nextButton34','INSTRUCTIONS5_P3');
