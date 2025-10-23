@@ -2255,7 +2255,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
           fillBar.transition()
             .duration(150)
             .attr("x", "50%")
-            .attr("width", "60%");
+            .attr("width", "60%")
             .transition()
             .duration(850)
             .attr("width", "50%");
