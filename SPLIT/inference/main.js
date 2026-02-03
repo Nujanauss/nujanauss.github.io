@@ -17,29 +17,35 @@ const ordinals = [
   'ninety-third', 'ninety-fourth', 'ninety-fifth', 'ninety-sixth', 'ninety-seventh',
   'ninety-eighth', 'ninety-ninth', 'one hundredth'
 ];
-const MB3 = 4;
+const MB3 = 3;
 
 let currentPage;
 let settings;
 let preferenceAgent;
 let randomAgent;
-var phase1Round              = 1;
-var phase3Round              = 1;
-var phase4Round              = 1;
-var check1Entered            = 0;
-var check3Entered            = 0;
-let scoresSoFar              = [];
-let maxPossibleScoreSoFar    = [];
-let scoresSoFar_P3           = [];
-let maxPossibleScoreSoFar_P3 = [];
-let selfRating               = 0;
-let currentPlayer            = 1;
-let players                  = [];
-let training1Over            = false;
-let training2Over            = false;
-let training3Over            = false;
-let trainingP21Over          = false;
-let ratedSelfOnce            = false;
+let numberInferenceStageRnds;
+const numberOfTrainingRnds    = 2
+var phase1Round               = 1;
+var phase3Round               = 1;
+var phase4Round               = 1;
+var check1Entered             = 0;
+var check3Entered             = 0;
+var testedOnceExpertBehaviour = false;
+var testedOnceRandomBehaviour = false;
+var testedOnceLeftyBehaviour  = false;
+var failedInferenceTaskTest   = false;
+let scoresSoFar               = [];
+let maxPossibleScoreSoFar     = [];
+let scoresSoFar_P3            = [];
+let maxPossibleScoreSoFar_P3  = [];
+let selfRating                = 0;
+let currentPlayer             = 1;
+let players                   = [];
+let training1Over             = false;
+let training2Over             = false;
+let training3Over             = false;
+let trainingP21Over           = false;
+let ratedSelfOnce             = false;
 
 let targetTable;
 var targetName = 'Random Player';
@@ -283,7 +289,7 @@ function showPage(pageId) {
             case 'GAME1':
                 loadPhase1(
                   settings.moves,
-                  2,
+                  numberOfTrainingRnds,
                   10,
                   settings.comparisonFrequency,
                   false,
@@ -358,7 +364,7 @@ function showPage(pageId) {
             case 'GAME3':
                 loadPhase3(
                   settings.moves,
-                  3,
+                  numberInferenceStageRnds,
                   settings.comparisonFrequency,
                   false,
                   {
@@ -391,6 +397,9 @@ function showPage(pageId) {
                 break;
             case 'DISP_P2':
                 loadScoreDisplay_P2();
+                break;
+            case 'DISP_P2_2':
+                loadScoreDisplay_P2_2();
                 break;
             case 'DISP_P3':
                 loadScoreDisplay_P3();
@@ -466,21 +475,48 @@ async function loadIndex() {
     const csvText = await response.text();
     const files = csvText.split(',').map(file => file.trim());
 
-    const settingsJSON = await loadGameSettings(files);
+    // -----------------------------
+    // 1. Group files by ID
+    // -----------------------------
+    const groups = {};
+
+    files.forEach(file => {
+      const match = file.match(/_(.+)\.json$/);
+      if (!match) return;
+
+      const id = match[1];
+      if (!groups[id]) groups[id] = [];
+      groups[id].push(file);
+    });
+
+    const groupIds = Object.keys(groups);
+    if (groupIds.length === 0) {
+      throw new Error('No valid file groups found');
+    }
+
+    // -----------------------------
+    // 2. Randomly select ONE group
+    // -----------------------------
+    const selectedId =
+      groupIds[Math.floor(Math.random() * groupIds.length)];
+
+    const selectedFiles = groups[selectedId];
+    
+    const settingsJSON = await loadGameSettings(selectedFiles);
     sessionStorage.setItem('gameSettings', JSON.stringify(settingsJSON));
 
-    const rationalJSON = await loadAgent(files, 'oracle');
+    const rationalJSON = await loadAgent(selectedFiles, 'oracle');
     sessionStorage.setItem('rationalAgent', JSON.stringify(rationalJSON));
-    const randomJSON = await loadAgent(files, 'random');
+    const randomJSON = await loadAgent(selectedFiles, 'random');
     sessionStorage.setItem('randomAgent', JSON.stringify(randomJSON));
-    const leftyJSON = await loadAgent(files, 'lefty');
+    const leftyJSON = await loadAgent(selectedFiles, 'lefty');
     sessionStorage.setItem('leftyAgent', JSON.stringify(leftyJSON));
 
-    async function loadGameSettings(files) {
-      const settingsFiles = files.filter(file => file.startsWith('settings_') && file.endsWith('.json'));
+    async function loadGameSettings(selectedFiles) {
+      const settingsFiles = selectedFiles.filter(file => file.startsWith('settings_') && file.endsWith('.json'));
 
       if (settingsFiles.length === 0) {
-        throw new Error('No JSON settings files found');
+        throw new Error('No JSON settings selectedFiles found');
       }
 
       while (settingsFiles.length > 0) { // Try to find file randomly or run out of options
@@ -500,7 +536,7 @@ async function loadIndex() {
           settingsFiles.splice(randomIndex, 1);
         }
       }
-      throw new Error('No valid JSON settings files found');
+      throw new Error('No valid JSON settings selectedFiles found');
     }
 
     async function loadAgent(files, type) {
@@ -607,41 +643,33 @@ function loadDataProtection() {
 
 function loadInstructions1() {
     let prolificID = get_prolific_id();
-    //if (prolificID === 0) {
-    //  return;
-    //}
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //create_participant(prolificID).then(id => {
-    //  if (!id || typeof id !== 'string' || id.trim() === '') {
-    //    showPage('BEFORE');
-    //    return;
-    //  }
-    //  var playerData = {
-    //    "player": {
-    //        "prolificID": id,
-    //    }
-    //  };
-    //  sessionStorage.setItem('playerData', JSON.stringify(playerData));
-    //}).catch(error => {
-    //  showPage('NOPID');
-    //});
+    if (prolificID === 0) {
+      return;
+    }
+
+    create_participant(prolificID).then(id => {
+      if (!id || typeof id !== 'string' || id.trim() === '') {
+        showPage('BEFORE');
+        return;
+      }
+      var playerData = {
+        "player": {
+            "prolificID": id,
+        }
+      };
+      sessionStorage.setItem('playerData', JSON.stringify(playerData));
+    }).catch(error => {
+      showPage('NOPID');
+    });
 
     settings = getGameSettings().vars;
+    numberInferenceStageRnds = (settings.numberOfRounds - 2) / 3;
     rationalAgent = getAgent('rationalAgent');
     randomAgent = getAgent('randomAgent');
     leftyAgent = getAgent('leftyAgent');
 
     const wordCnt = countWordsFromHTML(document.getElementById('INSTRUCTIONS1'));
     buttonToNewPage('nextButton1', 'INSTRUCTIONS2', wordCnt);
-
-    // DELETE BELOW
-    var playerData = {
-      "player": {
-          "prolificID": prolificID,
-      }
-    };
-    sessionStorage.setItem('playerData', JSON.stringify(playerData));
-    // DELETE ABOVE
 }
 
 
@@ -668,14 +696,11 @@ function loadInstructions5() {
 }
 
 function loadInstructions6() {
-  document.getElementById('comparisonFreqINSTR6').innerHTML = settings.comparisonFrequency;
-  document.getElementById('comparisonFreqINSTR6_2').innerHTML = settings.comparisonFrequency;
   const wordCnt = countWordsFromHTML(document.getElementById('INSTRUCTIONS6'));
   buttonToNewPage('nextButton6', 'INSTRUCTIONS7', wordCnt);
 }
 
 function loadInstructions7() {
-  document.getElementById('comparisonFreqINSTR7').innerHTML = settings.comparisonFrequency;
   const wordCnt = countWordsFromHTML(document.getElementById('INSTRUCTIONS7'));
   buttonToNewPage('backButton7', 'INSTRUCTIONS6', wordCnt);
   buttonToNewPage('trainingButton3', 'TRAIN3', wordCnt);
@@ -701,7 +726,7 @@ function loadInstructions10() {
 
 function loadInstructions11() {
   document.getElementById('numberTurnsINSTR11').innerHTML = settings.moves;
-  document.getElementById('numberRoundsINSTR11').innerHTML = Math.floor(settings.numberOfRounds / 7);
+  document.getElementById('numberRoundsINSTR11').innerHTML = numberOfTrainingRnds;
   const wordCnt = countWordsFromHTML(document.getElementById('INSTRUCTIONS11'));
   buttonToNewPage('nextButton11', 'GAME1', wordCnt);
 }
@@ -782,7 +807,6 @@ function loadInstructions2_P3_REPEAT() {
 
 function loadInstructions3_P3() {
   document.getElementById('target3_P3').innerHTML = targetName;
-  document.getElementById('comparisonFreqINSTR3_P3').innerHTML = settings.comparisonFrequency;
   document.getElementById('target3_P3_2').innerHTML = targetName;
   const wordCnt = countWordsFromHTML(document.getElementById('INSTRUCTIONS3_P3'));
   buttonToNewPage('backButton33','INSTRUCTIONS2_P3', wordCnt);
@@ -802,7 +826,6 @@ function loadInstructions4_P3() {
   document.getElementById('target4_P3_2').innerHTML = targetName;
   document.getElementById('target4_P3_3').innerHTML = targetName;
   document.getElementById('target4_P3_4').innerHTML = targetName;
-  document.getElementById('comparisonFreqINSTR4_P3').innerHTML = settings.comparisonFrequency;
   const wordCnt = countWordsFromHTML(document.getElementById('INSTRUCTIONS4_P3'));
   buttonToNewPage('backButton34','INSTRUCTIONS3_P3', wordCnt);
   buttonToNewPage('nextButton34','INSTRUCTIONS5_P3', wordCnt);
@@ -815,8 +838,6 @@ function loadInstructions5_P3() {
 }
 
 function loadInstructions6_P3() {
-  document.getElementById('comparisonFreqINSTR6_P3').innerHTML = settings.comparisonFrequency;
-  document.getElementById('comparisonFreqINSTR6_P3_2').innerHTML = settings.comparisonFrequency;
   document.getElementById('target6_P3').innerHTML = targetName;
   document.getElementById('target6_P3_2').innerHTML = targetName;
   document.getElementById('target6_P3_3').innerHTML = targetName;
@@ -826,6 +847,11 @@ function loadInstructions6_P3() {
 }
 
 function loadInstructions7_P3() {
+  if (failedInferenceTaskTest) {
+    document.getElementById('intro7_P3').innerHTML = "Oops! That was not quite right."
+  } else {
+    document.getElementById('intro7_P3').innerHTML = "Great! That's right."
+  }
   document.getElementById('target7_P3').innerHTML = targetName;
   document.getElementById('target7_P3_2').innerHTML = targetName;
   document.getElementById('target7_P3_3').innerHTML = targetName;
@@ -853,6 +879,8 @@ function loadInstructions10_P3() {
 }
 
 function loadInstructions11_P3() {
+  document.getElementById('numberTurnsINSTR11_P3').innerHTML = settings.moves;
+  document.getElementById('numberRoundsINSTR11_P3').innerHTML = numberInferenceStageRnds;
   const wordCnt = countWordsFromHTML(document.getElementById('INSTRUCTIONS11_P3'));
   buttonToNewPage('nextButton311','GAME3', wordCnt);
 }
@@ -1013,6 +1041,18 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
       scoreInfoBox.classList.add("gone");
     }
 
+    if (training) {
+      const numberFromId = topInstructionId.match(/\d+/);
+      const extractedNumber = parseInt(numberFromId[0], 10)-1;
+      if (extractedNumber === 0) {
+        topInstruction.innerHTML = 'Click on the left card'
+      } else if (extractedNumber === 1) {
+        topInstruction.innerHTML = 'Click on the central card four times'
+      } else if (extractedNumber === 2) {
+        topInstruction.innerHTML = 'Click on the right card six times'
+      }
+    }
+
     // Create one tile (adapted from your createSquare + click-handler)
     function createSquare(x) {
       const square = document.createElement('div');
@@ -1065,7 +1105,6 @@ async function loadPhase1(numberOfMoves, numberOfRounds, historyRowNum, comparis
       for (let x = 0; x < cols; x++) {
         const sq = createSquare(x);
         sub.appendChild(sq);
-        topInstructionId
         if (training) {
             const numberFromId = topInstructionId.match(/\d+/);
             const extractedNumber = parseInt(numberFromId[0], 10)-1;
@@ -1568,9 +1607,25 @@ async function loadPhase2(numberOfMoves, numberOfRounds, historyRowNum, training
           }
           saveData(decision, timeStamps);
 
-          const targetPage = correct
-            ? nextPageId
-            : 'DISP_P2';
+          var targetPage = 'DISP_P2';
+
+          const testedFlags = {
+            Random: testedOnceRandomBehaviour,
+            Lefty: testedOnceLeftyBehaviour,
+            Expert: testedOnceExpertBehaviour
+          };
+          const behaviourFlag = targetName.includes('Random') ? 'Random' : targetName.includes('Lefty') ? 'Lefty' : 'Expert';
+
+          if (correct) {
+            targetPage = nextPageId;
+          } else if (testedFlags[behaviourFlag]) {
+            targetPage = 'DISP_P2_2';
+          }
+
+          if (behaviourFlag === 'Random') testedOnceRandomBehaviour = true;
+          if (behaviourFlag === 'Lefty') testedOnceLeftyBehaviour = true;
+          if (behaviourFlag === 'Expert') testedOnceExpertBehaviour = true;
+
           return buttonToNewPage(buttonId, targetPage);
         }
       }, 900);
@@ -1971,7 +2026,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
       }
       let otherScoreSinceLastComp = 0;
 
-      const round = phase1Round + phase3Round + (Math.floor(settings.numberOfRounds / 7) * (currentPlayer-1));
+      const round = phase1Round + phase3Round;
       for (let i = 0; i < comparisonFrequency; i++) {
         const t = trial - i;
         let reward = agent[`round_${round}`]?.[t]?.reward || 0;
@@ -2132,7 +2187,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
     function handleClick(square) {
       if (square.style.pointerEvents === 'none') return;
 
-      const round = phase1Round + phase3Round + (Math.floor(settings.numberOfRounds / 7) * (currentPlayer-1))
+      const round = phase1Round + phase3Round
       const x = +square.dataset.x;
       cardSelected[currentTrial] = x;
       timeStampsSelected[currentTrial] = new Date().toISOString();
@@ -2142,7 +2197,7 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
 
       square.classList.remove(`reward${x}`);
       square.classList.add(`reward${x}-clicked`);
-      reward = Math.round(settings.chanceToWin[(phase1Round + phase3Round + (Math.floor(settings.numberOfRounds / 7) * (currentPlayer-1)) - 1) * settings.moves + currentTrial][0][x] * 100);
+      reward = Math.round(settings.chanceToWin[(round - 1) * settings.moves + currentTrial][0][x] * 100);
       if (training) {
         reward = (numberOfMoves - currentTrial) * 10;
       }
@@ -2307,10 +2362,16 @@ function loadPhase3(numberOfMoves, numberOfRounds, comparisonFrequency, training
         Array.from(rowWrapper.querySelector(`.subrow`).children).forEach(sq => {sq.classList.add('grey');});
         let targetPage = 'DISP_P3';
         if ((phase3Round % numberOfRounds) === 0) {
-          targetPage = (training && correctCount < 2)
+          targetPage = (training && correctCount < 2 && !failedInferenceTaskTest)
             ? 'DISP_P3_WRONG'
             : nextPageId;
+          if (training && correctCount < 2) {
+            failedInferenceTaskTest = true;
+          } else if (training) {
+            failedInferenceTaskTest = false;
+          }
         }
+
         buttonToNewPage(buttonId, targetPage);
       }
     }
@@ -2426,12 +2487,10 @@ function loadCheck() {
       }
 
       setTimeout(() => {
-        if (wrongCount > 1) {
-          submitButton.classList.add('gone');
-          if (check1Entered < 5) {
+        if (wrongCount > 0) {
+          if (check1Entered === 1) {
+            submitButton.classList.add('gone');
             buttonToNewPage('check-next', 'INSTRUCTIONS2');
-          } else {
-            buttonToNewPage('check-next', 'RESCINDED');
           }
         }
       }, 400);
@@ -2440,12 +2499,16 @@ function loadCheck() {
         showPage('INSTRUCTIONS11');
       }
       document.getElementById('4').style.marginBottom = '0px';
-      if (wrongCount == 1) {
-        document.getElementById('error-msg').classList.remove('gone');
+      if (check1Entered === 1) {
+        if (wrongCount === 1) {
+          document.getElementById('error-msg').classList.remove('gone');
+        } else {
+          questions.forEach(question => question.querySelector('.question').style.color = '#333');
+          document.getElementById('error-msg').classList.add('gone');
+          document.getElementById('error-msg2').classList.remove('gone');
+        }
       } else {
-        questions.forEach(question => question.querySelector('.question').style.color = '#333');
-        document.getElementById('error-msg').classList.add('gone');
-        document.getElementById('error-msg2').classList.remove('gone');
+        document.getElementById('error-msg').classList.remove('gone');
       }
 
       let checkQuestions = {
@@ -2548,11 +2611,9 @@ function loadCheck_P3() {
 
       setTimeout(() => {
         if (wrongCount_P3 > 1) {
-          submitButton.classList.add('gone');
-          if (check3Entered < 5) {
+          if (check3Entered === 1) {
+            submitButton.classList.add('gone');
             buttonToNewPage('checkNext_P3', 'INSTRUCTIONS3_P3');
-          } else {
-            buttonToNewPage('check-next', 'RESCINDED');
           }
         }
       }, 400);
@@ -2561,13 +2622,18 @@ function loadCheck_P3() {
         showPage('INSTRUCTIONS11_P3');
       }
       document.getElementById('5_P3').style.marginBottom = '0px';
-      if (wrongCount_P3 == 1) {
-        document.getElementById('error-msg_P3').classList.remove('gone');
+      if (check3Entered === 1) {
+        if (wrongCount_P3 === 1) {
+          document.getElementById('error-msg_P3').classList.remove('gone');
+        } else {
+          questions.forEach(question => question.querySelector('.question').style.color = '#333');
+          document.getElementById('error-msg_P3').classList.add('gone');
+          document.getElementById('error-msg2_P3').classList.remove('gone');
+        }
       } else {
-        questions.forEach(question => question.querySelector('.question').style.color = '#333');
-        document.getElementById('error-msg_P3').classList.add('gone');
-        document.getElementById('error-msg2_P3').classList.remove('gone');
+        document.getElementById('error-msg_P3').classList.remove('gone');
       }
+
 
       let checkQuestions = {
         answers: answers,
@@ -2585,14 +2651,22 @@ function loadScoreDisplay() {
     buttonToNewPage('nextButtonDisp','GAME1');
 }
 
+function loadScoreDisplay_P2_2() {
+    character = targetName.includes('Random') ? characteristics[0] : targetName.includes('Lefty') ? characteristics[1] : characteristics[2];
+    document.getElementById('target_disp_P2_2').innerHTML = targetName;
+    document.getElementById('player_description_2').innerHTML = character;
+    const targetPage = (currentPlayer > 1) ? 'INSTRUCTIONS2_P3_REPEAT' : 'INSTRUCTIONS3_P3';
+    buttonToNewPage('nextButtonDisp_P2_2',targetPage);
+}
+
 function loadScoreDisplay_P2() {
     document.getElementById('target_disp_P2').innerHTML = targetName;
     buttonToNewPage('nextButtonDisp_P2','INSTRUCTIONS4_P2');
 }
 
 function loadScoreDisplay_P3() {
-    document.getElementById('round-ordinal_P3').innerHTML = ordinals[phase3Round%(Math.floor(settings.numberOfRounds / 7))-1];
-    document.getElementById('round-next_P3').innerHTML = (phase3Round%(Math.floor(settings.numberOfRounds / 7))+1);
+    document.getElementById('round-ordinal_P3').innerHTML = ordinals[phase3Round-1];
+    document.getElementById('round-next_P3').innerHTML = phase3Round+1;
     phase3Round++;
     buttonToNewPage('nextButtonDisp_P3','GAME3');
 }
@@ -2602,13 +2676,14 @@ function loadScoreDisplay_P3_WRONG() {
     document.getElementById('target7_P3_2_wrong').innerHTML = targetName;
     document.getElementById('target7_P3_3_wrong').innerHTML = targetName;
     document.getElementById('target7_P3_4_wrong').innerHTML = targetName;
-    buttonToNewPage('nextButtonDisp_P3_WRONG','TRAIN_P3');
+    failedInferenceTaskTest = true;
+    buttonToNewPage('nextButtonDisp_P3_WRONG', 'TRAIN_P3');
 }
 
 function loadScoreDisplay_P4() {
     document.getElementById('round-score_P4').innerHTML = scoresSoFar_P4.at(-1);
-    document.getElementById('round-ordinal_P4').innerHTML = ordinals[phase4Round%(Math.floor(settings.numberOfRounds / 7))-1];
-    document.getElementById('round-next_P4').innerHTML = (phase4Round%(Math.floor(settings.numberOfRounds / 7))+1);
+    document.getElementById('round-ordinal_P4').innerHTML = ordinals[phase4Round%(numberInferenceStageRnds)-1];
+    document.getElementById('round-next_P4').innerHTML = (phase4Round%(numberInferenceStageRnds)+1);
     phase4Round++;
     buttonToNewPage('nextButtonDisp_P4','GAME4');
 }
@@ -2701,55 +2776,6 @@ function shuffleArray(array) {
     return array;
 }
 
-function loadPhase2Instr8() {
-    buttonToNewPage('nextButton28', 'PHASE2INSTR9');
-}
-
-
-function loadPhase2Instr9() {
-    document.getElementById('numberRound-Phase2').innerHTML = 3;
-    document.getElementById('changeRoundCount-Phase2').innerHTML = 1;
-    buttonToNewPage('backButton29', 'PHASE2INSTR8');
-    buttonToNewPage('nextButton29', 'PHASE2INSTR10');
-}
-
-function loadPhase2Instr10() {
-    buttonToNewPage('backButton210', 'PHASE2INSTR2');
-    buttonToNewPage('nextButton210', 'CHECK2');
-}
-
-function loadComparison2() {
-    const prolificID = JSON.parse(sessionStorage.getItem('playerData')).player.prolificID;
-    const nextButt = document.getElementById('nextButton8');
-    document.getElementById('username-generation').innerHTML = prolificID;
-    buttonToNewPage('backButtonCom2', 'DISP');
-    buttonToNewPage('nextButtonCom2', 'COMPARISON3');
-
-    nextButt.classList.add('disabled');
-    nextButt.disabled = true;
-    nextButt.style.cursor = 'not-allowed';
-    setTimeout(() => {
-        nextButt.classList.remove('disabled');
-        nextButt.classList.add('enabled');
-        nextButt.disabled = false;
-        nextButt.style.cursor = 'pointer';
-    }, 2000);
-}
-
-function loadComparison3() {
-    buttonToNewPage('backButtonCom3', 'COMPARISON2');
-    buttonToNewPage('nextButtonCom3', 'COMPARISON4');
-}
-
-function loadIntermediary() {
-    if (phase1Round <= settings.numberOfRounds) {
-        buttonToNewPage('rounder', 'GAME1');
-    } else {
-        document.getElementById('intermediary-text').innerHTML = "You have completed all the rounds. Thank you very much!";
-        document.getElementById('rounder').innerHTML = "Complete participation";
-        buttonToNewPage('rounder', 'THANKS');
-    }
-}
 
 function loadRate(otherRating, ids) {
     // — Get DOM ids —
@@ -2893,19 +2919,40 @@ function loadThanks_Pre() {
 }
 
 function loadThanks() {
-    let randomRound = Math.floor(Math.random() * scoresSoFar_P3.length);
-    let chosenScore = scoresSoFar_P3[randomRound];
-    let chosenMax = maxPossibleScoreSoFar_P3[randomRound];
+    let randomRound = Math.floor(Math.random() * scoresSoFar.length);
+    let chosenScore = scoresSoFar[randomRound];
+    let chosenMax = maxPossibleScoreSoFar[randomRound];
 
-    let percentageCorrect = Math.min(100, Math.round((chosenScore / chosenMax) * 100));
+    let percentageMax = Math.min(100, Math.round((chosenScore / chosenMax) * 100));
 
-    let bonus = true;
-    if (percentageCorrect < 80) {
-      document.getElementById('whether-bonus-paid').innerHTML = "Unfortunately, you didn't score enough in a random round to obtain a bonus this time."
-      bonus = false;
-    } else {
+    let bonusPossible = true;
+    if (percentageMax < 60 || isNaN(percentageMax) ) {
+      bonusPossible = false;
+    }
+
+    RANDOM_PLY_THR=50
+    EXPERT_PLY_THR=65
+    LEFTY_PLY_THR=75
+    let bonus = false;
+    if (bonusPossible) {
+      let randomRound = Math.floor(Math.random() * scoresSoFar_P3.length);
+      let chosenInferenceScore = scoresSoFar_P3[randomRound];
+      let percentageCorrect = Math.min(100, Math.round((chosenInferenceScore / settings.moves) * 100));
+      let chosenPlayer = players[Math.floor(randomRound / numberInferenceStageRnds)].name
+      if (chosenPlayer.includes("Random") && percentageCorrect > RANDOM_PLY_THR) {
+        bonus = true;
+      } else if (chosenPlayer.includes("Lefty") && percentageCorrect > LEFTY_PLY_THR) {
+        bonus = true;
+      } else if (chosenPlayer.includes("Expert") && percentageCorrect > EXPERT_PLY_THR) {
+        bonus = true;
+      }
+    }
+
+    if (bonus) {
       //let bonus = Math.min(MB3 * (chosenScore / chosenMax), MB3).toFixed(2);
       document.getElementById('player-score-max').innerHTML = '£' + MB3;
+    } else {
+      document.getElementById('whether-bonus-paid').innerHTML = "Unfortunately, you didn't score enough in a random round to obtain a bonus this time."
     }
 
     var genderSelect = document.getElementById('gender');
@@ -2951,7 +2998,7 @@ function loadFinal() {
     });
     send_complete(prolificID, JSON.stringify(data, null, 2));
     setTimeout(() => {
-        window.location = "https://app.prolific.com/submissions/complete?cc=C10ZGJNX";
+        window.location = "https://app.prolific.com/submissions/complete?cc=CVOY9TZU";
     }, 6000);
 }
 
@@ -3229,7 +3276,7 @@ function enableButton(btn) {
 // The backend URL is composed of a hostname (localhost for testing, kyblab2.etc
 // for running) and a port (which is specific to a particular experiment)
 // These should be set for each experiment
-const BACKEND_HOST = "http://kyblab2.tuebingen.mpg.de";
+const BACKEND_HOST = "https://kyblab2.tuebingen.mpg.de";
 const BACKEND_PORT = "8008";
 const BACKEND_URL = `${BACKEND_HOST}:${BACKEND_PORT}`;
 
