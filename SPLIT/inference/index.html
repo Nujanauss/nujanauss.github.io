@@ -15,7 +15,7 @@
           <aside class="inter">
             <div class="padding-50 font-30">Welcome!</div>
             <div class="index-instructions width-60">In this study, we are investigating people's decision making. We hope you enjoy participating.</div>
-            <div class="index-instructions width-60">The study will take about 40 minutes. You will be directed back to Prolific at the end.</div>
+            <div class="index-instructions width-60">The study will take about 30 minutes. You will be directed back to Prolific at the end.</div>
             <div class="index-instructions">Click Next to continue.</div>
           </aside>
           <div id="first-next">
@@ -136,7 +136,7 @@
               <div class="progress-bar" id="page1"></div>
             </div>
             <div class="index-instructions">This experiment has two stages.</div>
-            <div class="index-instructions">At each stage, you will be presented with three cards.</div>
+            <div class="index-instructions">In each stage, you will be presented with three cards.</div>
             <div class="index-instructions"><span class="blue-coloured">In the first stage, your task is to familiarise yourself with the cards.</span></div>
             <button id="nextButton1" class="button enabled">Next</button>
           </aside>
@@ -216,8 +216,6 @@
             <div class="index-instructions">Great! Clicking on a card will ALWAYS give you one or more points.</div>
             <div class="index-instructions width-70">Each card will usually give you a different number of points.</div>
             <div class="index-instructions width-70 blue-coloured">In general, cards give fewer and fewer points every turn, whether you click on them or not.</div>
-            <div class="index-instructions width-70">However, cards will reset to a new high at random times. This high will almost always be much larger than the card's current score. However, it need not be the highest score you've ever seen from that card.</div>
-            <div class="index-instructions width-70">The cards all have the same, fixed probability of resetting, and usually reset at different times.</div>
             <div class="button-group">
                 <button id="nextButton4" class="move-screen-button button enabled">Next</button>
             </div>
@@ -279,7 +277,10 @@
             <div class="progress-bar-container">
               <div class="progress-bar" id="page6"></div>
             </div>
-            <div class="index-instructions">Perfect! Now every <span id="comparisonFreqINSTR6">2</span> turns, we will show you how many points you scored in the last <span id="comparisonFreqINSTR6_2">2</span> turns.</div>
+            <div class=index-instructions>Perfect! Cards will give fewer and fewer points, whether you click on them or not.</div>
+            <div class="index-instructions blue-coloured">However, they will also reset to a new high at random times.</div>
+            <div class="index-instructions width-70">This high will usually be much larger than the card's current score, but not necessarily the highest ever.</div>
+            <div class="index-instructions width-70">The cards all have the same, fixed probability of resetting, and usually reset at different times.</div>
             <div class="button-group">
                 <button id="nextButton6" class="move-screen-button button enabled">Next</button>
             </div>
@@ -297,7 +298,7 @@
             <div class="index-instructions">Let's have another training round to see what that looks like.</div>
             <div class="index-instructions width-100">Click on the right card six times.</div>
             <div class="index-instructions width-60">Your history of card selections will be on the left, and your total score on the right.</div>
-            <div class="index-instructions width-60">Every <span id="comparisonFreqINSTR7">2</span> turns we will show you how many points you scored in a central box.</div>
+            <div class="index-instructions width-60">Every two turns we will show you how many points you scored in the last two turns in a central box.</div>
             <div class="index-instructions width-60 blue-coloured">Click on this central box to make it go away.</div>
             <div class="index-instructions">Click Train to continue.</div>
             <div class="button-group">
@@ -356,8 +357,8 @@
             <div class="progress-bar-container">
               <div class="progress-bar" id="page8"></div>
             </div>
-            <div class="index-instructions">Great! That is exactly how the familiarisation stage looks.</div>
-            <div class="index-instructions blue-coloured width-60">IMPORTANT: The chance that a card will reset to a new high score is fixed for all cards.</div>
+            <div class="index-instructions">Great! That is how the familiarisation stage looks.</div>
+            <div class="index-instructions blue-coloured width-60">IMPORTANT: The chance that a card will reset to a new high is fixed for all cards.</div>
             <div class="index-instructions">Any points you found during training are gone, and the cards have reset.</div>
             <div class="button-group">
                 <button id="nextButton8" class="move-screen-button button enabled">Next</button>
@@ -454,7 +455,8 @@
           <aside class="inter">
             <div class="index-instructions">Great! We are ready to play.</div>
             <div class="index-instructions blue-coloured width-60">Training is over. Everything has been reset. From now on, we will calculate whether you meet the bonus threshold.</div>
-            <div class="index-instructions">There will now be <span id="numberRoundsINSTR11">6</span> rounds of <span id="numberTurnsINSTR11">12</span> turns each.</div>
+            <div class="index-instructions">There will be <span id="numberRoundsINSTR11">6</span> rounds of <span id="numberTurnsINSTR11">12</span> turns each.</div>
+            <div class="index-instructions">Gather as many points as possible!</div>
             <div class="index-instructions width-60">When you are ready, click Play to start.</div>
             <div class="button-group">
                 <button id="nextButton11" class="move-screen-button button enabled">Play</button>
@@ -683,6 +685,19 @@
       <img id="comparison-target-image_P2" class="topLeftIm animate gone" src="./static/player-X.png" alt="Player X">
     </div>
 
+    <!-- SCOREDISPLAY_P2_2 -->
+    <div id="DISP_P2_2" class="w">
+        <div class="wrapper">
+            <aside class="inter">
+              <div class="index-instructions width-100">Oops! That again wasn't quite right.</div>
+              <div class="index-instructions width-100 blue-coloured">Remember that <span id="target_disp_P2_2">Player A</span>: <span id="player_description_2">selects cards randomly</span>.</div>
+              <div class="button-group">
+                <button id="nextButtonDisp_P2_2" class="move-screen-button button enabled">Next</button>
+              </div>
+            </aside>
+        </div>
+    </div>
+
     <!-- SCOREDISPLAY_P2 -->
     <div id="DISP_P2" class="w">
         <div class="wrapper">
@@ -719,8 +734,8 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page2"></div>
               </div>
-              <div class="index-instructions">Perfect! Let's move on.</div>
-              <div class="index-instructions">Just like before, you will have to infer how other players acted.</div>
+              <div class="index-instructions">Good. Let's move on.</div>
+              <div class="index-instructions">Just like before, you will have to infer how this player acted.</div>
              <div class="button-group">
                 <button id="nextButton32R" class="move-screen-button button enabled">Next</button>
               </div>
@@ -763,7 +778,7 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page3"></div>
               </div>
-              <div class="index-instructions blue-coloured width-80">We will now show you information about <span id="target3_P3">Player A</span>'s score every <span id="comparisonFreqINSTR3_P3">12</span> turns.</div>
+              <div class="index-instructions blue-coloured width-80">We will now show you information about <span id="target3_P3">Player A</span>'s score every two turns.</div>
               <div class="index-instructions width-80">Your job is to infer (make an educated guess about) which cards <span id="target3_P3_2">Player A</span> selected to get their score.</div>
              <div class="button-group">
                 <button id="backButton33" class="move-screen-button button enabled">Back</button>
@@ -780,9 +795,9 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page4"></div>
               </div>
-              <div class="index-instructions width-60">To do this, first, click on <span id="comparisonFreqINSTR4_P3">12</span> of the cards.</div>
-              <div class="index-instructions width-60">Then you will see how many more or less points <span id="target4_P3">Player A</span> found over the same two turns playing with the SAME cards.</div>
-              <div class="index-instructions width-60"><span id="target4_P3_2">Player A</span> may have selected exactly the cards that you selected, in the same order, or selected two different cards. Your job is to infer which cards they did select to get their score.</div>
+              <div class="index-instructions width-60">To do this, first, click on two of the cards.</div>
+              <div class="index-instructions width-60">Then you will see how many more or less points <span id="target4_P3">Player A</span> found over the same two turns.</div>
+              <div class="index-instructions width-60"><span id="target4_P3_2">Player A</span> had the same cards available to them as you. They may have selected exactly the same cards as you, in the same order, or not. Your job is to infer which cards they did select to get their score.</div>
               <div class="index-instructions width-60">If you see that <span id="target4_P3_3">Player A</span> got the same score as you in the previous two turns, they probably selected what you selected in the previous two turns.</div> <div class="index-instructions width-60">If <span id="target4_P3_4">Player A</span> got a higher or lower score than you in the previous two turns, they probably selected different cards than you.</div>
               <div class="button-group">
                 <button id="backButton34" class="move-screen-button button enabled">Back</button>
@@ -818,8 +833,8 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page6"></div>
               </div>
-              <div class="index-instructions width-60">First, click on <span id="comparisonFreqINSTR6_P3">3</span> of the cards.</div>
-              <div class="index-instructions width-60">Then, we will show you how many more or less points <span id="target6_P3">Player A</span> found over the same <span id="comparisonFreqINSTR6_P3_2">3</span> turns.</div>
+              <div class="index-instructions width-60">First, click on two of the cards.</div>
+              <div class="index-instructions width-60">Then, we will show you how many more or less points <span id="target6_P3">Player A</span> found over the same two turns.</div>
               <div class="index-instructions width-60">Finally, drag and drop the two <span id="target6_P3_2">Player A</span> icons to tell us which two cards you think <span id="target6_P3_3">Player A</span> selected to get their points.</div>
               <div class="index-instructions width-60">You may place both icons on the same card.</div>
               <div class="index-instructions width-60 blue-coloured">IMPORTANT: We only care about WHICH cards were selected, not in what order they were selected.</div>
@@ -910,7 +925,7 @@
               <div class="progress-bar-container">
                 <div class="progress-bar" id="page7"></div>
               </div>
-              <div class="index-instructions">Great! That's right.</div>
+              <div class="index-instructions"><span id="intro7_P3">Great! That's right.</span></div>
               <div class="index-instructions width-60">Since <span id="target7_P3">Player A</span> received the same number of points as you, the most likely cards <span id="target7_P3_2">Player A</span> selected were the same as yours.</div>
               <div class="index-instructions width-60 blue-coloured">Your performance score at this stage is affected by the accuracy of your inferences.</div>
               <div class="index-instructions width-60">The better you infer how <span id="target7_P3_3">Player A</span> acted, the higher your performance score.</div>
@@ -1034,6 +1049,8 @@
             </div>
             <div class="index-instructions">Great! We are ready to play.</div>
             <div class="index-instructions blue-coloured width-60">Training is over. Everything has been reset. From now on, the rounds may contribute towards your bonus.</div>
+            <div class="index-instructions">There will be <span id="numberRoundsINSTR11_P3">6</span> rounds of <span id="numberTurnsINSTR11_P3">12</span> turns each.</div>
+            <div class="index-instructions">Make the best inferences you can for the bonus!</div>
             <div class="index-instructions">When you are ready, click Play to begin.</div>
             <div class="button-group">
                 <button id="nextButton311" class="move-screen-button button enabled">Play</button>
@@ -1248,7 +1265,7 @@
         <div class="thanks-wrapper">
             <aside class="inter">
               <div id="thanks-title" class="padding-50 font-30">You're finished!</div>
-              <div class="index-instructions"><span id="whether-bonus-paid">Well done! In a random round, you performed well enough to obtain a bonus of <span id="player-score-max">£4</span>!</span></div>
+              <div class="index-instructions"><span id="whether-bonus-paid">Well done! In a random round, you performed well enough to obtain a bonus of <span id="player-score-max">£3</span>!</span></div>
               <div class="index-instructions">Please enter your information below.</div><div class="index-instructions">If you have any comments about the task, the other players, or about how you made your decisions, these would be very welcome. Please do not provide any identifiable information in your comments.</div><div class="index-instructions">Click Final payment to proceed to the final payment page.</div>
               <div id="final-user-input" class="final-user-input">
                 <form class="demos">
@@ -1272,6 +1289,7 @@
                   <textarea id="comments" name="comments" placeholder="Leave your comments here..."></textarea>
                 </div>
               </div>
+              <div class="index-instructions"><span class="font-15" id="whether-bonus-paid">If you would like to contact us directly, please send us a message via the Prolific application.</div>
               <div id="final-payment-button-wrapper">
                 <button id="final-payment" class="button enabled">Final payment</button>
               </div>
